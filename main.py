@@ -2,11 +2,6 @@ from flask import Flask, render_template, session, redirect, url_for, request, f
 from utils.server_config import *
 
 import logging
-# logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s',
-#          			level=logging.INFO,
-#          			datefmt='%Y-%m-%d %H:%M:%S')
-# from tornado.options import parse_command_line
-# parse_command_line()  # parsing Tornado's default config
 from tornado.log import enable_pretty_logging
 enable_pretty_logging()
 
