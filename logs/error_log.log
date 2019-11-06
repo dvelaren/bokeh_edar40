@@ -26,3 +26,8 @@
 2019-11-06 10:09:59 INFO     101 GET /prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=GNMfm9gu06eZljS8yZT3F5X1IbDxrJFN9vF5oBO2ksLf (192.168.35.78) 1.50ms
 2019-11-06 10:43:41 INFO     200 GET /prediccion/autoload.js?bokeh-autoload-element=9320&bokeh-app-path=/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/prediccion (192.168.35.78) 3074.22ms
 2019-11-06 10:43:42 INFO     101 GET /prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=qlpgZ6108uxjHvQon8SD4PqjzFdzF6RLeAO06UVI9NtC (192.168.35.78) 1.36ms
+2019-11-06 13:18:34 INFO     200 GET /prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/prediccion (192.168.35.78) 3070.23ms
+2019-11-06 13:18:34 INFO     200 GET /static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 12.57ms
+2019-11-06 13:18:34 INFO     200 GET /static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 115.15ms
+2019-11-06 13:18:34 INFO     200 GET /static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 90.74ms
+2019-11-06 13:18:34 INFO     200 GET /static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 4.30ms
