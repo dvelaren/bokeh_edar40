@@ -67,7 +67,22 @@ EDAR is the acronym for "Estacion Depuradora de Aguas Residuales", which is tran
     }
     ```
 
-10. Run application with gunicorn
+10. Create a link to the previous nginx config file inside /etc/nginx/sites-enabled/
+    ```sh
+    sudo ln -s /etc/nginx/sites-available/edar /etc/nginx/sites-enabled
+    ```
+
+11. Test that nginx config is correct
+    ```sh
+    sudo nginx -t
+    ```
+
+12. Restart nginx
+    ```sh
+    sudo systemctl restart nginx
+    ```
+
+13. Run application with gunicorn
     ```sh
     gunicorn -b 0.0.0.0:9995 main:app
     ```
