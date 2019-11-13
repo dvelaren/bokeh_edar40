@@ -82,8 +82,8 @@ def perfil():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':1})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':1})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':1})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':1})
 			title = 'Calidad del Agua - Periodo 1'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
@@ -94,8 +94,8 @@ def perfil_p2():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':2})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':2})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':2})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':2})
 			title = 'Calidad del Agua - Periodo 2'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
@@ -106,8 +106,8 @@ def perfil_comp():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True)
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil')
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True)
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil')
 			title = 'Calidad del Agua - Comparativo Periodos'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
@@ -120,8 +120,8 @@ def cartuja_prediction():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
 			title = 'Predicción de Calidad del Agua - Periodo 1'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
@@ -133,8 +133,8 @@ def cartuja_prediction_p2():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':2})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')							
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':2})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')							
 			title = 'Predicción de Calidad del Agua - Periodo 2'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
@@ -146,8 +146,8 @@ def cartuja_prediction_comp():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True)
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True)
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
 			title = 'Predicción de Calidad del Agua - Comparativo Periodos'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
