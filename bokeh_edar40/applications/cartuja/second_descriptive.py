@@ -5,7 +5,7 @@ import utils.bokeh_utils as bokeh_utils
 from bokeh.core.properties import value
 from bokeh.models import ColumnDataSource, Div, HoverTool, GraphRenderer, StaticLayoutProvider, Rect, MultiLine, LinearAxis, Grid, Legend, LegendItem, Span, Label, BasicTicker, ColorBar, LinearColorMapper, PrintfTickFormatter, MonthsTicker, LinearAxis, Range1d
 from bokeh.models.ranges import FactorRange
-from bokeh.models.widgets import Select, Button, TableColumn, DataTable, CheckboxButtonGroup
+from bokeh.models.widgets import Select, Button, TableColumn, DataTable, CheckboxButtonGroup, Slider
 from bokeh.plotting import figure
 from bokeh.layouts import layout, widgetbox, column, row, gridplot
 from bokeh.models.formatters import DatetimeTickFormatter
@@ -590,7 +590,60 @@ def create_div_title(title = ''):
 	
 	return div_title
 
+def create_df_sliders(weight_df, pred_df):
+	"""Crea el dataframe que contiene los valores estadisticos para crear los sliders
+	Parameters:
+		weight_df: Dataframe con las variables influyentes
+		pred_df: Dataframe con las predicciones diarias
+	Returns:
+		slider_df: Dataframe con los valores minimo, medio y máximo para la creación de sliders
+	"""
+
+	var_influyentes = list(weight_df['Attribute'])
+	pred_df_stats=pred_df[var_influyentes].describe()
+	df_sliders = pred_df_stats.loc[['min', 'mean', 'max']]
+
+	return df_sliders
+
+class DynamicSlider:
+	"""Clase DynamicSlider para representar los sliders de simulación
+	
+	Attributes:
+		df: Dataframe con las estadisticas para min, mean, max de los sliders
+		target: Target de simulación
+	"""
+	def __init__(self, df, target):
+		self.target = target
+		self.sliders = OrderedDict([])
+		self.df = df
+		for col in list(self.df.keys()):
+			delta = (self.df[col]['max']-self.df[col]['min']) * 0.1
+			slider = Slider(start=max(0,self.df[col]['min']-delta), end=self.df[col]['max']+delta, value=self.df[col]['mean'], step=0.1, title=col)
+			self.sliders.update({f'slider_{col}': slider})
+		self.button_simulate = Button(label="Simular", button_type="primary")
+		self.button_simulate.on_click(self.simulate)
+		self.sim_target = Div(text=f'<b>{self.target}:</b>')
+		self.wb = widgetbox(list(self.sliders.values()) + [self.button_simulate, self.sim_target], max_width=200)
+
+	def simulate(self, new):
+		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
+		"""
+		vars_influyentes = {}
+		for col in list(self.df.keys()):
+			vars_influyentes.update({col: self.sliders[f'slider_{col}'].value})
+		import random
+		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
+		print(vars_influyentes)
+
+        #TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
+		#				  username='rapidminer',
+		#				  password='rapidminer',
+		# 				  parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
+		# 				  out_json=True)
+		
+
 def modify_second_descriptive(doc):
+	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
 	
 	# Llamada al webservice de RapidMiner
@@ -606,7 +659,7 @@ def modify_second_descriptive(doc):
 	# Creación de los gráficos y widgets permanentes en la interfaz
 	prediction_plot = create_prediction_plot(prediction_df)
 	outlier_plot = create_outlier_plot(outlier_df)
-	simulation_title = create_div_title('Simulación')
+	simulation_title = create_div_title('Simulación de modelos')
 	model_title, add_model_button, model_select_menu = create_model_menu()
 	model_select_wb = widgetbox([model_title, model_select_menu , add_model_button], max_width=200, sizing_mode='stretch_width')
 	created_models_title = create_div_title('Modelos creados')
@@ -634,10 +687,15 @@ def modify_second_descriptive(doc):
 			confusion_df_raw = df_prediction[1].reindex(columns=list(json_prediction_document[1][0].keys()))
 			confusion_df = create_df_confusion(confusion_df_raw)
 			weight_df = df_prediction[2]
-			daily_pred_df = df_prediction[3][['timestamp', model_objective, f'prediction({model_objective})']]
+			pred_df = df_prediction[3]
+			slider_df = create_df_sliders(weight_df, pred_df)
+			daily_pred_df = pred_df[['timestamp', model_objective, f'prediction({model_objective})']]
+			
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
 			# Crear nuevos gráficos
+			simulate_title = create_div_title(f'Simulación - {model_objective}')
+			simulate_sliders = DynamicSlider(slider_df, model_objective)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
 			decision_tree_graph = create_decision_tree_graph_renderer(decision_tree_plot, decision_tree_data)
@@ -648,6 +706,7 @@ def modify_second_descriptive(doc):
 			confusion_title = create_div_title(f'Matriz de confusión - {model_objective}')
 			decision_tree_title = create_div_title(f'Arbol de decisión - {model_objective}')
 			new_plots = layout([
+				[column([simulate_title, simulate_sliders.wb], sizing_mode='stretch_width')],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],
