@@ -139,19 +139,6 @@ def cartuja_prediction_p2():
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
 	return redirect(url_for('login'))
 
-#Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
-@app.route('/prediccion/comparativo', methods=['GET'])
-def cartuja_prediction_comp():
-	active_page = 'prediccion'
-	if 'username' in session:
-		username = str(session.get('username'))
-		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True)
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
-			title = 'Predicción de Calidad del Agua - Comparativo Periodos'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
-	return redirect(url_for('login'))
-
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
 	app.secret_key = '[]V\xf0\xed\r\x84L,p\xc59n\x98\xbc\x92'
