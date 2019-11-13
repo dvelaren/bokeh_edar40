@@ -143,3 +143,4 @@ bokeh_edar40/visualizations/__pycache__/decision_tree.cpython-37.pyc
 .vscode/settings.json
 
 logs/error_log.log
+.vscode/launch.json
