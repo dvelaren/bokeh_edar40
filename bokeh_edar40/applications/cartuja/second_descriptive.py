@@ -5,7 +5,7 @@ import utils.bokeh_utils as bokeh_utils
 from bokeh.core.properties import value
 from bokeh.models import ColumnDataSource, Div, HoverTool, GraphRenderer, StaticLayoutProvider, Rect, MultiLine, LinearAxis, Grid, Legend, LegendItem, Span, Label, BasicTicker, ColorBar, LinearColorMapper, PrintfTickFormatter, MonthsTicker, LinearAxis, Range1d
 from bokeh.models.ranges import FactorRange
-from bokeh.models.widgets import Select, Button, TableColumn, DataTable, CheckboxButtonGroup, Slider
+from bokeh.models.widgets import Select, Button, TableColumn, DataTable, CheckboxButtonGroup, Slider, TextInput
 from bokeh.plotting import figure
 from bokeh.layouts import layout, widgetbox, column, row, gridplot
 from bokeh.models.formatters import DatetimeTickFormatter
@@ -605,32 +605,60 @@ def create_df_sliders(weight_df, pred_df):
 
 	return df_sliders
 
-class DynamicSlider:
-	"""Clase DynamicSlider para representar los sliders de simulación
+class DynamicRow:
+	"""Clase DynamicRow para representar una fila dinámica con slider y textbox
+	
+	Attributes:
+		start: Valor inicial del slider
+		end: Valor final del slider
+		value: Valor por defecto del slider y el textbox
+		title: Título del slider
+	"""
+	def __init__(self, start, end, value, title):
+		self.start = start
+		self.end = end
+		self.value = value
+		self.title = title
+		self.slider = Slider(start=self.start, end=self.end, value=self.value, step=0.1, title=self.title)
+		self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
+		self.dyn_row = row([self.slider, self.text_input], sizing_mode='stretch_height')
+		self.slider.on_change('value',self.slider_handler)
+		self.text_input.on_change('value',self.text_handler)
+	def slider_handler(self, attrname, old, new):
+		self.text_input.value = f"{new:.2f}"
+	def text_handler(self, attrname, old, new):
+		self.slider.value = float(new)
+
+class DynamicWidget:
+	"""Clase DynamicWidget para representar widget dinámicos con sliders y textbox de simulación
 	
 	Attributes:
 		df: Dataframe con las estadisticas para min, mean, max de los sliders
 		target: Target de simulación
 	"""
 	def __init__(self, df, target):
-		self.target = target
-		self.sliders = OrderedDict([])
 		self.df = df
+		self.target = target
+		self.new_rows = OrderedDict([])
+		self.columns = column([])
 		for col in list(self.df.keys()):
 			delta = (self.df[col]['max']-self.df[col]['min']) * 0.1
-			slider = Slider(start=max(0,self.df[col]['min']-delta), end=self.df[col]['max']+delta, value=self.df[col]['mean'], step=0.1, title=col)
-			self.sliders.update({f'slider_{col}': slider})
+			self.new_rows.update({f'row_{col}': DynamicRow(start=max(0,self.df[col]['min']-delta),
+                                    						end=self.df[col]['max']+delta,
+                                          					value=self.df[col]['mean'],
+                                          					title=col)})
+			self.columns.children.append(self.new_rows[f'row_{col}'].dyn_row)
 		self.button_simulate = Button(label="Simular", button_type="primary")
 		self.button_simulate.on_click(self.simulate)
 		self.sim_target = Div(text=f'<b>{self.target}:</b>')
-		self.wb = widgetbox(list(self.sliders.values()) + [self.button_simulate, self.sim_target], max_width=200)
+		self.wb = widgetbox([self.columns] + [self.button_simulate, self.sim_target], max_width=200)
 
 	def simulate(self, new):
 		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
 		"""
 		vars_influyentes = {}
 		for col in list(self.df.keys()):
-			vars_influyentes.update({col: self.sliders[f'slider_{col}'].value})
+			vars_influyentes.update({col: round(self.new_rows[f'row_{col}'].slider.value,2)})
 		import random
 		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
 		print(vars_influyentes)
@@ -695,7 +723,7 @@ def modify_second_descriptive(doc):
 			
 			# Crear nuevos gráficos
 			simulate_title = create_div_title(f'Simulación - {model_objective}')
-			simulate_sliders = DynamicSlider(slider_df, model_objective)
+			simulate_sliders = DynamicWidget(slider_df, model_objective)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
 			decision_tree_graph = create_decision_tree_graph_renderer(decision_tree_plot, decision_tree_data)
