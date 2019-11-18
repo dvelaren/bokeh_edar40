@@ -32,21 +32,24 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					{% if session['username'] == 'rapidminer' %}
-					<li class="nav-item dropdown {% if active_page == 'perfil' %}active{% endif %}">
-						<a class="nav-link dropdown-toggle" href="{{ url_for('index') }}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
-						<div class="dropdown-menu" aria-labelledby="dropdown01">
-						  <a class="dropdown-item" href="{{ url_for('index') }}">Periodo 1</a>
-						  <a class="dropdown-item" href="{{ url_for('perfil_p2') }}">Periodo 2</a>
-						  <a class="dropdown-item" href="{{ url_for('perfil_comp') }}">Comparativo</a>
-						</div>
+					
+					<li class="nav-item {% if active_page == 'perfil' %}active{% endif %}">
+						<a class="nav-link" href="{{ url_for('index') }}">Perfil</a>
 					</li>
-					<li class="nav-item dropdown {% if active_page == 'prediccion' %}active{% endif %}">
-						<a class="nav-link dropdown-toggle" href="{{ url_for('cartuja_prediction') }}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Predicciones</a>
-						<div class="dropdown-menu" aria-labelledby="dropdown01">
-						  <a class="dropdown-item" href="{{ url_for('cartuja_prediction') }}">Periodo 1</a>
-						  <a class="dropdown-item" href="{{ url_for('cartuja_prediction_p2') }}">Periodo 2</a>
-						</div>
+					<li class="nav-item {% if active_page == 'prediccion' %}active{% endif %}">
+						<a class="nav-link" href="{{ url_for('cartuja_prediction') }}">Predicción</a>
 					</li>
+					<form class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
+						<select class="form-control" id="periodo" name="periodo">
+								<option value="2" {% if periodo=='2' %}selected{% endif %}>Periodo 2</option>
+								<option value="1" {% if periodo=='1' %}selected{% endif %}>Periodo 1</option>
+						</select>
+						<select class="form-control" id="tipo_var" name="tipo_var">
+								<option value="rend" {% if tipo_var=='rend' %}selected{% endif %}>Rendimientos</option>
+								<option value="abs" {% if tipo_var=='abs' %}selected{% endif %}>Absolutas</option>
+						</select>
+						<button class="btn btn-sm btn-outline-success" type="submit">Actualizar</button>
+					</form>
 					{% endif %}
 				</ul>
 				<ul class="navbar-nav navbar-right">

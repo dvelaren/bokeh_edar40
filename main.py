@@ -15,6 +15,8 @@ from threading import Thread
 from subprocess import Popen
 
 app = Flask(__name__)
+periodo = '2'
+tipo_var = 'rend'
 
 #Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
 
@@ -75,68 +77,44 @@ def logout():
 	return redirect(url_for('index'))
 
 #Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
-@app.route('/perfil', methods=['GET'])
-@app.route('/perfil/periodo1', methods=['GET'])
+@app.route('/perfil', methods=['GET', 'POST'])
+# @app.route('/perfil/periodo1', methods=['GET', 'POST'])
 def perfil():
+	global periodo
+	global tipo_var
 	active_page = 'perfil'
+	if request.method == 'POST':
+		periodo = request.form['periodo']
+		tipo_var = request.form['tipo_var']
+	print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
 			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':1})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':1})
-			title = 'Calidad del Agua - Periodo 1'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
-	return redirect(url_for('login'))
-
-@app.route('/perfil/periodo2', methods=['GET'])
-def perfil_p2():
-	active_page = 'perfil'
-	if 'username' in session:
-		username = str(session.get('username'))
-		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':2})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':2})
-			title = 'Calidad del Agua - Periodo 2'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
-	return redirect(url_for('login'))
-
-@app.route('/perfil/comparativo', methods=['GET'])
-def perfil_comp():
-	active_page = 'perfil'
-	if 'username' in session:
-		username = str(session.get('username'))
-		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/perfil', relative_urls=True)
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil')
-			title = 'Calidad del Agua - Comparativo Periodos'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var}]'
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
 
 #Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
-@app.route('/prediccion', methods=['GET'])
-@app.route('/prediccion/periodo1', methods=['GET'])
+@app.route('/prediccion', methods=['GET', 'POST'])
 def cartuja_prediction():
+	global periodo
+	global tipo_var
 	active_page = 'prediccion'
+	if request.method == 'POST':
+		periodo = request.form['periodo']
+		tipo_var = request.form['tipo_var']
+	print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
 			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1})
 			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
-			title = 'Predicción de Calidad del Agua - Periodo 1'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
-	return redirect(url_for('login'))
-
-#Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
-@app.route('/prediccion/periodo2', methods=['GET'])
-def cartuja_prediction_p2():
-	active_page = 'prediccion'
-	if 'username' in session:
-		username = str(session.get('username'))
-		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':2})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')							
-			title = 'Predicción de Calidad del Agua - Periodo 2'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title)
+			title = f'Predicción de Calidad del Agua - Periodo {periodo}'
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
