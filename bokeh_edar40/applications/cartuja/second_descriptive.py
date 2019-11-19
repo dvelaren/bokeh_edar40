@@ -1,6 +1,7 @@
 from utils.rapidminer_proxy import call_webservice
 from bokeh_edar40.visualizations.decision_tree import Node, Tree
 import utils.bokeh_utils as bokeh_utils
+from utils.generate_model_vars import load_or_create_model_vars
 
 from bokeh.core.properties import value
 from bokeh.models import ColumnDataSource, Div, HoverTool, GraphRenderer, StaticLayoutProvider, Rect, MultiLine, LinearAxis, Grid, Legend, LegendItem, Span, Label, BasicTicker, ColorBar, LinearColorMapper, PrintfTickFormatter, MonthsTicker, LinearAxis, Range1d
@@ -207,13 +208,14 @@ def create_confusion_matrix(df):
 
 	return p
 
-def create_model_menu():
+def create_model_menu(new_models = False):
 	"""Crea menú de selección de variables para modelización del árbol de decisión
 
 	Returns:
 		Button: Botón del menú de selección
 		Select: Panel de selección de variable del menú de selección
 	"""
+
 
 	variables_file = open('resources/model_variables.txt', 'r')
 	variables_file_lines = variables_file.readlines()
@@ -671,6 +673,7 @@ class DynamicWidget:
 		
 
 def modify_second_descriptive(doc):
+	# Captura de los argumentos pasados desde flask
 	args = doc.session_context.request.arguments
 	try:
 		periodo = int(args.get('periodo')[0])
@@ -679,6 +682,22 @@ def modify_second_descriptive(doc):
 		periodo = 0
 		tipo_var = 'rend'
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+
+	# Creación/Carga en RAM del diccionario con las variables a modelizar
+	total_model_dict = load_or_create_model_vars(model_vars_file = 'resources/total_model_dict.pkl', 
+												mask_file = 'resources/model_variables_mask.xlsx',
+												sheets = ['ID_INFLUENTE',
+															'ID_BIOS',
+															'ID_FANGOS',
+															'ID_HORNO',
+															'ID_EFLUENTE',
+															'ID_ELECTRICIDAD',
+															'YOKO',
+															'ANALITICA'],
+												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
+												force_create=True)
+	
+	print(total_model_dict.keys())
 
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])

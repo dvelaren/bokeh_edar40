@@ -1175,3 +1175,1047 @@ requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetErro
 2019-11-19 13:36:37 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=YjL135skLlgycD941Ekd5zmbbwLLRNQ2SuJ9Kifb5zco (192.168.35.78) 1.44ms
 2019-11-19 13:36:55 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=7950&bokeh-app-path=/bokeh/perfil&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/perfil&periodo=2&tipo_var=abs (192.168.35.78) 1479.80ms
 2019-11-19 13:36:55 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=kza91pj9rUVtzpHrpVH5kH1Y4qeIiEPMIHatiw3X8Mpe (192.168.35.78) 1.38ms
+2019-11-19 15:54:35 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:54:35 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 14.43ms
+2019-11-19 15:54:36 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:54:36 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 4.36ms
+2019-11-19 15:59:30 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:59:30 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 7.50ms
+2019-11-19 15:59:30 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:59:30 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 4.32ms
+2019-11-19 15:59:46 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:59:46 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 13.32ms
+2019-11-19 15:59:47 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 15:59:47 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 4.35ms
+2019-11-19 16:00:27 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 16:00:27 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 9.74ms
+2019-11-19 16:00:28 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    create_obj()
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 84, in create_obj
+    df, outs_dict = create_df_outs(mask_file, sheets, cols)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 46, in create_df_outs
+    df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/util/_decorators.py", line 208, in wrapper
+    return func(*args, **kwargs)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 310, in read_excel
+    io = ExcelFile(io, engine=engine)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 819, in __init__
+    self._reader = self._engines[engine](self._io)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/io/excel/_xlrd.py", line 20, in __init__
+    import_optional_dependency("xlrd", extra=err_msg)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/pandas/compat/_optional.py", line 93, in import_optional_dependency
+    raise ImportError(message.format(name=name, extra=extra)) from None
+ImportError: Missing optional dependency 'xlrd'. Install xlrd >= 1.0.0 for Excel support Use pip or conda to install xlrd.
+2019-11-19 16:00:28 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 4.35ms
+2019-11-19 16:02:20 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 98, in load_or_create_model_vars
+    return total_model_dict
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:02:20 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 265.18ms
+2019-11-19 16:02:21 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 696, in modify_second_descriptive
+    cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'])
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 98, in load_or_create_model_vars
+    return total_model_dict
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:02:21 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 262.06ms
+2019-11-19 16:05:04 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 698, in modify_second_descriptive
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:05:04 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 269.51ms
+2019-11-19 16:05:04 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 698, in modify_second_descriptive
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:05:04 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 225.30ms
+2019-11-19 16:05:57 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 698, in modify_second_descriptive
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:05:57 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 228.24ms
+2019-11-19 16:05:58 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 698, in modify_second_descriptive
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:05:58 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 260.01ms
+2019-11-19 16:06:50 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3042.73ms
+2019-11-19 16:06:50 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 11.70ms
+2019-11-19 16:06:50 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 18.90ms
+2019-11-19 16:06:50 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 49.47ms
+2019-11-19 16:06:50 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 100.64ms
+2019-11-19 16:06:50 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=P9vdAnhGY08iSu3Xy1vkiHIagVJMaOQWTLPcaeMpWimu (192.168.35.78) 1.55ms
+2019-11-19 16:07:38 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 2953.77ms
+2019-11-19 16:07:38 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 15.47ms
+2019-11-19 16:07:38 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 48.04ms
+2019-11-19 16:07:38 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 92.79ms
+2019-11-19 16:07:38 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 1.89ms
+2019-11-19 16:09:24 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=WYs2nuLjWrAOBxGH9hFlgYoKocyJPqmynPOYmnVLR74x (192.168.35.78) 0.62ms
+2019-11-19 16:09:31 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3321.60ms
+2019-11-19 16:09:31 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 13.57ms
+2019-11-19 16:09:31 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 26.96ms
+2019-11-19 16:09:31 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 53.39ms
+2019-11-19 16:09:31 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 103.42ms
+2019-11-19 16:09:31 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=IMaGwElfq9k2PDkUf0ZVAab0jAfkz1G0eBGBwCP5Fdwy (192.168.35.78) 1.37ms
+2019-11-19 16:13:23 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3221.29ms
+2019-11-19 16:13:23 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 10.85ms
+2019-11-19 16:13:23 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 18.96ms
+2019-11-19 16:13:23 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 56.30ms
+2019-11-19 16:13:23 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 98.97ms
+2019-11-19 16:13:23 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=lXGV965ubOH9v1xOh2YMnUO0zD9ZyIqty5lW2ywM9SwI (192.168.35.78) 1.53ms
+2019-11-19 16:14:35 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3227.94ms
+2019-11-19 16:14:35 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 11.38ms
+2019-11-19 16:14:35 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 28.12ms
+2019-11-19 16:14:35 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 59.32ms
+2019-11-19 16:14:35 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 133.59ms
+2019-11-19 16:14:36 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=XeU88bQ9Hpf75lOSCN4Uz0Cp5UG7e1j53CAsB55WrI5q (192.168.35.78) 1.54ms
+2019-11-19 16:18:13 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3217.45ms
+2019-11-19 16:18:13 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 18.18ms
+2019-11-19 16:18:13 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 51.68ms
+2019-11-19 16:18:13 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 94.70ms
+2019-11-19 16:18:13 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 5.80ms
+2019-11-19 16:19:18 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=zoVJ6EkxJloiu3acvsl30z0E9sfCEOXMTVDcYyhytjRq (192.168.35.78) 2.08ms
+2019-11-19 16:19:24 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3165.18ms
+2019-11-19 16:19:24 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 13.74ms
+2019-11-19 16:19:24 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 32.82ms
+2019-11-19 16:19:24 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 72.75ms
+2019-11-19 16:19:24 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 112.93ms
+2019-11-19 16:20:24 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=uSGZshzvBpLWN8VjYgkGi2rET0FzHGmnNe7yQtIWfaQy (192.168.35.78) 1.97ms
+2019-11-19 16:20:31 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3343.48ms
+2019-11-19 16:20:31 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 11.02ms
+2019-11-19 16:20:31 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 21.89ms
+2019-11-19 16:20:31 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 53.67ms
+2019-11-19 16:20:31 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 98.37ms
+2019-11-19 16:20:31 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=hU0acOWkQ3s7MEfC4bjlXnXgIqzCCw3UVNEuLLSA9B93 (192.168.35.78) 1.38ms
+2019-11-19 16:20:50 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3179.77ms
+2019-11-19 16:20:50 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 13.46ms
+2019-11-19 16:20:50 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 16.07ms
+2019-11-19 16:20:50 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 51.15ms
+2019-11-19 16:20:50 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 98.92ms
+2019-11-19 16:20:51 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=rkob9A7yZGNz7vUtJkAhz5PXCFod7TsX9FrK91JPoQvR (192.168.35.78) 1.55ms
+2019-11-19 16:21:27 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=2293&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3317.02ms
+2019-11-19 16:21:27 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 8.56ms
+2019-11-19 16:21:27 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 34.91ms
+2019-11-19 16:21:27 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 52.88ms
+2019-11-19 16:21:27 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 99.06ms
+2019-11-19 16:21:27 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=UJbkg9zfoF2TGRPa25tQfMtKqXypnXg28rl9jN2IpYdv (192.168.35.78) 1.37ms
+2019-11-19 16:22:18 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 94, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:22:18 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 268.90ms
+2019-11-19 16:22:19 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 94, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:22:19 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 222.96ms
+2019-11-19 16:23:54 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 95, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:23:54 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 263.20ms
+2019-11-19 16:23:54 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 95, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:23:54 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 257.95ms
+2019-11-19 16:24:56 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 96, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:24:56 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 235.45ms
+2019-11-19 16:24:56 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 96, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:24:56 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 259.14ms
+2019-11-19 16:32:14 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:32:14 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 237.23ms
+2019-11-19 16:32:15 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:32:15 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 220.48ms
+2019-11-19 16:36:54 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:36:54 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 238.48ms
+2019-11-19 16:36:55 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+KeyError: 'Calidad_Agua'
+2019-11-19 16:36:55 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 262.59ms
+2019-11-19 16:38:15 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:38:15 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 237.13ms
+2019-11-19 16:38:16 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 97, in load_or_create_model_vars
+    print(total_model_dict['Calidad_Agua'])
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:38:16 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 256.63ms
+2019-11-19 16:47:37 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 106, in load_or_create_model_vars
+    return total_model_dict
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:47:37 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 238.10ms
+2019-11-19 16:47:38 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78)
+HTTPServerRequest(protocol='http', host='10.0.20.30:9090', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend', version='HTTP/1.1', remote_ip='192.168.35.78')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 697, in modify_second_descriptive
+    force_create=True)
+  File "/home/edar/bokeh_edar40/utils/generate_model_vars.py", line 106, in load_or_create_model_vars
+    return total_model_dict
+UnboundLocalError: local variable 'total_model_dict' referenced before assignment
+2019-11-19 16:47:38 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 222.94ms
+2019-11-19 16:48:49 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3780.43ms
+2019-11-19 16:48:49 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 10.71ms
+2019-11-19 16:48:49 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 21.80ms
+2019-11-19 16:48:49 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 54.53ms
+2019-11-19 16:48:49 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 99.41ms
+2019-11-19 16:48:49 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=vJg4N1WlZE9phZ0Krx8Mf1NVJDKBlfbh9iJVLnmBgX3t (192.168.35.78) 1.52ms
+2019-11-19 16:50:18 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2&tipo_var=rend (192.168.35.78) 3149.92ms
+2019-11-19 16:50:18 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 13.62ms
+2019-11-19 16:50:18 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 21.28ms
+2019-11-19 16:50:18 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 51.55ms
+2019-11-19 16:50:18 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 98.73ms
+2019-11-19 16:50:18 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=mW3Mc2dVDO3R8tf4DvYiDcOsrOpHCk2I53IOk5dYO3Sa (192.168.35.78) 1.52ms
