@@ -671,6 +671,15 @@ class DynamicWidget:
 		
 
 def modify_second_descriptive(doc):
+	args = doc.session_context.request.arguments
+	try:
+		periodo = int(args.get('periodo')[0])
+		tipo_var = str(args.get('tipo_var')[0])
+	except:
+		periodo = 0
+		tipo_var = 'rend'
+	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
 	
