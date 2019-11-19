@@ -80,40 +80,46 @@ def logout():
 @app.route('/perfil', methods=['GET', 'POST'])
 # @app.route('/perfil/periodo1', methods=['GET', 'POST'])
 def perfil():
-	global periodo
-	global tipo_var
-	active_page = 'perfil'
-	if request.method == 'POST':
-		periodo = request.form['periodo']
-		tipo_var = request.form['tipo_var']
-	print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
-
 	if 'username' in session:
+		global periodo
+		global tipo_var
+		active_page = 'perfil'
+		if request.method == 'POST':
+			periodo = request.form['periodo']
+			tipo_var = request.form['tipo_var']
+		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':1})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':1, , 'tipo_var':tipo_var})
 			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var}]'
+			if tipo_var == 'abs':
+				tipo_var_title = 'Absolutas'
+			elif tipo_var == 'rend':
+				tipo_var_title = 'Rendimientos'
+			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
 
 #Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
 @app.route('/prediccion', methods=['GET', 'POST'])
 def cartuja_prediction():
-	global periodo
-	global tipo_var
-	active_page = 'prediccion'
-	if request.method == 'POST':
-		periodo = request.form['periodo']
-		tipo_var = request.form['tipo_var']
-	print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
-
 	if 'username' in session:
+		global periodo
+		global tipo_var
+		active_page = 'prediccion'
+		if request.method == 'POST':
+			periodo = request.form['periodo']
+			tipo_var = request.form['tipo_var']
+		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion')
-			title = f'Predicción de Calidad del Agua - Periodo {periodo}'
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1, , 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			if tipo_var == 'abs':
+				tipo_var_title = 'Absolutas'
+			elif tipo_var == 'rend':
+				tipo_var_title = 'Rendimientos'
+			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
 
