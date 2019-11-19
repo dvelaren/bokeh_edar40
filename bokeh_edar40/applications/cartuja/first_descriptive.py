@@ -283,7 +283,7 @@ def create_normalize_plot(df):
 		('Valor', '@valor')
 	]
 
-	normalize_plot = figure(plot_height=350, toolbar_location=None, sizing_mode='stretch_width',
+	normalize_plot = figure(plot_height=350, max_width=600, toolbar_location=None, sizing_mode='stretch_width',
 							x_range=FactorRange(factors=source_cluster[0].data['Indicador']), tooltips=TOOLTIPS)
 	# Linea horizontal de anotación sobre nivel máximo de 0 a 1
 	hline = Span(location=1, dimension='width', line_color='red', line_alpha=0.6, line_dash='dotted', line_width=2)
@@ -373,7 +373,7 @@ def create_radar_plot(df):
 	hover = HoverTool(names=['radar_plt'], tooltips=TOOLTIPS)
 
 	# Create radar figure
-	nor_rad_pl = figure(plot_height=340, toolbar_location=None, x_range=(-0.2,1.4),
+	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
 						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width')
 
 	for i in range(GRID_STEPS):
@@ -447,7 +447,7 @@ def create_not_normalize_plot(df):
 		TableColumn(field='Units', title='Unidad', width=30)
 	]
 
-	data_table = DataTable(source=source, columns=columns, selectable=False, sizing_mode='stretch_width', max_width=650, height=200)
+	data_table = DataTable(source=source, columns=columns, selectable=False, sizing_mode='stretch_width', max_width=580, height=350)
 
 	return data_table
 
@@ -522,72 +522,49 @@ def modify_first_descriptive(doc):
 		tipo_var = str(args.get('tipo_var')[0])
 	except:
 		periodo = 0
+		tipo_var = 'rend'
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 	# desc = create_description()
 	# Llamada al webservice de RapidMiner
 	json_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
 	df_perfil = [json_normalize(data) for data in json_document]
 	
-	# Extracción de los dataframe en valores absolutos
+	# Extracción de los dataframe
 	normalize_df = df_perfil[0]
 	not_normalize_df = df_perfil[1]
 	weight_df = df_perfil[2]
 
-	# Extracción de los dataframe en valores de rendimientos
-	normalize_rend_df = df_perfil[0]
-	not_normalize_rend_df = df_perfil[1]
-	weight_rend_df = df_perfil[2]
-
 	# Eliminamos texto repetido average() de los indicadores
 	normalize_df['Indicador']=normalize_df['Indicador'].replace(regex=[r'\(', r'\)', 'average'],value='')	
 	not_normalize_df['Indicador']=not_normalize_df['Indicador'].replace(regex=[r'\(', r'\)', 'average'],value='')
-	normalize_rend_df['Indicador']=normalize_rend_df['Indicador'].replace(regex=[r'\(', r'\)', 'average'],value='')	
-	not_normalize_rend_df['Indicador']=not_normalize_rend_df['Indicador'].replace(regex=[r'\(', r'\)', 'average'],value='')	
 
 	# Convertimos las columnas numericas a flotante
 	normalize_df['valor'] = normalize_df['valor'].astype('float')
 	not_normalize_df['valor'] = not_normalize_df['valor'].astype('float')
-	normalize_rend_df['valor'] = normalize_rend_df['valor'].astype('float')
-	not_normalize_rend_df['valor'] = not_normalize_rend_df['valor'].astype('float')
 
 	# Creación de los gráficos
-	## Gráfico de perfil y araña normalizado-absolutos
+	## Gráfico de perfil y araña normalizado
 	normalize_plot = create_normalize_plot(normalize_df)
 	nor_rad_pl = create_radar_plot(normalize_df)
-	l_panel = Panel(child=nor_rad_pl, title='Diagrama de araña')
-	r_panel = Panel(child=normalize_plot, title='Diagrama de linea')
-	profile_tabs = Tabs(tabs=[l_panel, r_panel], height = 400, sizing_mode="stretch_both", max_width=650, margin=[0,10,0,0])
-	profile_title = create_title('Perfil de calidad del agua (normalizado-absolutos)')
-	profile_widget_box = widgetbox([profile_title, profile_tabs], max_width=650, height=400, sizing_mode='stretch_width', spacing=3)
+	# l_panel = Panel(child=nor_rad_pl, title='Diagrama de araña')
+	# r_panel = Panel(child=normalize_plot, title='Diagrama de linea')
+	# profile_tabs = Tabs(tabs=[l_panel, r_panel], height = 400, sizing_mode="stretch_both", max_width=650, margin=[0,10,0,0])
+	profile_title = create_title('Perfil de calidad del agua (normalizado) - Diagrama de línea')
+	profile_title_rad = create_title('Perfil de calidad del agua (normalizado) - Diagrama de araña')
+	# profile_widget_box = widgetbox([profile_title, profile_tabs], max_width=650, height=400, sizing_mode='stretch_width', spacing=3)
 	
-	## Gráfico de perfil y araña normalizado-rendimientos
-	nor_rad_pl_rend = create_radar_plot(normalize_rend_df)
-	normalize_plot_rend = create_normalize_plot(normalize_rend_df)
-	l_panel_rend = Panel(child=nor_rad_pl_rend, title='Diagrama de araña')
-	r_panel_rend = Panel(child=normalize_plot_rend, title='Diagrama de linea')
-	profile_tabs_rend = Tabs(tabs=[l_panel_rend, r_panel_rend], height = 400, sizing_mode="stretch_both", max_width=650, margin=[0,10,0,0])
-	profile_title_rend = create_title('Perfil de calidad del agua (normalizado-rendimientos)')
-	profile_widget_box_rend = widgetbox([profile_title_rend, profile_tabs_rend], max_width=650, height=400, sizing_mode='stretch_width', spacing=3)
-
-	## Tabla sin normalizar valores absolutos
-	not_normalize_table_title = create_title('Indicadores influentes sin normalizar (absolutos)')
+	## Tabla sin normalizar
+	not_normalize_table_title = create_title('Indicadores influentes sin normalizar')
 	not_normalize_table = create_not_normalize_plot(not_normalize_df)
-	not_normalize_widget_box = widgetbox([not_normalize_table_title, not_normalize_table], max_width=650, height=250, sizing_mode='stretch_width', spacing=3)
-
-	## Tabla sin normalizar valores rendimientos
-	not_normalize_table_title_rend = create_title('Indicadores influentes sin normalizar (rendimientos)')
-	not_normalize_table_rend = create_not_normalize_plot(not_normalize_rend_df)
-	not_normalize_widget_box_rend = widgetbox([not_normalize_table_title_rend, not_normalize_table_rend], max_width=650, height=250, sizing_mode='stretch_width', spacing=3)
+	not_normalize_widget_box = widgetbox([not_normalize_table_title, not_normalize_table], max_width=600, height=400, sizing_mode='stretch_both', spacing=3)
 	
-	## Gráfico de peso de indicadores absolutos y rendimientos
+	## Gráfico de peso de indicadores
 	weight_plot = create_weight_plot(weight_df)
-	weight_plot_rend = create_weight_plot(weight_rend_df)
 
 	# Distribución de los gráficos con una grid de bokeh
 	l = grid([
-		[profile_widget_box, profile_widget_box_rend],
-		[not_normalize_widget_box, not_normalize_widget_box_rend],
-		[weight_plot, weight_plot_rend]],
-		sizing_mode='stretch_both')
+		[column([profile_title, normalize_plot], sizing_mode='stretch_width'), column([profile_title_rad, nor_rad_pl], sizing_mode='stretch_width')],
+		[not_normalize_widget_box, weight_plot]
+		], sizing_mode='stretch_both')
 
 	doc.add_root(l)
