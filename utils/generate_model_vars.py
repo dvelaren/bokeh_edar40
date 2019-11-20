@@ -95,7 +95,7 @@ def load_or_create_model_vars(model_vars_file, mask_file, sheets, cols, force_cr
         try:
             total_model_dict = load_obj(model_vars_file)
             print('Cargando archivo pre-creado')
-        except (OSError, IOError) as e:
+        except (OSError, IOError):
             print('Creando nuevo archivo - sin forzar')
             total_model_dict = create_obj()
     return total_model_dict
