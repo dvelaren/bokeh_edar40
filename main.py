@@ -114,11 +114,12 @@ def cartuja_prediction():
 		username = str(session.get('username'))
 		if username == 'rapidminer':
 			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':1, , 'tipo_var':tipo_var})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
+			
 			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
