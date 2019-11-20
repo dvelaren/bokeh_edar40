@@ -46,7 +46,7 @@ def create_df_outs(file, sheets, cols):
         df[ws] = pd.read_excel(file, sheet_name=ws, usecols=cols)
         for out in list(df[ws]['OUT'].dropna()):
             outs_dict.update({out:ws})
-    return df, outs_dict;
+    return df, outs_dict
 
 # Read all possible in variables for each model
 def create_model_vars_dict(df, outs_dict):

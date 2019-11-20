@@ -2578,3 +2578,9 @@ ValueError: expected an instance of type AbstractIcon, got bk-tool-icon-arrow-ri
 2019-11-20 12:11:30 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 51.79ms
 2019-11-20 12:11:30 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 99.68ms
 2019-11-20 12:11:30 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=tDPRLPZPA1wM4BrroeAOuwQTSscW1HqErOaA60C6qrkX (192.168.35.78) 1.58ms
+2019-11-20 12:13:23 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&bokeh-absolute-url=http://10.0.20.30:9090/bokeh/prediccion&periodo=2 (192.168.35.78) 3052.44ms
+2019-11-20 12:13:23 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (192.168.35.78) 5.29ms
+2019-11-20 12:13:23 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (192.168.35.78) 16.56ms
+2019-11-20 12:13:23 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (192.168.35.78) 52.92ms
+2019-11-20 12:13:23 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (192.168.35.78) 99.80ms
+2019-11-20 12:13:23 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=gB9JSuges8OBqeha6jkepgcAl4I0CjNgrL9aXkyY0E2e (192.168.35.78) 1.52ms
