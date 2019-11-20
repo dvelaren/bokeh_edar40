@@ -208,7 +208,8 @@ def create_confusion_matrix(df):
 
 	return p
 
-def create_model_menu(new_models = False):
+#TODO Eliminar despues de nuevos servicios RapidMiner
+def create_model_menu(new_models = False, new_variables = []):
 	"""Crea menú de selección de variables para modelización del árbol de decisión
 
 	Returns:
@@ -216,21 +217,44 @@ def create_model_menu(new_models = False):
 		Select: Panel de selección de variable del menú de selección
 	"""
 
+	if new_models == False:
+		variables_file = open('resources/model_variables.txt', 'r')
+		variables_file_lines = variables_file.readlines()
 
-	variables_file = open('resources/model_variables.txt', 'r')
-	variables_file_lines = variables_file.readlines()
-
-	option_values = [line.rstrip('\n') for line in variables_file_lines]
-	
-	option_values.sort(key=lambda option_value:(option_value[:2]!='O_', option_value))
+		option_values = [line.rstrip('\n') for line in variables_file_lines]
+		
+		option_values.sort(key=lambda option_value:(option_value[:2]!='O_', option_value))
+	else:
+		option_values = new_variables
 
 	selected_value = 'Calidad_Agua'
 
 	title = create_div_title('Modelo')
-	select = Select(value=selected_value, options=option_values, height=35)
+	select = Select(value=selected_value, options=option_values, height=35, sizing_mode='stretch_width')
 	button = Button(label='Modelizar', button_type='primary', height=45)
 
 	return title, button, select
+
+#TODO Descomentar despues de crear nuevos servicios RapidMiner
+# def create_model_menu(model_variables = []):
+# 	"""Crea menú de selección de variables para modelización del árbol de decisión
+# 	Parameters:
+# 		model_variables: Lista con las variables para modelización
+
+# 	Returns:
+# 		Button: Botón del menú de selección
+# 		Select: Panel de selección de variable del menú de selección
+# 	"""
+
+# 	option_values = new_variables
+
+# 	selected_value = 'Calidad_Agua'
+
+# 	title = create_div_title('Modelo')
+# 	select = Select(value=selected_value, options=option_values, height=35)
+# 	button = Button(label='Modelizar', button_type='primary', height=45)
+
+# 	return title, button, select
 
 
 def create_decision_tree_graph_renderer(plot, tree):
@@ -665,7 +689,7 @@ class DynamicWidget:
 		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
 		print(vars_influyentes)
 
-        #TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
+        # TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
 		#				  username='rapidminer',
 		#				  password='rapidminer',
 		# 				  parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
@@ -695,9 +719,7 @@ def modify_second_descriptive(doc):
 															'YOKO',
 															'ANALITICA'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
-												force_create=True)
-	
-	print(total_model_dict.keys())
+												force_create=False)
 
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
@@ -717,12 +739,40 @@ def modify_second_descriptive(doc):
 	outlier_plot = create_outlier_plot(outlier_df)
 	simulation_title = create_div_title('Simulación de modelos')
 	model_title, add_model_button, model_select_menu = create_model_menu()
-	model_select_wb = widgetbox([model_title, model_select_menu , add_model_button], max_width=200, sizing_mode='stretch_width')
+	model_title_new, add_model_button_new, model_select_menu_new = create_model_menu(new_models=True, new_variables=list(total_model_dict.keys()))
+	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=190)
+	model_select_menu_new.max_width=190
+	model_select_wb = widgetbox([model_title, model_select_menu, row([model_select_menu_new, recreate_button], sizing_mode='stretch_width', max_width=400) , add_model_button], max_width=400, sizing_mode='stretch_width')
 	created_models_title = create_div_title('Modelos creados')
 	created_models_checkbox = CheckboxButtonGroup(labels=list(models.keys()), height=35)
 	created_models_checkbox.active = [0]
 	delete_model_button = Button(label='Eliminar', button_type='danger', height=45, max_width=200)
 	created_models_wb = widgetbox([created_models_title, created_models_checkbox], max_width=900, sizing_mode='stretch_width')
+	# Callback para crear nuevamente el listado de variables de la mascara
+	def recreate_callback():
+		print('Recreando lista de variables para modelizar')
+		nonlocal total_model_dict
+		total_model_dict = load_or_create_model_vars(model_vars_file = 'resources/total_model_dict.pkl', 
+												mask_file = 'resources/model_variables_mask.xlsx',
+												sheets = ['ID_INFLUENTE',
+															'ID_BIOS',
+															'ID_FANGOS',
+															'ID_HORNO',
+															'ID_EFLUENTE',
+															'ID_ELECTRICIDAD',
+															'YOKO',
+															'ANALITICA'],
+												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
+												force_create=True)
+		# print('Nuevas variables: ')
+		# print(total_model_dict.keys())
+		model_select_menu_new.options = list(total_model_dict.keys())
+		model_select_menu_new.value = 'Calidad_Agua'
+		models.clear()
+		model_plots.children = []
+		created_models_checkbox.labels = []
+		created_models_checkbox.active = []
+	recreate_button.on_click(recreate_callback)
 
 	# Callbacks para los widgets de la interfaz
 	def prediction_callback():
@@ -734,7 +784,20 @@ def modify_second_descriptive(doc):
 		if model_objective not in models:		
 			json_prediction_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON?',
 														'rapidminer', 'rapidminer', {'Objetivo': model_objective, 'Discretizacion': model_discretise, 'Numero_Atributos': 4},
-														out_json=True)	
+														out_json=True)
+
+			# TODO Remover anterior y descomentar este cuando Aitor cree los nuevos servicios
+			# json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON?',
+			# 											username='rapidminer',
+			# 											password='rapidminer',
+			# 											parameters={'Objetivo': model_objective,
+			# 														'Discretizacion': model_discretise,
+			# 														'Numero_Atributos': 4,
+			# 														'Ruta_Periodo': f'/home/admin/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+			# 														'Ruta_Perfilado': '/home/admin/Cartuja_Datos/Perfil_Calidad_out',
+			# 														'IN_MODELO': total_model_dict[model_objective]
+			# 														},
+			# 											out_json=True)	
 			
 			# Obtener datos
 			df_prediction = [json_normalize(data) for data in json_prediction_document]
