@@ -701,11 +701,12 @@ def modify_second_descriptive(doc):
 	args = doc.session_context.request.arguments
 	try:
 		periodo = int(args.get('periodo')[0])
-		tipo_var = str(args.get('tipo_var')[0])
+		# tipo_var = str(args.get('tipo_var')[0])
 	except:
 		periodo = 0
-		tipo_var = 'rend'
-	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+		# tipo_var = 'rend'
+	# print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+	print(f'periodo: {periodo}')
 
 	# Creación/Carga en RAM del diccionario con las variables a modelizar
 	total_model_dict = load_or_create_model_vars(model_vars_file = 'resources/total_model_dict.pkl', 
