@@ -522,11 +522,25 @@ def modify_first_descriptive(doc):
 		tipo_var = str(args.get('tipo_var')[0])
 	except:
 		periodo = 0
-		tipo_var = 'rend'
+		tipo_var = ''
+	if tipo_var == 'abs':
+		tipo_var = 'ABSOLUTAS'
+	elif tipo_var == 'rend':
+		tipo_var = 'RENDIMIENTOS'
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 	# desc = create_description()
 	# Llamada al webservice de RapidMiner
 	json_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
+
+	# TODO Comentar arriba y descomentar esto cuando Aitor actualice los nuevos servicios
+	# json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?',
+	# 								username='rapidminer',
+	# 								password='rapidminer',
+	# 								parameters={'Ruta_Periodo': f'/home/admin/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+	# 											'Ruta_Tipo_Variable': f'/home/admin/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv'},
+	# 								out_json=True)
+
+
 	df_perfil = [json_normalize(data) for data in json_document]
 	
 	# Extracción de los dataframe
