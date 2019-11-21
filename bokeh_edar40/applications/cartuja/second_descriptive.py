@@ -762,7 +762,8 @@ def modify_second_descriptive(doc):
 															'ID_EFLUENTE',
 															'ID_ELECTRICIDAD',
 															'YOKO',
-															'ANALITICA'],
+															'ANALITICA',
+															'METEO'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
 												force_create=True)
 		# print('Nuevas variables: ')
