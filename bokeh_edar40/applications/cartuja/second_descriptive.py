@@ -77,7 +77,7 @@ def create_corrects_plot(df, target):
 	xlabels = list(df.keys())
 	source = ColumnDataSource(df)
 
-	corrects_plot = figure(x_range=xlabels, plot_height=400, toolbar_location=None, sizing_mode='stretch_width')
+	corrects_plot = figure(x_range=xlabels, plot_height=400, toolbar_location=None, sizing_mode='stretch_width', output_backend="webgl")
 
 	bar_width = 0.1
 	xloc = calc_xoffset_corrects_plot(num_vals=len(xlabels), bar_width=bar_width)
@@ -129,7 +129,7 @@ def create_attribute_weight_plot(df, target):
 		]
 		)
 
-	weight_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_range=df['Attribute'].values)
+	weight_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_range=df['Attribute'].values, output_backend="webgl")
 
 	weight_plot.vbar(x='Attribute', top='Weight', source=source, width=0.9, line_color='white', fill_color='colors')
 
@@ -177,7 +177,8 @@ def create_confusion_matrix(df):
 		x_axis_location="above",
 		x_axis_label="Actual Label",
 		y_axis_label="Predicted Label",
-		sizing_mode='stretch_width')
+		sizing_mode='stretch_width',
+		output_backend="webgl")
 	p.xaxis.axis_line_color = None
 	p.yaxis.axis_line_color = None
 	p.xaxis.major_label_orientation = np.pi/4
@@ -317,7 +318,7 @@ def create_decision_tree_plot():
 	Returns:
 		Figure: Gráfica del árbol de decisión
 	"""
-	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=500, sizing_mode='stretch_width')
+	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=500, sizing_mode='stretch_width', output_backend="webgl")
 
 	plot.axis.visible = False
 	plot.xgrid.grid_line_color = None
@@ -339,7 +340,7 @@ def create_outlier_plot(df):
 
 	hover_tool = HoverTool(
 		tooltips = [
-			('Fecha', '@timestamp{%b %Y}'),
+			('Fecha', '@timestamp{%F}'),
 			('Outlier', '@outlier')
 		],
 		formatters = {
@@ -348,7 +349,7 @@ def create_outlier_plot(df):
 		mode = 'mouse'
 		)
 
-	outlier_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime')
+	outlier_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime', output_backend="webgl")
 
 	df['timestamp'] = pd.to_datetime(df['timestamp'])
 	df['outlier'] = pd.to_numeric(pd.Series(df['outlier'].values))
@@ -358,10 +359,16 @@ def create_outlier_plot(df):
 	source_cluster_2 = create_data_source_from_dataframe(df, 'cluster', 'cluster_2')
 	source_cluster_3 = create_data_source_from_dataframe(df, 'cluster', 'cluster_3')
 
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], size=6, legend_label='Cluster 0')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], size=6, legend_label='Cluster 1')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], size=6, legend_label='Cluster 2')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], size=6, legend_label='Cluster 3')
+	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], size=6, legend_label='Cluster 0')
+	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], size=6, legend_label='Cluster 1')
+	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], size=6, legend_label='Cluster 2')
+	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], size=6, legend_label='Cluster 3')
+
+	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], alpha=0.4, legend_label='Cluster 0')
+	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], alpha=0.4, legend_label='Cluster 1')
+	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], alpha=0.4, legend_label='Cluster 2')
+	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=0.4, legend_label='Cluster 3')
+
 
 	outlier_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	outlier_plot.yaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
@@ -407,7 +414,7 @@ def create_prediction_plot(df):
 	df['añomes'] = pd.to_datetime(df['añomes'], format='%m/%d/%y %I:%M %p')
 	df['Prediction'] = pd.to_numeric(pd.Series(df['Prediction'].values))
 
-	prediction_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime')
+	prediction_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime', output_backend="webgl")
 	
 	source_cluster_0 = create_data_source_from_dataframe(df, 'cluster', 'cluster_0')
 	source_cluster_1 = create_data_source_from_dataframe(df, 'cluster', 'cluster_1')
@@ -551,7 +558,7 @@ def create_daily_pred_plot(df_original, target='Calidad_Agua'):
 	source = ColumnDataSource(df)
 
 	daily_pred_plot = figure(plot_height=200, toolbar_location='right', sizing_mode='stretch_width', x_axis_type='datetime',
-							tools='pan, box_zoom, reset')
+							tools='pan, box_zoom, reset', output_backend="webgl")
 	daily_pred_plot.toolbar.logo = None
 	# Se añade un nuevo eje Y para el error
 	# daily_pred_plot.extra_y_ranges = {'y_error': Range1d(start=0, end=df['real'].max()-df['real'].min())}
@@ -667,6 +674,7 @@ class DynamicWidget:
 		self.target = target
 		self.new_rows = OrderedDict([])
 		self.columns = column([])
+		self.var_title = Div(text='<b>Variables de entrada</b>')
 		for col in list(self.df.keys()):
 			delta = (self.df[col]['max']-self.df[col]['min']) * 0.1
 			self.new_rows.update({f'row_{col}': DynamicRow(start=max(0,self.df[col]['min']-delta),
@@ -677,7 +685,7 @@ class DynamicWidget:
 		self.button_simulate = Button(label="Simular", button_type="primary")
 		self.button_simulate.on_click(self.simulate)
 		self.sim_target = Div(text=f'<b>{self.target}:</b>')
-		self.wb = widgetbox([self.columns] + [self.button_simulate, self.sim_target], max_width=200)
+		self.wb = widgetbox([self.var_title, self.columns, self.sim_target, self.button_simulate], max_width=200)
 
 	def simulate(self, new):
 		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
@@ -694,6 +702,101 @@ class DynamicWidget:
 		#				  password='rapidminer',
 		# 				  parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
 		# 				  out_json=True)
+
+class DynamicOptimRow:
+	def __init__(self, var_title):
+		self.var_title = var_title
+		self.var_row_title = Div(text=f'{self.var_title}:')
+		self.var_found_value = Div(text='', min_width=150)
+		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=80, min_width=80)
+		self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
+		self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
+		self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
+		self.target_col = row(children=[self.var_row_title, self.var_found_value],
+							  sizing_mode='stretch_width',
+							  max_width=200)
+		self.dyn_row = row([self.target_col,
+							self.low_condition_select,
+							self.low_inter_text,
+							self.high_condition_select,
+							self.high_inter_text], sizing_mode='stretch_width')
+		self.low_condition_select.on_change('value', self.low_select_handler)
+		self.high_condition_select.on_change('value', self.high_select_handler)
+	def low_select_handler(self, attr, old, new):
+#             print(f'attr: {attr}, old: {old}, {new}')
+		if new=='-':
+			self.low_inter_text.visible=False
+			self.high_condition_select.value = '-'
+			self.high_condition_select.visible = False
+		elif new=='=':
+			self.low_inter_text.visible=True
+			self.high_condition_select.value = '-'
+			self.high_condition_select.visible = False
+		else:
+			self.low_inter_text.visible=True
+			self.high_condition_select.visible = True
+	def high_select_handler(self, attr, old, new):
+#             print(f'attr: {attr}, old: {old}, {new}')
+		if new=='-':
+			self.high_inter_text.visible = False
+		else:
+			self.high_inter_text.visible = True
+
+class DynamicOptimWidget:
+	def __init__(self, target, possible_targets, var_influyentes):
+		self.target = target
+		self.possible_targets = possible_targets
+		self.var_influyentes = var_influyentes
+		# self.target_title = Div(text=f'<b>{self.target}</b>')
+		self.target_title = create_div_title(f'Optimización - {self.target}')
+		self.objective_select = Select(title='Objetivo', value='min', options=['min', 'max'])
+		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, min_width=110)
+		self.restrict_title = Div(text='<b>Restricciones</b>')
+		self.dyn_row_list = OrderedDict([])
+		self.columns = column([], sizing_mode='stretch_width')
+		for var in self.var_influyentes:
+			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var)})
+			self.columns.children.append(self.dyn_row_list[var].dyn_row)
+		self.button_optimize = Button(label="Optimizar", button_type="primary", max_width=180)
+		self.button_optimize.on_click(self.optimizar)
+		self.wb = widgetbox([self.target_title,
+							row([self.objective_select, self.target_select], sizing_mode='stretch_width'),
+							self.restrict_title,
+							self.columns,
+							self.button_optimize], sizing_mode='stretch_width', max_width=300)
+	def optimizar(self):
+		import random
+		restricciones = {}
+		for var in self.var_influyentes:
+			
+			condicion1 = self.dyn_row_list[var].low_condition_select.value
+			condicion2 = self.dyn_row_list[var].high_condition_select.value
+			
+			dict_condicion1 = self.create_dict_condicion(num_condicion=1,
+															condicion=condicion1,
+															val_condicion_raw=self.dyn_row_list[var].low_inter_text.value)
+			dict_condicion2 = self.create_dict_condicion(num_condicion=2,
+															condicion=condicion2,
+															val_condicion_raw=self.dyn_row_list[var].high_inter_text.value)
+			if dict_condicion1:
+				dict_condicion1.update(dict_condicion2)
+				restricciones.update({var: dict_condicion1})
+			self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'
+		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
+		print(f'Target: {arg_target}')
+		print(f'Restricciones: {restricciones}')
+	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
+#             print(f'num_condicion: {num_condicion}, condicion: {condicion}, val_condicion_raw: {val_condicion_raw}')
+		if condicion != '-':
+			try:
+				val_condicion = max(0, float('0'+val_condicion_raw))
+			except:
+				val_condicion = 0
+			dict_condicion = {f'condicion{num_condicion}': condicion,
+								f'val_condicion{num_condicion}': val_condicion}
+		else:
+			dict_condicion = {}
+		return dict_condicion
 		
 
 def modify_second_descriptive(doc):
@@ -811,12 +914,15 @@ def modify_second_descriptive(doc):
 			pred_df = df_prediction[3]
 			slider_df = create_df_sliders(weight_df, pred_df)
 			daily_pred_df = pred_df[['timestamp', model_objective, f'prediction({model_objective})']]
-			
+			possible_targets = sorted(list(pred_df[model_objective].unique()))
+			var_influyentes = list(weight_df['Attribute'])
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
 			# Crear nuevos gráficos
 			simulate_title = create_div_title(f'Simulación - {model_objective}')
+			simulate_title.min_width = 390
 			simulate_sliders = DynamicWidget(slider_df, model_objective)
+			optimize_wb = DynamicOptimWidget(target=model_objective, possible_targets=possible_targets, var_influyentes=var_influyentes)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
 			decision_tree_graph = create_decision_tree_graph_renderer(decision_tree_plot, decision_tree_data)
@@ -827,7 +933,7 @@ def modify_second_descriptive(doc):
 			confusion_title = create_div_title(f'Matriz de confusión - {model_objective}')
 			decision_tree_title = create_div_title(f'Arbol de decisión - {model_objective}')
 			new_plots = layout([
-				[column([simulate_title, simulate_sliders.wb], sizing_mode='stretch_width')],
+				[column([simulate_title, simulate_sliders.wb], sizing_mode='stretch_width'), optimize_wb.wb],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],

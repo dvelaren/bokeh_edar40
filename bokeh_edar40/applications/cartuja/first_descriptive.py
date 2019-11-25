@@ -188,7 +188,7 @@ def create_treemap(df):
 		return {'x': x, 'y': y, 'text': text}
 
 
-	treemap_figure = figure(plot_height=400, sizing_mode='stretch_width', toolbar_location=None)
+	treemap_figure = figure(plot_height=400, sizing_mode='stretch_width', toolbar_location=None, output_backend="webgl")
 	treemap_figure.axis.visible = False
 	treemap_figure.xgrid.grid_line_color = None
 	treemap_figure.ygrid.grid_line_color = None
@@ -284,7 +284,7 @@ def create_normalize_plot(df):
 	]
 
 	normalize_plot = figure(plot_height=350, max_width=600, toolbar_location=None, sizing_mode='stretch_width',
-							x_range=FactorRange(factors=source_cluster[0].data['Indicador']), tooltips=TOOLTIPS)
+							x_range=FactorRange(factors=source_cluster[0].data['Indicador']), tooltips=TOOLTIPS, output_backend="webgl")
 	# Linea horizontal de anotación sobre nivel máximo de 0 a 1
 	hline = Span(location=1, dimension='width', line_color='red', line_alpha=0.6, line_dash='dotted', line_width=2)
 	
@@ -374,7 +374,7 @@ def create_radar_plot(df):
 
 	# Create radar figure
 	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
-						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width')
+						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', output_backend="webgl")
 
 	for i in range(GRID_STEPS):
 		verts=unit_poly_verts(theta, (GRID_STEPS-i)*0.5/GRID_STEPS, CENTER)
@@ -468,7 +468,7 @@ def create_weight_plot(df):
 		('Peso', '@Weight'),
 	]
 
-	weight_plot = figure(max_width=650, height=400, toolbar_location=None, sizing_mode='stretch_width',y_range=FactorRange(factors=source.data['Attribute']), x_range=(0,1), tooltips=TOOLTIPS)
+	weight_plot = figure(max_width=650, height=400, toolbar_location=None, sizing_mode='stretch_width',y_range=FactorRange(factors=source.data['Attribute']), x_range=(0,1), tooltips=TOOLTIPS, output_backend="webgl")
 	weight_plot.hbar(y='Attribute', left='Weight', right=0, source=source, height=0.6, fill_color=bokeh_utils.BAR_COLORS_PALETTE[0], line_color=bokeh_utils.BAR_COLORS_PALETTE[0])
 
 	weight_plot.title.text = 'Peso de indicadores influentes'
