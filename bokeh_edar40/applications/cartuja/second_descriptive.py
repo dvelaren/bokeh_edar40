@@ -21,7 +21,6 @@ from collections import OrderedDict
 from datetime import datetime as dt
 import time
 
-
 def create_data_source_from_dataframe(df, group_value_name, group_value):
 	"""Crea ColumnDataSource desde DataFrame agrupando los valores de una columna concreta según un valor
 	Parameters:
@@ -697,11 +696,11 @@ class DynamicWidget:
 		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
 		print(vars_influyentes)
 
-        # TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
-		#				  username='rapidminer',
-		#				  password='rapidminer',
-		# 				  parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
-		# 				  out_json=True)
+        # TODO json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
+		#				                    username='rapidminer',
+		#				                    password='rapidminer',
+		# 				                    parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
+		# 				                    out_json=True)
 
 class DynamicOptimRow:
 	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
@@ -712,40 +711,44 @@ class DynamicOptimRow:
 	def __init__(self, var_title):
 		self.var_title = var_title
 		self.var_row_title = Div(text=f'{self.var_title}:')
-		self.var_found_value = Div(text='', min_width=150)
+		self.var_found_value = Div(text='')
 		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=80, min_width=80)
-		self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
-		self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
-		self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
+		# self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
+		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
+		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
+		self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80)
+		self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80)
+		self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80)
+
 		self.target_col = row(children=[self.var_row_title, self.var_found_value],
 							  sizing_mode='stretch_width',
-							  max_width=200)
+							  max_width=200, min_width=200)
 		self.dyn_row = row([self.target_col,
 							self.low_condition_select,
 							self.low_inter_text,
 							self.high_condition_select,
 							self.high_inter_text], sizing_mode='stretch_width')
-		self.low_condition_select.on_change('value', self.low_select_handler)
-		self.high_condition_select.on_change('value', self.high_select_handler)
-	def low_select_handler(self, attr, old, new):
-#             print(f'attr: {attr}, old: {old}, {new}')
-		if new=='-':
-			self.low_inter_text.visible=False
-			self.high_condition_select.value = '-'
-			self.high_condition_select.visible = False
-		elif new=='=':
-			self.low_inter_text.visible=True
-			self.high_condition_select.value = '-'
-			self.high_condition_select.visible = False
-		else:
-			self.low_inter_text.visible=True
-			self.high_condition_select.visible = True
-	def high_select_handler(self, attr, old, new):
-#             print(f'attr: {attr}, old: {old}, {new}')
-		if new=='-':
-			self.high_inter_text.visible = False
-		else:
-			self.high_inter_text.visible = True
+# 		self.low_condition_select.on_change('value', self.low_select_handler)
+# 		self.high_condition_select.on_change('value', self.high_select_handler)
+# 	def low_select_handler(self, attr, old, new):
+# #             print(f'attr: {attr}, old: {old}, {new}')
+# 		if new=='-':
+# 			self.low_inter_text.visible=False
+# 			self.high_condition_select.value = '-'
+# 			self.high_condition_select.visible = False
+# 		elif new=='=':
+# 			self.low_inter_text.visible=True
+# 			self.high_condition_select.value = '-'
+# 			self.high_condition_select.visible = False
+# 		else:
+# 			self.low_inter_text.visible=True
+# 			self.high_condition_select.visible = True
+# 	def high_select_handler(self, attr, old, new):
+# #             print(f'attr: {attr}, old: {old}, {new}')
+# 		if new=='-':
+# 			self.high_inter_text.visible = False
+# 		else:
+# 			self.high_inter_text.visible = True
 
 class DynamicOptimWidget:
 	"""Clase DynamicOptimWidget para representar widget dinámicos con todas las restricciones para optimizar
@@ -759,7 +762,6 @@ class DynamicOptimWidget:
 		self.target = target
 		self.possible_targets = possible_targets
 		self.var_influyentes = var_influyentes
-		# self.target_title = Div(text=f'<b>{self.target}</b>')
 		self.target_title = create_div_title(f'Optimización - {self.target}')
 		self.objective_select = Select(title='Objetivo', value='min', options=['min', 'max'])
 		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, min_width=110)
@@ -800,11 +802,11 @@ class DynamicOptimWidget:
 		print(f'Target: {arg_target}')
 		print(f'Restricciones: {restricciones}')
 
-		# TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_JSON?,
-		#				  username='rapidminer',
-		#				  password='rapidminer',
-		# 				  parameters={'Target': arg_target, 'Restricciones': restricciones},
-		# 				  out_json=True)
+		# TODO json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_JSON?,
+		#				                    username='rapidminer',
+		#				                    password='rapidminer',
+		# 				                    parameters={'Target': arg_target, 'Restricciones': restricciones},
+		# 				                    out_json=True)
 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
 		"""Función que crea el diccionario con la restricción especificada
 
@@ -827,7 +829,6 @@ class DynamicOptimWidget:
 		else:
 			dict_condicion = {}
 		return dict_condicion
-		
 
 def modify_second_descriptive(doc):
 	# Captura de los argumentos pasados desde flask
@@ -964,6 +965,7 @@ def modify_second_descriptive(doc):
 			decision_tree_title = create_div_title(f'Arbol de decisión - {model_objective}')
 			new_plots = layout([
 				[column([simulate_title, simulate_sliders.wb], sizing_mode='stretch_width'), optimize_wb.wb],
+				# [column([simulate_title, simulate_sliders.wb], sizing_mode='stretch_width')],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],
