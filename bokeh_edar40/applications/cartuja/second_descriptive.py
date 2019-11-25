@@ -645,7 +645,7 @@ class DynamicRow:
 		self.end = end
 		self.value = value
 		self.title = title
-		self.slider = Slider(start=self.start, end=self.end, value=self.value, step=0.1, title=self.title)
+		self.slider = Slider(start=self.start, end=self.end, value=self.value, step=0.1, title=self.title, max_width=280)
 		self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
 		self.dyn_row = row([self.slider, self.text_input], sizing_mode='stretch_height')
 		self.slider.on_change('value',self.slider_handler)
@@ -738,7 +738,7 @@ def modify_second_descriptive(doc):
 	# Creación de los gráficos y widgets permanentes en la interfaz
 	prediction_plot = create_prediction_plot(prediction_df)
 	outlier_plot = create_outlier_plot(outlier_df)
-	simulation_title = create_div_title('Simulación de modelos')
+	simulation_title = create_div_title('Simulación y Optimización de modelos')
 	model_title, add_model_button, model_select_menu = create_model_menu()
 	model_title_new, add_model_button_new, model_select_menu_new = create_model_menu(new_models=True, new_variables=list(total_model_dict.keys()))
 	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=190)
