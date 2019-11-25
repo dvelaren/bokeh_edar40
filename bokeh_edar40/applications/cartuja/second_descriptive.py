@@ -704,6 +704,11 @@ class DynamicWidget:
 		# 				  out_json=True)
 
 class DynamicOptimRow:
+	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
+	
+	Attributes:
+		var_title: Título de la restricción
+	"""
 	def __init__(self, var_title):
 		self.var_title = var_title
 		self.var_row_title = Div(text=f'{self.var_title}:')
@@ -743,6 +748,13 @@ class DynamicOptimRow:
 			self.high_inter_text.visible = True
 
 class DynamicOptimWidget:
+	"""Clase DynamicOptimWidget para representar widget dinámicos con todas las restricciones para optimizar
+	
+	Attributes:
+		target: Target de optimización
+		possible_targets: Lista de posibles clusters/rangos a optimizar
+		var_influyentes: Lista variables influyentes que calculadas por el optimizador
+	"""
 	def __init__(self, target, possible_targets, var_influyentes):
 		self.target = target
 		self.possible_targets = possible_targets
@@ -765,6 +777,8 @@ class DynamicOptimWidget:
 							self.columns,
 							self.button_optimize], sizing_mode='stretch_width', max_width=300)
 	def optimizar(self):
+		"""Callback que optimiza y obtiene los valores de las variables influyentes según objetivo fijado
+		"""
 		import random
 		restricciones = {}
 		for var in self.var_influyentes:
@@ -785,7 +799,23 @@ class DynamicOptimWidget:
 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
 		print(f'Target: {arg_target}')
 		print(f'Restricciones: {restricciones}')
+
+		# TODO call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_JSON?,
+		#				  username='rapidminer',
+		#				  password='rapidminer',
+		# 				  parameters={'Target': arg_target, 'Restricciones': restricciones},
+		# 				  out_json=True)
 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
+		"""Función que crea el diccionario con la restricción especificada
+
+		Parameters:
+			num_condicion: Número de la condición (posible 1 o 2)
+			condicion: Tipo de condición (<, >, <=, >=, =, -)
+			val_condicion_raw: Valor ingresado por el usuario de la condición sin procesar
+		
+		Returns:
+			dict_condicion: Diccionario con la restricción creada
+		"""
 #             print(f'num_condicion: {num_condicion}, condicion: {condicion}, val_condicion_raw: {val_condicion_raw}')
 		if condicion != '-':
 			try:
