@@ -8,10 +8,10 @@ from bokeh.models import ColumnDataSource, Div, HoverTool, GraphRenderer, Static
 from bokeh.models.ranges import FactorRange
 from bokeh.models.widgets import Select, Button, TableColumn, DataTable, CheckboxButtonGroup, Slider, TextInput
 from bokeh.plotting import figure
-from bokeh.layouts import layout, widgetbox, column, row, gridplot
+from bokeh.layouts import layout, widgetbox, column, row
 from bokeh.models.formatters import DatetimeTickFormatter
 from bokeh.models.tickers import FixedTicker
-from bokeh.transform import jitter, factor_cmap, dodge, transform
+from bokeh.transform import dodge, transform
 
 import xml.etree.ElementTree as et
 import pandas as pd
@@ -20,6 +20,7 @@ from pandas.io.json import json_normalize
 from collections import OrderedDict
 from datetime import datetime as dt
 import time
+import random
 
 def create_data_source_from_dataframe(df, group_value_name, group_value):
 	"""Crea ColumnDataSource desde DataFrame agrupando los valores de una columna concreta según un valor
@@ -362,11 +363,12 @@ def create_outlier_plot(df):
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], size=6, legend_label='Cluster 1')
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], size=6, legend_label='Cluster 2')
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], size=6, legend_label='Cluster 3')
-
-	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], alpha=0.4, legend_label='Cluster 0')
-	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], alpha=0.4, legend_label='Cluster 1')
-	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], alpha=0.4, legend_label='Cluster 2')
-	outlier_plot.scatter(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=0.4, legend_label='Cluster 3')
+	size = 5
+	alpha = 0.4
+	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], alpha=alpha, size=size, legend_label='Cluster 0')
+	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], alpha=alpha, size=size, legend_label='Cluster 1')
+	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], alpha=alpha, size=size, legend_label='Cluster 2')
+	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=alpha, size=size, legend_label='Cluster 3')
 
 
 	outlier_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
@@ -692,7 +694,6 @@ class DynamicWidget:
 		vars_influyentes = {}
 		for col in list(self.df.keys()):
 			vars_influyentes.update({col: round(self.new_rows[f'row_{col}'].slider.value,2)})
-		import random
 		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
 		print(vars_influyentes)
 
@@ -781,7 +782,6 @@ class DynamicOptimWidget:
 	def optimizar(self):
 		"""Callback que optimiza y obtiene los valores de las variables influyentes según objetivo fijado
 		"""
-		import random
 		restricciones = {}
 		for var in self.var_influyentes:
 			
