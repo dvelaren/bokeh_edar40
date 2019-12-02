@@ -88,7 +88,7 @@ def load_or_create_model_vars(model_vars_file, mask_file, sheets, cols, force_cr
         return total_model_dict
         # import pdb; pdb.set_trace()
 
-    if force_create==True:
+    if force_create:
         print('Creando nuevo archivo')
         total_model_dict = create_obj()
     else:
