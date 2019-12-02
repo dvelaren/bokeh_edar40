@@ -43,6 +43,7 @@ if __name__ != '__main__':
 	app.logger.addHandler(tornado_access_logger.handlers)
 	app.logger.addHandler(tornado_application_logger.handlers)
 	app.logger.setLevel(logging.INFO)
+	app.jinja_env.cache = {}
 
 Thread(target=bk_worker).start()
 
@@ -90,8 +91,8 @@ def perfil():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -113,8 +114,8 @@ def cartuja_prediction():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo})
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
