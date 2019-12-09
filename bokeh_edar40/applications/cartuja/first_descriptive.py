@@ -269,14 +269,7 @@ def create_normalize_plot(df):
 
 	NUM_CLUSTERS = df.cluster.nunique()	# Extraer numero clusters
 	
-	# source_cluster_0 = create_data_source_from_dataframe(df, 'cluster', 'cluster_0')
-	# source_cluster_1 = create_data_source_from_dataframe(df, 'cluster', 'cluster_1')
-	# source_cluster_2 = create_data_source_from_dataframe(df, 'cluster', 'cluster_2')
-	# source_cluster_3 = create_data_source_from_dataframe(df, 'cluster', 'cluster_3')
-	source_cluster = []
-	for i in range(NUM_CLUSTERS):
-		source_cluster.append(create_data_source_from_dataframe(df, 'cluster', f'cluster_{i}'))
-		# print(source_cluster[i].data)
+	source_cluster = [create_data_source_from_dataframe(df, 'cluster', f'cluster_{i}') for i in range(NUM_CLUSTERS)]
 
 	TOOLTIPS = [
 		('Indicador', '@Indicador'),
@@ -374,7 +367,7 @@ def create_radar_plot(df):
 
 	# Create radar figure
 	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
-						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', output_backend="webgl")
+						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', output_backend="webgl", name='testing')
 
 	for i in range(GRID_STEPS):
 		verts=unit_poly_verts(theta, (GRID_STEPS-i)*0.5/GRID_STEPS, CENTER)
