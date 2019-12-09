@@ -4,7 +4,7 @@ from bokeh.models import Div
 from bokeh.models.widgets import Select, Button, Slider, TextInput, RadioButtonGroup
 from collections import OrderedDict
 import utils.bokeh_utils as bokeh_utils
-
+import time
 import random
 
 def create_div_title(title = ''):
@@ -104,6 +104,7 @@ class DynamicOptimRow:
 	def __init__(self, var_title):
 		self.var_title = var_title
 		self.var_row_title = Div(text=f'{self.var_title}:')
+		# self.var_found_value = Div(text='')
 		self.var_found_value = Div(text='')
 		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=80, min_width=80)
 		# self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
@@ -174,6 +175,7 @@ class DynamicOptimWidget:
 	def optimizar(self):
 		"""Callback que optimiza y obtiene los valores de las variables influyentes según objetivo fijado
 		"""
+		start = time.time()
 		restricciones = {}
 		for var in self.var_influyentes:
 			condicion1 = self.dyn_row_list[var].low_condition_select.value
@@ -188,15 +190,17 @@ class DynamicOptimWidget:
 				dict_condicion1.update(dict_condicion2)
 				restricciones.update({var: dict_condicion1})
 			self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'
+		
 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
 		print(f'Target: {arg_target}')
 		print(f'Restricciones: {restricciones}')
-
+		print(f'Total time: {time.time()-start}')
 		# TODO json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_JSON?,
 		#				                    username='rapidminer',
 		#				                    password='rapidminer',
 		# 				                    parameters={'Target': arg_target, 'Restricciones': restricciones},
 		# 				                    out_json=True)
+
 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
 		"""Función que crea el diccionario con la restricción especificada
 
