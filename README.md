@@ -12,7 +12,7 @@ EDAR is the acronym for "Estacion Depuradora de Aguas Residuales", which is tran
 2. Install python3-pip, python dev tools and python3-venv
     ```sh
     sudo apt-get update
-    sudo apt-get install python3-pio
+    sudo apt-get install python3-pip
     sudo apt-get install build-essential libssl-dev libffi-dev python3-dev
     sudo apt-get install python3-venv
     ```
