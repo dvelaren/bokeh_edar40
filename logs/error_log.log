@@ -4140,3 +4140,201 @@ NameError: name 'source_cluster' is not defined
 2019-12-09 08:56:17 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1020&bokeh-app-path=/bokeh/perfil&periodo=1&tipo_var=abs (127.0.0.1) 1431.52ms
 2019-12-09 08:56:20 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=42280&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2915.37ms
 2019-12-09 08:56:20 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=ob5q8l3O2Qgqu7dHuK7o5JUT21XEe7z18jCb6OMoY1GW (127.0.0.1) 1.57ms
+2019-12-09 09:36:13 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1)
+HTTPServerRequest(protocol='http', host='edar.vicomtech.org:9995', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 792, in modify_second_descriptive
+    prediction_callback()
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 741, in prediction_callback
+    simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/visualizations/simul_optim_widgets.py", line 261, in __init__
+    self.optimize_wb = DynamicOptimWidget(target=self.target, possible_targets=self.possible_targets, var_influyentes=self.var_influyentes)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/visualizations/simul_optim_widgets.py", line 174, in __init__
+    row([self.button_optimize, self.div_spinner], sizing_mode='stretch_width')], sizing_mode='stretch_width', max_width=300)
+AttributeError: 'DynamicOptimWidget' object has no attribute 'div_spinner'
+2019-12-09 09:36:13 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2828.58ms
+2019-12-09 09:38:51 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2961.66ms
+2019-12-09 09:38:51 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 9.63ms
+2019-12-09 09:38:51 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 10.36ms
+2019-12-09 09:38:51 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 10.79ms
+2019-12-09 09:38:51 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 11.61ms
+2019-12-09 09:38:51 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=I4pQejswZingdepjWa4WRGCIdL2kvGcWUB6YjUu6QO9h (127.0.0.1) 1.66ms
+2019-12-09 09:43:32 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2945.37ms
+2019-12-09 09:43:32 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=0B2SfCFIG1Iz5z6bPdOnitxXiBXOxLlip2Vl6NF8l7o0 (127.0.0.1) 1.64ms
+2019-12-09 09:51:01 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2979.73ms
+2019-12-09 09:51:01 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=tjXsLQEJs1Xz5tgXyjst4Y7IshTayDAnPLIQK0huqH6o (127.0.0.1) 1.65ms
+2019-12-09 09:55:26 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2970.01ms
+2019-12-09 09:55:26 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=PJEotbcBQaGLT2FEGQ9zomZfdhTrA1ofGroWSfybDkz3 (127.0.0.1) 1.72ms
+2019-12-09 09:59:35 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2966.54ms
+2019-12-09 09:59:35 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=LdKqAMlybn3jTEpkcWRbL0XE4vO6OYsJuCFcpNu5jYWH (127.0.0.1) 1.65ms
+2019-12-09 10:03:17 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2982.72ms
+2019-12-09 10:03:18 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=em6GTKTHCOm9gao7Yd0dEqygDAh435icCPFXfdLkEcZW (127.0.0.1) 1.70ms
+2019-12-09 10:20:15 INFO     200 GET /bokeh/static/js/bokeh.min.js.map (127.0.0.1) 8.70ms
+2019-12-09 10:20:15 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js.map (127.0.0.1) 8.66ms
+2019-12-09 10:20:15 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js.map (127.0.0.1) 9.66ms
+2019-12-09 10:20:15 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js.map (127.0.0.1) 9.60ms
+2019-12-09 10:20:19 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2967.73ms
+2019-12-09 12:35:15 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=ciq0h2sjavgkH7qiUrHNCVfezdlQGv3NsrCW03XV0tPH (127.0.0.1) 1.56ms
+2019-12-09 12:35:24 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2976.44ms
+2019-12-09 12:35:25 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=bWKn4mFRtzNFyi1xbM5lhc3vTN8L42SR7mEkwAtjd9Ad (127.0.0.1) 1.51ms
+2019-12-09 13:12:43 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1503.77ms
+2019-12-09 13:12:43 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=jW9lofpD3JKEEa56LTQomZDJpvwm69furaUOl4FKTmQz (127.0.0.1) 1.65ms
+2019-12-09 13:12:49 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1929&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1)
+HTTPServerRequest(protocol='http', host='edar.vicomtech.org:9995', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1929&bokeh-app-path=/bokeh/prediccion&periodo=2', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 792, in modify_second_descriptive
+    prediction_callback()
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 741, in prediction_callback
+    simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/visualizations/simul_optim_widgets.py", line 268, in __init__
+    self.tab_simulate = Panel(child=simulate_wb.wb, title="Simular")
+NameError: name 'simulate_wb' is not defined
+2019-12-09 13:12:49 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1929&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2823.81ms
+2019-12-09 13:15:40 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2978.99ms
+2019-12-09 13:15:40 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 3.49ms
+2019-12-09 13:15:40 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 3.63ms
+2019-12-09 13:15:40 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 3.67ms
+2019-12-09 13:15:40 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 3.39ms
+2019-12-09 13:15:40 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=yCE9y9drHgrZ7gcgmnYbIyq4jXGs1xRXf7NMSq4wwS4L (127.0.0.1) 1.68ms
+2019-12-09 13:17:33 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=jW9lofpD3JKEEa56LTQomZDJpvwm69furaUOl4FKTmQz (127.0.0.1) 2.15ms
+2019-12-09 13:17:40 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3016.50ms
+2019-12-09 13:17:40 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=kQaQTIIYzz5iWl4D2M7Isis9WYLBXYAJmmzSuRyB7w1u (127.0.0.1) 1.51ms
+2019-12-09 13:24:25 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=jW9lofpD3JKEEa56LTQomZDJpvwm69furaUOl4FKTmQz (127.0.0.1) 2.14ms
+2019-12-09 13:24:29 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2943.57ms
+2019-12-09 13:24:29 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=pAq39yXCxOs8ZA8UsAnDM2vu4LpDlIGkdBHOmv11mFEv (127.0.0.1) 1.52ms
+2019-12-09 13:37:29 ERROR    Uncaught exception GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1)
+HTTPServerRequest(protocol='http', host='edar.vicomtech.org:9995', method='GET', uri='/bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2', version='HTTP/1.1', remote_ip='127.0.0.1')
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/web.py", line 1699, in _execute
+    result = await result
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/autoload_js_handler.py", line 60, in get
+    session = yield self.get_session()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 742, in run
+    yielded = self.gen.throw(*exc_info)  # type: ignore
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/views/session_handler.py", line 79, in get_session
+    session = yield self.application_context.create_session_if_needed(session_id, self.request)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 735, in run
+    value = future.result()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/gen.py", line 748, in run
+    yielded = self.gen.send(value)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/contexts.py", line 222, in create_session_if_needed
+    self._application.initialize_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/application.py", line 178, in initialize_document
+    h.modify_document(doc)
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/application/handlers/function.py", line 133, in modify_document
+    self._func(doc)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 792, in modify_second_descriptive
+    prediction_callback()
+  File "/home/edar/bokeh_edar40/bokeh_edar40/applications/cartuja/second_descriptive.py", line 741, in prediction_callback
+    simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/visualizations/simul_optim_widgets.py", line 297, in __init__
+    self.simulate_wb = DynamicSimulWidget(target=self.target, df=self.simul_df)
+  File "/home/edar/bokeh_edar40/bokeh_edar40/visualizations/simul_optim_widgets.py", line 106, in __init__
+    row([self.button_simulate, self.spinner_text], sizing_mode='stretch_width')], min_width = 390, max_width=400, sizing_mode='stretch_width')
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/layouts.py", line 95, in row
+    raise ValueError("""Only LayoutDOM items can be inserted into a row. Tried to insert: %s of type %s""" % (item, type(item)))
+ValueError: Only LayoutDOM items can be inserted into a row. Tried to insert: 
+					<!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
+					<div class="loader">
+					<style scoped>
+					.loader {
+						border: 4px solid #f3f3f3; /* Light grey */
+						border-top: 4px solid #3498db; /* Blue */
+						border-radius: 50%;
+						width: 25px;
+						height: 25px;
+						animation: spin 2s linear infinite;
+					}
+
+					@keyframes spin {
+						0% { transform: rotate(0deg); }
+						100% { transform: rotate(360deg); }
+					} 
+					</style>
+					</div>
+					 of type <class 'str'>
+2019-12-09 13:37:29 ERROR    500 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2823.78ms
+2019-12-09 13:39:07 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3010.21ms
+2019-12-09 13:39:07 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=ZvqqZn0Pn5WGO5F0Yh22fIY0lfKdT8w2utqes7nljNF9 (127.0.0.1) 1.65ms
+2019-12-09 13:40:57 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2941.29ms
+2019-12-09 13:40:57 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 4.64ms
+2019-12-09 13:40:57 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 4.16ms
+2019-12-09 13:40:57 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 3.53ms
+2019-12-09 13:40:57 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 2.74ms
+2019-12-09 13:40:57 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=LpC8gnMatDsxg8WxmzR23X9ectxxJbYfABUb4VBj1Puv (127.0.0.1) 1.53ms
+2019-12-09 13:45:09 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3010.47ms
+2019-12-09 13:45:09 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=vSjmI2A3ETHCun6ijSK8Aibo228CS4rVHyV7KwsDvsNc (127.0.0.1) 1.67ms
+2019-12-09 15:24:31 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3061.58ms
+2019-12-09 15:24:31 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 6.84ms
+2019-12-09 15:24:31 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 7.57ms
+2019-12-09 15:24:31 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 8.02ms
+2019-12-09 15:24:31 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 2.52ms
+2019-12-09 15:24:32 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=Z3Tb80IY8q9iZ4EXpcUixzaPLC7xlceprpOShJ5If21J (127.0.0.1) 1.61ms
+2019-12-09 15:25:13 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=2373&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2963.33ms
+2019-12-09 15:25:14 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=d1UZ61GD1tT8ek7NnvxXLhIYlAewAEqceuznaK93jQZM (127.0.0.1) 1.52ms
+2019-12-09 15:25:37 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1003&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1412.19ms
+2019-12-09 15:25:37 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=Um3coVpJir2tuUizO3gHD56WE2u7SAVFFfAK5Xa8DO98 (127.0.0.1) 1.54ms
+2019-12-09 15:25:43 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1004&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2959.01ms
+2019-12-09 15:25:43 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=DZoD9Suu0cdRUJv9w2OmfSIMRbmrfUCKuLPMvSigRDL4 (127.0.0.1) 0.45ms
+2019-12-09 15:31:11 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 2969.08ms
+2019-12-09 15:31:11 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 6.73ms
+2019-12-09 15:31:11 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 7.40ms
+2019-12-09 15:31:11 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 8.26ms
+2019-12-09 15:31:11 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 2.49ms
+2019-12-09 15:31:12 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=gC5nuMVcKSw2Hz11o2PmNGVlGNyrxich8QfmRr9fpIUr (127.0.0.1) 1.63ms
+2019-12-09 15:57:10 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3039.79ms
+2019-12-09 15:57:10 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 1.95ms
+2019-12-09 15:57:10 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 4.75ms
+2019-12-09 15:57:10 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 4.05ms
+2019-12-09 15:57:10 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 3.43ms
+2019-12-09 15:57:11 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=tz7E746RENu8PF5ugxZNEFJpDaoorzLeOfRLrRKQwUEd (127.0.0.1) 1.57ms
+2019-12-09 16:06:01 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2 (127.0.0.1) 3005.34ms
+2019-12-09 16:06:02 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=bMzBHuukEuquzMlY9NgnACCVofiCYS7u3n9d2fSXRWU1 (127.0.0.1) 1.67ms

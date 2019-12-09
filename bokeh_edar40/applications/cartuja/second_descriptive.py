@@ -738,11 +738,6 @@ def modify_second_descriptive(doc):
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
 			# Crear nuevos gráficos
-			# simulate_wb = DynamicSimulWidget(target=model_objective, df=slider_df)
-			# optimize_wb = DynamicOptimWidget(target=model_objective, possible_targets=possible_targets, var_influyentes=var_influyentes)
-			# simulate_title = create_div_title(f'Simulación - {model_objective}')
-			# simulate_title.min_width = 390
-
 			simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
@@ -758,9 +753,7 @@ def modify_second_descriptive(doc):
 				[model_title],
 				[simul_or_optim_wb.rb],
 				[simul_or_optim_wb.wb],
-				# [column([simulate_title, simulate_wb.wb], sizing_mode='stretch_width'), optimize_wb.wb],
-				# [column([simulate_title, simulate_wb.wb], sizing_mode='stretch_width')],
-				# [simulate_wb.wb, optimize_wb.wb],
+				# [simul_or_optim_wb.tabs],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],
