@@ -68,13 +68,13 @@ class DynamicSimulWidget:
 		target_title = create_div_title(f'Simulación - {self.target}')
 		target_title.min_width = 390
 		var_title = Div(text='<b>Variables de entrada</b>')
-		for col in list(self.df.keys()):
-			delta = (self.df[col]['max']-self.df[col]['min']) * 0.1
-			self.new_rows.update({f'row_{col}': DynamicSimulRow(start=max(0,self.df[col]['min']-delta),
-                                    						end=self.df[col]['max']+delta,
-                                          					value=self.df[col]['mean'],
-                                          					title=col)})
-			columns.children.append(self.new_rows[f'row_{col}'].dyn_row)
+		for var in list(self.df.keys()):
+			delta = (self.df[var]['max']-self.df[var]['min']) * 0.1
+			self.new_rows.update({var: DynamicSimulRow(start=max(0,self.df[var]['min']-delta),
+                                    						end=self.df[var]['max']+delta,
+                                          					value=self.df[var]['mean'],
+                                          					title=var)})
+			columns.children.append(self.new_rows[var].dyn_row)
 		button_simulate = Button(label="Simular", button_type="primary", max_width=180, min_width=180)
 		button_simulate.on_click(self.simulate)
 		self.sim_target = Div(text=f'<b>{self.target}:</b>')
@@ -117,9 +117,7 @@ class DynamicSimulWidget:
 		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
 		"""
 		self.show_spinner()
-		vars_influyentes = {}
-		for col in list(self.df.keys()):
-			vars_influyentes.update({col: round(self.new_rows[f'row_{col}'].slider.value,2)})
+		vars_influyentes = {var: round(drow.slider.value,2) for (var, drow) in self.new_rows.items()}
 		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
 		print(vars_influyentes)
 		self.hide_spinner()
@@ -238,15 +236,15 @@ class DynamicOptimWidget:
 		start = time.time()
 		self.show_spinner()
 		restricciones = {}
-		for var in self.var_influyentes:
-			condicion1 = self.dyn_row_list[var].low_condition_select.value
-			condicion2 = self.dyn_row_list[var].high_condition_select.value
+		for var, drow in self.dyn_row_list.items():
+			condicion1 = drow.low_condition_select.value
+			condicion2 = drow.high_condition_select.value
 			dict_condicion1 = self.create_dict_condicion(num_condicion=1,
 															condicion=condicion1,
-															val_condicion_raw=self.dyn_row_list[var].low_inter_text.value)
+															val_condicion_raw=drow.low_inter_text.value)
 			dict_condicion2 = self.create_dict_condicion(num_condicion=2,
 															condicion=condicion2,
-															val_condicion_raw=self.dyn_row_list[var].high_inter_text.value)
+															val_condicion_raw=drow.high_inter_text.value)
 			if dict_condicion1:
 				dict_condicion1.update(dict_condicion2)
 				restricciones.update({var: dict_condicion1})
