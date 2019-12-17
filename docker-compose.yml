@@ -1,0 +1,17 @@
+version: '2'
+services:
+    gunicorn:
+        build: .
+        expose:
+            - 9090
+        volumes:
+            - '/home/edar/bokeh_edar40:/gunicorn'
+    nginx:
+        build: ./nginx
+        ports:
+            - '80:80'
+            - '9995:9995'
+        # volumes:
+        #     - '/etc/nginx/sites-enabled:/etc/nginx/conf.d'
+        depends_on:
+            - gunicorn
