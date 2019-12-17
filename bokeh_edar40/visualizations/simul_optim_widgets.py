@@ -1,11 +1,12 @@
 
-from bokeh.layouts import widgetbox, column, row
-from bokeh.models import Div, Panel, Tabs
-from bokeh.models.widgets import Select, Button, Slider, TextInput, RadioButtonGroup
-from collections import OrderedDict
 import utils.bokeh_utils as bokeh_utils
 import time
 import random
+from collections import OrderedDict
+
+from bokeh.models import Div, Panel, Tabs
+from bokeh.models.widgets import Select, Button, Slider, TextInput, RadioButtonGroup
+from bokeh.layouts import widgetbox, column, row
 
 def create_div_title(title = ''):
 	"""Crea el título para un objeto de la interfaz bokeh
@@ -43,7 +44,9 @@ class DynamicSimulRow:
 		self.end = end
 		self.value = value
 		self.title = title
-		self.slider = Slider(start=self.start, end=self.end, value=self.value, step=0.1, title=self.title, max_width=280)
+		self.slider = Slider(start=self.start, end=self.end,
+							value=self.value, step=0.1,
+							title=self.title, max_width=280)
 		self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
 		self.dyn_row = row([self.slider, self.text_input], sizing_mode='stretch_height')
 		self.slider.on_change('value',self.slider_handler)
@@ -71,9 +74,9 @@ class DynamicSimulWidget:
 		for var in list(self.df.keys()):
 			delta = (self.df[var]['max']-self.df[var]['min']) * 0.1
 			self.new_rows.update({var: DynamicSimulRow(start=max(0,self.df[var]['min']-delta),
-                                    						end=self.df[var]['max']+delta,
-                                          					value=self.df[var]['mean'],
-                                          					title=var)})
+														end=self.df[var]['max']+delta,
+                                          				value=self.df[var]['mean'],
+                                          				title=var)})
 			columns.children.append(self.new_rows[var].dyn_row)
 		button_simulate = Button(label="Simular", button_type="primary", max_width=180, min_width=180)
 		button_simulate.on_click(self.simulate)
