@@ -266,7 +266,7 @@ def create_normalize_plot(df):
 	Returns:
 		Figure: Gráfica de variables afectando en cada tipo de calidad de agua con valores normalizados
 	"""
-
+	print(df.describe())
 	NUM_CLUSTERS = df.cluster.nunique()	# Extraer numero clusters
 	
 	source_cluster = [create_data_source_from_dataframe(df, 'cluster', f'cluster_{i}') for i in range(NUM_CLUSTERS)]
@@ -300,8 +300,8 @@ def create_normalize_plot(df):
 	normalize_plot.yaxis.axis_label = 'Valor (normalizado)'
 	normalize_plot.yaxis.axis_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	normalize_plot.yaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
-	normalize_plot.y_range.start = -2
-	normalize_plot.y_range.end = 3
+	# normalize_plot.y_range.start = 0
+	# normalize_plot.y_range.end = 5
 	normalize_plot.legend.location = 'top_left'
 	normalize_plot.legend.orientation = 'horizontal'
 	normalize_plot.legend.click_policy = 'hide'
@@ -431,13 +431,16 @@ def create_not_normalize_plot(df):
 	Returns:
 		DataTable: Tabla de variables afectando en cada tipo de calidad de agua con valores sin normalizar
 	"""
-	units = 4*["tuni1","tuni2","tuni3","tuni4","tuni5","tuni6","tuni7","tuni8","tuni9","tuni10"]
-	source = ColumnDataSource(df.assign(Units=units))
+	# units = 4*["tuni1","tuni2","tuni3","tuni4","tuni5","tuni6","tuni7","tuni8","tuni9","tuni10"]
+	# units = 4*["tuni1","tuni2","tuni3","tuni4","tuni5"]
+
+	# source = ColumnDataSource(df.assign(Units=units))
+	source = ColumnDataSource(df)
 	columns = [
 		TableColumn(field='cluster', title='Cluster', width=20),
 		TableColumn(field='Indicador', title='Indicador (promedio)', width=72),
-		TableColumn(field='valor', title='Valor', width=30),
-		TableColumn(field='Units', title='Unidad', width=30)
+		TableColumn(field='valor', title='Valor', width=30)
+		# TableColumn(field='Units', title='Unidad', width=30)
 	]
 
 	data_table = DataTable(source=source, columns=columns, selectable=False, sizing_mode='stretch_width', max_width=580, height=350)
@@ -512,29 +515,45 @@ def modify_first_descriptive(doc):
 	args = doc.session_context.request.arguments
 	try:
 		periodo = int(args.get('periodo')[0])
-		tipo_var = str(args.get('tipo_var')[0])
+		# tipo_var = str(args.get('tipo_var')[0])
+		tipo_var = args.get('tipo_var')[0].decode('ascii')
+
+		print(f"tipo_var_raw: {tipo_var}")
 	except:
 		periodo = 0
 		tipo_var = ''
 	if tipo_var == 'abs':
 		tipo_var = 'ABSOLUTAS'
+		print('hola soy abs')
 	elif tipo_var == 'rend':
+		print('hola soy rend')
 		tipo_var = 'RENDIMIENTOS'
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 	# desc = create_description()
 	# Llamada al webservice de RapidMiner
-	json_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
+	# json_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
 
 	# TODO Comentar arriba y descomentar esto cuando Aitor actualice los nuevos servicios
-	# json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?',
-	# 								username='rapidminer',
-	# 								password='rapidminer',
-	# 								parameters={'Ruta_Periodo': f'/home/admin/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
-	# 											'Ruta_Tipo_Variable': f'/home/admin/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv'},
-	# 								out_json=True)
+	json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v2?',
+									username='rapidminer',
+									password='rapidminer',
+									parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+												'Ruta_tipo_variable': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+												'Normalizacion': 1},
+									out_json=True)
 
-
+	# print('Imprimiendo json_document')
+	print(json_document)
 	df_perfil = [json_normalize(data) for data in json_document]
+
+	# for i, data in enumerate(json_document):
+	# 	if i == 0:
+	# 		print('Imprimiendo una data')
+	# 		print(data)
+	# 	df_perfil = json_normalize(data)
+	
+	print('Imprimiendo df_perfil[0]')
+	print(df_perfil[0])
 	
 	# Extracción de los dataframe
 	normalize_df = df_perfil[0]
@@ -572,6 +591,7 @@ def modify_first_descriptive(doc):
 	l = grid([
 		[column([profile_title, normalize_plot], sizing_mode='stretch_width'), column([profile_title_rad, nor_rad_pl], sizing_mode='stretch_width')],
 		[not_normalize_widget_box, weight_plot]
+		# [weight_plot]
 		], sizing_mode='stretch_both')
 
 	doc.add_root(l)
