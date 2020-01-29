@@ -63,6 +63,7 @@ def create_model_vars_dict(df, outs_dict):
     for out in outs_dict:
         proc_in_list = []
         for proc_in in list(df[outs_dict[out]]['PROCESOS_IN'].dropna()):
+            # import pdb; pdb.set_trace()
             proc_in_list = proc_in_list + list(df[proc_in]['OUT'].dropna()) + list(df[proc_in]['IN'].dropna()) + list(df[proc_in]['MANIPULABLES'].dropna())
         total_model_dict.update({out: list(df[outs_dict[out]]['IN'].dropna()) + list(df[outs_dict[out]]['MANIPULABLES'].dropna()) + proc_in_list})
     return total_model_dict
