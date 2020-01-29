@@ -266,7 +266,6 @@ def create_normalize_plot(df):
 	Returns:
 		Figure: Gráfica de variables afectando en cada tipo de calidad de agua con valores normalizados
 	"""
-	print(df.describe())
 	NUM_CLUSTERS = df.cluster.nunique()	# Extraer numero clusters
 	
 	source_cluster = [create_data_source_from_dataframe(df, 'cluster', f'cluster_{i}') for i in range(NUM_CLUSTERS)]
@@ -297,7 +296,7 @@ def create_normalize_plot(df):
 	normalize_plot.xaxis.axis_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	normalize_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 
-	normalize_plot.yaxis.axis_label = 'Valor (normalizado)'
+	normalize_plot.yaxis.axis_label = 'Valor'
 	normalize_plot.yaxis.axis_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	normalize_plot.yaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	# normalize_plot.y_range.start = 0
@@ -321,11 +320,12 @@ def create_normalize_plot(df):
 	return normalize_plot
 
 
-def create_radar_plot(df):
+def create_radar_plot(df, tipo_var):
 	"""Crea gráfica de radar afectando en cada tipo de calidad de agua con valores normalizados
 	
 	Parameters:
 		df (Dataframe): Dataframe con los datos a mostrar en la visualización
+		tipo_var: Tipo de variable seleccionada
 
 	Returns:
 		Figure: Gráfica de radar afectando en cada tipo de calidad de agua con valores normalizados
@@ -366,8 +366,9 @@ def create_radar_plot(df):
 	hover = HoverTool(names=['radar_plt'], tooltips=TOOLTIPS)
 
 	# Create radar figure
+	# (old) plot_height=340, max_width=600
 	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
-						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', output_backend="webgl", name='testing')
+						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', name='testing')
 
 	for i in range(GRID_STEPS):
 		verts=unit_poly_verts(theta, (GRID_STEPS-i)*0.5/GRID_STEPS, CENTER)
@@ -378,11 +379,13 @@ def create_radar_plot(df):
 			# source_test = ColumnDataSource({'x':x_var_label + [CENTER],'y':y[i]+ [(GRID_STEPS-i)*0.5/GRID_STEPS+CENTER],'text':text+ ['']})
 			var_labels = LabelSet(x="x",y="y",text="text",source=source, text_color=bokeh_utils.LABEL_FONT_COLOR, text_font_size='15px') # Position variable labels
 			nor_rad_pl.add_layout(var_labels) # Add variable labels
-			color='black'
+			color='red'
+			line_dash='dashed'
 		else:
 			source = ColumnDataSource({'x':x[i]+ [CENTER],'y':y[i]+ [(GRID_STEPS-i)*0.5/GRID_STEPS+CENTER]}) #radius*i/GRID_STEPS+CENTER
 			color='gainsboro'
-		nor_rad_pl.line(x="x", y="y", source=source, line_color=color) # Create poligons
+			line_dash='solid'
+		nor_rad_pl.line(x="x", y="y", source=source, line_color=color, line_dash=line_dash) # Create poligons
 		y_ticks.append(y[i][0]) # Store y-vertices grid ticks positions
 
 	for i in range(NUM_VARS):
@@ -396,8 +399,13 @@ def create_radar_plot(df):
 
 	clist = []	# Cluster data list for spider pl patches
 	colors = bokeh_utils.LINE_COLORS_PALETTE
-	DATA_MIN = -2
-	DATA_MAX = 3
+	if tipo_var == 'RENDIMIENTOS':
+		DATA_MIN = 0
+		DATA_MAX = 1
+	elif tipo_var == 'ABSOLUTAS':
+		DATA_MIN = 0
+		DATA_MAX = 1
+
 
 	for i, cluster in enumerate(df.cluster.unique()):
 		clist.append(df[df['cluster'] == cluster])
@@ -422,25 +430,31 @@ def create_radar_plot(df):
 	return nor_rad_pl
 
 
-def create_not_normalize_plot(df):
+def create_not_normalize_plot(df, tipo_var):
 	"""Crea tabla de variables afectando en cada tipo de calidad de agua con valores sin normalizar
 	
 	Parameters:
 		df (Dataframe): Dataframe con los datos a mostrar en la visualización
+		tipo_var: Tipo de variable seleccionada
 
 	Returns:
 		DataTable: Tabla de variables afectando en cada tipo de calidad de agua con valores sin normalizar
 	"""
 	# units = 4*["tuni1","tuni2","tuni3","tuni4","tuni5","tuni6","tuni7","tuni8","tuni9","tuni10"]
-	# units = 4*["tuni1","tuni2","tuni3","tuni4","tuni5"]
+	if tipo_var == 'RENDIMIENTOS':
+		units = 4*["%","%","%","%","%"]
+		df['valor'] = round(df['valor']*100,4)
+	elif tipo_var == 'ABSOLUTAS':
+		units = 4*["mgO2/l","mgO2/l","mg/l","mg/l","mg/l"]
+		df['valor'] = round(df['valor'],4)
 
-	# source = ColumnDataSource(df.assign(Units=units))
-	source = ColumnDataSource(df)
+	source = ColumnDataSource(df.assign(Units=units))
+	# source = ColumnDataSource(df)
 	columns = [
 		TableColumn(field='cluster', title='Cluster', width=20),
 		TableColumn(field='Indicador', title='Indicador (promedio)', width=72),
-		TableColumn(field='valor', title='Valor', width=30)
-		# TableColumn(field='Units', title='Unidad', width=30)
+		TableColumn(field='valor', title='Valor', width=30),
+		TableColumn(field='Units', title='Unidad', width=30)
 	]
 
 	data_table = DataTable(source=source, columns=columns, selectable=False, sizing_mode='stretch_width', max_width=580, height=350)
@@ -515,25 +529,17 @@ def modify_first_descriptive(doc):
 	args = doc.session_context.request.arguments
 	try:
 		periodo = int(args.get('periodo')[0])
-		# tipo_var = str(args.get('tipo_var')[0])
 		tipo_var = args.get('tipo_var')[0].decode('ascii')
-
-		print(f"tipo_var_raw: {tipo_var}")
 	except:
 		periodo = 0
 		tipo_var = ''
 	if tipo_var == 'abs':
 		tipo_var = 'ABSOLUTAS'
-		print('hola soy abs')
 	elif tipo_var == 'rend':
-		print('hola soy rend')
 		tipo_var = 'RENDIMIENTOS'
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 	# desc = create_description()
 	# Llamada al webservice de RapidMiner
-	# json_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
-
-	# TODO Comentar arriba y descomentar esto cuando Aitor actualice los nuevos servicios
 	json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v2?',
 									username='rapidminer',
 									password='rapidminer',
@@ -542,19 +548,8 @@ def modify_first_descriptive(doc):
 												'Normalizacion': 1},
 									out_json=True)
 
-	# print('Imprimiendo json_document')
-	print(json_document)
 	df_perfil = [json_normalize(data) for data in json_document]
 
-	# for i, data in enumerate(json_document):
-	# 	if i == 0:
-	# 		print('Imprimiendo una data')
-	# 		print(data)
-	# 	df_perfil = json_normalize(data)
-	
-	print('Imprimiendo df_perfil[0]')
-	print(df_perfil[0])
-	
 	# Extracción de los dataframe
 	normalize_df = df_perfil[0]
 	not_normalize_df = df_perfil[1]
@@ -571,7 +566,7 @@ def modify_first_descriptive(doc):
 	# Creación de los gráficos
 	## Gráfico de perfil y araña normalizado
 	normalize_plot = create_normalize_plot(normalize_df)
-	nor_rad_pl = create_radar_plot(normalize_df)
+	nor_rad_pl = create_radar_plot(normalize_df, tipo_var)
 	# l_panel = Panel(child=nor_rad_pl, title='Diagrama de araña')
 	# r_panel = Panel(child=normalize_plot, title='Diagrama de linea')
 	# profile_tabs = Tabs(tabs=[l_panel, r_panel], height = 400, sizing_mode="stretch_both", max_width=650, margin=[0,10,0,0])
@@ -581,7 +576,7 @@ def modify_first_descriptive(doc):
 	
 	## Tabla sin normalizar
 	not_normalize_table_title = create_title('Indicadores influentes sin normalizar')
-	not_normalize_table = create_not_normalize_plot(not_normalize_df)
+	not_normalize_table = create_not_normalize_plot(not_normalize_df, tipo_var)
 	not_normalize_widget_box = widgetbox([not_normalize_table_title, not_normalize_table], max_width=600, height=400, sizing_mode='stretch_both', spacing=3)
 	
 	## Gráfico de peso de indicadores
@@ -591,7 +586,6 @@ def modify_first_descriptive(doc):
 	l = grid([
 		[column([profile_title, normalize_plot], sizing_mode='stretch_width'), column([profile_title_rad, nor_rad_pl], sizing_mode='stretch_width')],
 		[not_normalize_widget_box, weight_plot]
-		# [weight_plot]
 		], sizing_mode='stretch_both')
 
 	doc.add_root(l)
