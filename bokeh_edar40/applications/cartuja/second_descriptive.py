@@ -134,6 +134,7 @@ def create_attribute_weight_plot(df, target):
 	weight_plot.vbar(x='Attribute', top='Weight', source=source, width=0.9, line_color='white', fill_color='colors')
 
 	weight_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
+	weight_plot.xaxis.major_label_orientation = np.pi/4
 
 	weight_plot.yaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 
@@ -141,6 +142,7 @@ def create_attribute_weight_plot(df, target):
 
 	weight_plot.title.text = f'Importancia de los predictores - {target}'
 	weight_plot.title.text_color = bokeh_utils.TITLE_FONT_COLOR
+	
 	weight_plot.title.align = 'left'
 	weight_plot.title.text_font_size = '16px'
 	weight_plot.border_fill_color = bokeh_utils.BACKGROUND_COLOR
