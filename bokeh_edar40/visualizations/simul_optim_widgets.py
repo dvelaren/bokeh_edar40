@@ -3,7 +3,9 @@ import utils.bokeh_utils as bokeh_utils
 import time
 import random
 from collections import OrderedDict
+from pandas.io.json import json_normalize
 
+from utils.rapidminer_proxy import call_webservice
 from bokeh.models import Div, Panel, Tabs
 from bokeh.models.widgets import Select, Button, Slider, TextInput, RadioButtonGroup
 from bokeh.layouts import widgetbox, column, row
@@ -63,9 +65,10 @@ class DynamicSimulWidget:
 		df: Dataframe con las estadisticas para min, mean, max de los sliders
 		target: Target de simulación
 	"""
-	def __init__(self, target, df):
+	def __init__(self, target, df, periodo):
 		self.target = target
 		self.df = df
+		self.periodo = periodo
 		self.new_rows = OrderedDict([])
 		columns = column([])
 		target_title = create_div_title(f'Simulación - {self.target}')
@@ -121,15 +124,18 @@ class DynamicSimulWidget:
 		"""
 		self.show_spinner()
 		vars_influyentes = {var: round(drow.slider.value,2) for (var, drow) in self.new_rows.items()}
-		self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
+		json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
+									username='rapidminer',
+									password='rapidminer',
+									parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes, 'Ruta_periodo':f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'},
+									out_json=True)
+		simul_result = json_normalize(json_simul)
+		# self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
+		self.sim_target.text = f'<b>{self.target}</b>: cluster_{simul_result}'
 		print(vars_influyentes)
 		self.hide_spinner()
 
-        # TODO json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON?,
-		#				                    username='rapidminer',
-		#				                    password='rapidminer',
-		# 				                    parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes},
-		# 				                    out_json=True)
+		
 
 class DynamicOptimRow:
 	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
@@ -288,8 +294,8 @@ class DynamicOptimWidget:
 		return dict_condicion
 
 class SimulOptimWidget:
-	def __init__(self, target, simul_df, possible_targets, var_influyentes):
-		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df)
+	def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo):
+		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df, periodo=periodo)
 		self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes)
 		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width')
 		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, max_width=390)
