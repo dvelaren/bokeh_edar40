@@ -340,18 +340,18 @@ def create_outlier_plot(df):
 
 	hover_tool = HoverTool(
 		tooltips = [
-			('Fecha', '@timestamp{%F}'),
+			('Fecha', '@Fecha{%F}'),
 			('Outlier', '@outlier')
 		],
 		formatters = {
-			'timestamp': 'datetime',
+			'Fecha': 'datetime',
 		},
 		mode = 'mouse'
 		)
 
 	outlier_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime', output_backend="webgl")
 
-	df['timestamp'] = pd.to_datetime(df['timestamp'])
+	df['Fecha'] = pd.to_datetime(df['Fecha'])
 	df['outlier'] = pd.to_numeric(pd.Series(df['outlier'].values))
 
 	source_cluster_0 = create_data_source_from_dataframe(df, 'cluster', 'cluster_0')
@@ -365,10 +365,10 @@ def create_outlier_plot(df):
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], size=6, legend_label='Cluster 3')
 	size = 5
 	alpha = 0.4
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], alpha=alpha, size=size, legend_label='Cluster 0')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], alpha=alpha, size=size, legend_label='Cluster 1')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], alpha=alpha, size=size, legend_label='Cluster 2')
-	outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=alpha, size=size, legend_label='Cluster 3')
+	outlier_plot.circle(x='Fecha', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], alpha=alpha, size=size, legend_label='Cluster 0')
+	outlier_plot.circle(x='Fecha', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], alpha=alpha, size=size, legend_label='Cluster 1')
+	outlier_plot.circle(x='Fecha', y='outlier', source=source_cluster_2, color=bokeh_utils.LINE_COLORS_PALETTE[2], alpha=alpha, size=size, legend_label='Cluster 2')
+	outlier_plot.circle(x='Fecha', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=alpha, size=size, legend_label='Cluster 3')
 
 
 	outlier_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
@@ -536,8 +536,8 @@ def create_daily_pred_plot(df_original, target='Calidad_Agua'):
 	df = df_original
 	df = df.rename(columns={target: 'real', f'prediction({target})': 'prediction'})
 	bins = list(df['real'].unique())
-	df['timestamp'] = pd.to_datetime(df['timestamp'], format='%m/%d/%y').sort_values()
-	df = df.set_index('timestamp')
+	df['Fecha'] = pd.to_datetime(df['Fecha'], format='%m/%d/%y').sort_values()
+	df = df.set_index('Fecha')
 	df = df.groupby(df.index).first()
 	df = df['2018-01-01':'2019-01-31']
 
@@ -550,11 +550,11 @@ def create_daily_pred_plot(df_original, target='Calidad_Agua'):
 	df['error'] = abs(df['real']-df['prediction'])
 
 	TOOLTIPS = [
-		('Fecha', "@timestamp{%F}"),
+		('Fecha', "@Fecha{%F}"),
 		('Real', '@real'),
 		("Predicho", "@prediction")
 	]
-	hover_tool = HoverTool(tooltips = TOOLTIPS, formatters={'timestamp': 'datetime'})
+	hover_tool = HoverTool(tooltips = TOOLTIPS, formatters={'Fecha': 'datetime'})
 
 	source = ColumnDataSource(df)
 
@@ -566,9 +566,9 @@ def create_daily_pred_plot(df_original, target='Calidad_Agua'):
 	daily_pred_plot.extra_y_ranges = {'y_error': Range1d(start=0, end=len(bins))}
 	daily_pred_plot.add_layout(LinearAxis(y_range_name='y_error', axis_label='Error', ticker=list(range(len(bins)))), 'right')
 
-	daily_pred_plot.line(x='timestamp', y='real', source=source, line_width=2, line_color='#392FCC', line_alpha=0.8, legend_label='Real')
-	daily_pred_plot.line(x='timestamp', y='prediction', source=source, line_width=2, line_color='#CA574D', line_alpha=0.8, line_dash='dashed', legend_label='Predicción')
-	daily_pred_plot.line(x='timestamp', y='error', source=source, line_width=2, line_color='green', line_alpha=0.4, legend_label='Error', y_range_name='y_error')
+	daily_pred_plot.line(x='Fecha', y='real', source=source, line_width=2, line_color='#392FCC', line_alpha=0.8, legend_label='Real')
+	daily_pred_plot.line(x='Fecha', y='prediction', source=source, line_width=2, line_color='#CA574D', line_alpha=0.8, line_dash='dashed', legend_label='Predicción')
+	daily_pred_plot.line(x='Fecha', y='error', source=source, line_width=2, line_color='green', line_alpha=0.4, legend_label='Error', y_range_name='y_error')
 
 
 	daily_pred_plot.xaxis.major_label_orientation = np.pi/4
@@ -623,12 +623,15 @@ def modify_second_descriptive(doc):
 	args = doc.session_context.request.arguments
 	try:
 		periodo = int(args.get('periodo')[0])
-		# tipo_var = str(args.get('tipo_var')[0])
+		tipo_var = args.get('tipo_var')[0].decode('ascii')
 	except:
 		periodo = 0
-		# tipo_var = 'rend'
-	# print(f'periodo: {periodo}, tipo_var: {tipo_var}')
-	print(f'periodo: {periodo}')
+		tipo_var = ''
+	if tipo_var == 'abs':
+		tipo_var = 'ABSOLUTAS'
+	elif tipo_var == 'rend':
+		tipo_var = 'RENDIMIENTOS'
+	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 
 	# Creación/Carga en RAM del diccionario con las variables a modelizar
 	total_model_dict = load_or_create_model_vars(model_vars_file = 'resources/total_model_dict.pkl', 
@@ -640,15 +643,22 @@ def modify_second_descriptive(doc):
 															'ID_EFLUENTE',
 															'ID_ELECTRICIDAD',
 															'YOKO',
-															'ANALITICA'],
+															'ANALITICA',
+															'METEO'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
 												force_create=False)
-
+	print('Hola')
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
 	
 	# Llamada al webservice de RapidMiner
-	json_perfil_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON?', 'rapidminer', 'rapidminer', out_json=True)
+	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v2?',
+											username='rapidminer',
+											password='rapidminer',
+											parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+														'Ruta_tipo_variable': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+														'Normalizacion': 1},
+											out_json=True)
 	
 	# Extracción de los datos web
 	df_perfil = [json_normalize(data) for data in json_perfil_document]
@@ -700,28 +710,25 @@ def modify_second_descriptive(doc):
 
 	# Callbacks para los widgets de la interfaz
 	def prediction_callback():
-		# Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
-		model_objective = model_select_menu.value
+		# model_objective = model_select_menu.value
+		model_objective = model_select_menu_new.value
 		model_discretise = 5
 		
 		# Verificar que el modelo no ha sido creado antes
 		if model_objective not in models:		
-			json_prediction_document = call_webservice('http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON?',
-														'rapidminer', 'rapidminer', {'Objetivo': model_objective, 'Discretizacion': model_discretise, 'Numero_Atributos': 4},
-														out_json=True)
+			# import pdb; pdb.set_trace()
 
-			# TODO Remover anterior y descomentar este cuando Aitor cree los nuevos servicios
-			# json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON?',
-			# 											username='rapidminer',
-			# 											password='rapidminer',
-			# 											parameters={'Objetivo': model_objective,
-			# 														'Discretizacion': model_discretise,
-			# 														'Numero_Atributos': 4,
-			# 														'Ruta_Periodo': f'/home/admin/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
-			# 														'Ruta_Perfilado': '/home/admin/Cartuja_Datos/Perfil_Calidad_out',
-			# 														'IN_MODELO': total_model_dict[model_objective]
-			# 														},
-			# 											out_json=True)	
+			# Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
+			json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v3?',
+														username='rapidminer',
+														password='rapidminer',
+														parameters={'Objetivo': model_objective,
+																	'Discretizacion': model_discretise,
+																	'Numero_Atributos': 4,
+																	'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+																	'IN_MODELO': str(total_model_dict[model_objective])
+																	},
+														out_json=True)	
 			
 			# Obtener datos
 			df_prediction = [json_normalize(data) for data in json_prediction_document]
@@ -732,13 +739,13 @@ def modify_second_descriptive(doc):
 			weight_df = df_prediction[2]
 			pred_df = df_prediction[3]
 			slider_df = create_df_sliders(weight_df, pred_df)
-			daily_pred_df = pred_df[['timestamp', model_objective, f'prediction({model_objective})']]
+			daily_pred_df = pred_df[['Fecha', model_objective, f'prediction({model_objective})']]
 			possible_targets = sorted(list(pred_df[model_objective].unique()))
 			var_influyentes = list(weight_df['Attribute'])
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
 			# Crear nuevos gráficos
-			simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes)
+			simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes, periodo=periodo)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
 			decision_tree_graph = create_decision_tree_graph_renderer(decision_tree_plot, decision_tree_data)
