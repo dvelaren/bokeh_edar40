@@ -283,7 +283,7 @@ def create_normalize_plot(df):
 	normalize_plot.add_layout(hline)
 
 	# Etiqueta linea horizontal
-	hlabel = Label(x=8.7, y=1, text='Max', text_color='red', text_alpha=0.6, text_font_size='14px')
+	hlabel = Label(x=500, y=1, x_units='screen',text='Max', text_color='red', text_alpha=0.6, text_font_size='14px')
 	normalize_plot.add_layout(hlabel)
 
 	for i in range(NUM_CLUSTERS):
@@ -367,8 +367,10 @@ def create_radar_plot(df, tipo_var):
 
 	# Create radar figure
 	# (old) plot_height=340, max_width=600
-	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
-						y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', name='testing')
+	# nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None, x_range=(-0.2,1.4),
+	# 					y_range=(-0.1,1.1), tools=[hover,], sizing_mode='stretch_width', name='testing')
+	nor_rad_pl = figure(plot_height=340, max_width=600, toolbar_location=None,
+						tools=[hover,], sizing_mode='stretch_width', name='testing')
 
 	for i in range(GRID_STEPS):
 		verts=unit_poly_verts(theta, (GRID_STEPS-i)*0.5/GRID_STEPS, CENTER)
