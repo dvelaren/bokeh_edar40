@@ -443,7 +443,7 @@ def create_prediction_plot(df):
 	prediction_plot.xaxis[0].formatter = DatetimeTickFormatter(months=['%b %Y'])
 	prediction_plot.xaxis[0].ticker = FixedTicker(ticks=list(x_axis_tick_vals))
 	# Linea vertical para definir el horizonte de predicción
-	prediction_date = time.mktime(dt(2019, 2, 1, 0, 0, 0).timetuple())*1000
+	prediction_date = time.mktime(dt(2019, 9, 29, 0, 0, 0).timetuple())*1000
 	vline = Span(location=prediction_date, dimension='height', line_color='gray', line_alpha=0.6, line_dash='dotted', line_width=2)
 	prediction_plot.add_layout(vline)
 	# Etiqueta linea horizontal
@@ -541,7 +541,7 @@ def create_daily_pred_plot(df_original, target='Calidad_Agua'):
 	df['Fecha'] = pd.to_datetime(df['Fecha'], format='%m/%d/%y').sort_values()
 	df = df.set_index('Fecha')
 	df = df.groupby(df.index).first()
-	df = df['2018-01-01':'2019-01-31']
+	# df = df['2018-01-01':'2019-01-31']
 
 	if target=='Calidad_Agua':
 		df.replace(regex=['cluster_'], value='', inplace=True)
