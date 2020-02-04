@@ -127,12 +127,17 @@ class DynamicSimulWidget:
 		json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
 									username='rapidminer',
 									password='rapidminer',
-									parameters={'Modelo': self.target, 'Variables_influyentes': vars_influyentes, 'Ruta_periodo':f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'},
+									parameters={'Modelo': self.target, 'Variables_influyentes': str(vars_influyentes), 'Ruta_periodo':f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'},
 									out_json=True)
-		simul_result = json_normalize(json_simul)
-		# self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
-		self.sim_target.text = f'<b>{self.target}</b>: cluster_{simul_result}'
+		print(f'Modelo: {self.target}')
+		print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
 		print(vars_influyentes)
+		simul_result = json_normalize(json_simul)
+		# print(simul_result)
+		print(simul_result[f'prediction({self.target})'][0])
+		# print(simul_result['prediction(Calidad_Agua)'][0])
+		# self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
+		self.sim_target.text = f"<b>{self.target}</b>: {simul_result[f'prediction({self.target})'][0]}"
 		self.hide_spinner()
 
 		
