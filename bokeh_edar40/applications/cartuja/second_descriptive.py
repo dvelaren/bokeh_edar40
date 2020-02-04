@@ -212,52 +212,52 @@ def create_confusion_matrix(df):
 	return p
 
 #TODO Eliminar despues de nuevos servicios RapidMiner
-def create_model_menu(new_models = False, new_variables = []):
-	"""Crea menú de selección de variables para modelización del árbol de decisión
-
-	Returns:
-		Button: Botón del menú de selección
-		Select: Panel de selección de variable del menú de selección
-	"""
-
-	if new_models == False:
-		variables_file = open('resources/model_variables.txt', 'r')
-		variables_file_lines = variables_file.readlines()
-
-		option_values = [line.rstrip('\n') for line in variables_file_lines]
-		
-		option_values.sort(key=lambda option_value:(option_value[:2]!='O_', option_value))
-	else:
-		option_values = new_variables
-
-	selected_value = 'Calidad_Agua'
-
-	title = create_div_title('Modelo')
-	select = Select(value=selected_value, options=option_values, height=35, sizing_mode='stretch_width')
-	button = Button(label='Modelizar', button_type='primary', height=45)
-
-	return title, button, select
-
-#TODO Descomentar despues de crear nuevos servicios RapidMiner
-# def create_model_menu(model_variables = []):
+# def create_model_menu(new_models = False, new_variables = []):
 # 	"""Crea menú de selección de variables para modelización del árbol de decisión
-# 	Parameters:
-# 		model_variables: Lista con las variables para modelización
 
 # 	Returns:
 # 		Button: Botón del menú de selección
 # 		Select: Panel de selección de variable del menú de selección
 # 	"""
 
-# 	option_values = new_variables
+# 	if new_models == False:
+# 		variables_file = open('resources/model_variables.txt', 'r')
+# 		variables_file_lines = variables_file.readlines()
+
+# 		option_values = [line.rstrip('\n') for line in variables_file_lines]
+		
+# 		option_values.sort(key=lambda option_value:(option_value[:2]!='O_', option_value))
+# 	else:
+# 		option_values = new_variables
 
 # 	selected_value = 'Calidad_Agua'
 
 # 	title = create_div_title('Modelo')
-# 	select = Select(value=selected_value, options=option_values, height=35)
+# 	select = Select(value=selected_value, options=option_values, height=35, sizing_mode='stretch_width')
 # 	button = Button(label='Modelizar', button_type='primary', height=45)
 
 # 	return title, button, select
+
+#TODO Descomentar despues de crear nuevos servicios RapidMiner
+def create_model_menu(model_variables = []):
+	"""Crea menú de selección de variables para modelización del árbol de decisión
+	Parameters:
+		model_variables: Lista con las variables para modelización
+
+	Returns:
+		Button: Botón del menú de selección
+		Select: Panel de selección de variable del menú de selección
+	"""
+
+	option_values = model_variables
+
+	selected_value = 'Calidad_Agua'
+
+	title = create_div_title('Modelo')
+	select = Select(value=selected_value, options=option_values, height=35)
+	button = Button(label='Modelizar', button_type='primary', height=45)
+	select.max_width=190
+	return title, button, select
 
 
 def create_decision_tree_graph_renderer(plot, tree):
@@ -649,7 +649,6 @@ def modify_second_descriptive(doc):
 															'METEO'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
 												force_create=False)
-	print('Hola')
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
 	
@@ -672,12 +671,11 @@ def modify_second_descriptive(doc):
 	# Creación de los gráficos y widgets permanentes en la interfaz
 	prediction_plot = create_prediction_plot(prediction_df)
 	outlier_plot = create_outlier_plot(outlier_df)
-	simulation_title = create_div_title('Simulación y Optimización de modelos')
-	model_title, add_model_button, model_select_menu = create_model_menu()
-	model_title_new, add_model_button_new, model_select_menu_new = create_model_menu(new_models=True, new_variables=list(total_model_dict.keys()))
+	simulation_title = create_div_title('Creación, Simulación y Optimización de modelos')
+	# model_title, add_model_button, model_select_menu = create_model_menu()
+	model_title, add_model_button, model_select_menu = create_model_menu(model_variables=list(total_model_dict.keys()))
 	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=190)
-	model_select_menu_new.max_width=190
-	model_select_wb = widgetbox([model_title, model_select_menu, row([model_select_menu_new, recreate_button], sizing_mode='stretch_width', max_width=400) , add_model_button], max_width=400, sizing_mode='stretch_width')
+	model_select_wb = widgetbox([model_title, row([model_select_menu, recreate_button], sizing_mode='stretch_width', max_width=400) , add_model_button], max_width=400, sizing_mode='stretch_width')
 	created_models_title = create_div_title('Modelos creados')
 	created_models_checkbox = CheckboxButtonGroup(labels=list(models.keys()), height=35)
 	created_models_checkbox.active = [0]
@@ -702,8 +700,8 @@ def modify_second_descriptive(doc):
 												force_create=True)
 		# print('Nuevas variables: ')
 		# print(total_model_dict.keys())
-		model_select_menu_new.options = list(total_model_dict.keys())
-		model_select_menu_new.value = 'Calidad_Agua'
+		model_select_menu.options = list(total_model_dict.keys())
+		model_select_menu.value = 'Calidad_Agua'
 		models.clear()
 		model_plots.children = []
 		created_models_checkbox.labels = []
@@ -713,7 +711,7 @@ def modify_second_descriptive(doc):
 	# Callbacks para los widgets de la interfaz
 	def prediction_callback():
 		# model_objective = model_select_menu.value
-		model_objective = model_select_menu_new.value
+		model_objective = model_select_menu.value
 		model_discretise = 5
 		
 		# Verificar que el modelo no ha sido creado antes
