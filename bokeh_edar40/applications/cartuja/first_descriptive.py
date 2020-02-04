@@ -483,7 +483,7 @@ def create_weight_plot(df):
 	weight_plot = figure(max_width=650, height=400, toolbar_location=None, sizing_mode='stretch_width',y_range=FactorRange(factors=source.data['Attribute']), x_range=(0,1), tooltips=TOOLTIPS, output_backend="webgl")
 	weight_plot.hbar(y='Attribute', left='Weight', right=0, source=source, height=0.6, fill_color=bokeh_utils.BAR_COLORS_PALETTE[0], line_color=bokeh_utils.BAR_COLORS_PALETTE[0])
 
-	weight_plot.title.text = 'Peso de indicadores influentes'
+	weight_plot.title.text = 'Peso de indicadores influyentes'
 	weight_plot.title.text_color = bokeh_utils.TITLE_FONT_COLOR
 	weight_plot.title.align = 'left'
 	weight_plot.title.text_font_size = '16px'
@@ -577,7 +577,7 @@ def modify_first_descriptive(doc):
 	# profile_widget_box = widgetbox([profile_title, profile_tabs], max_width=650, height=400, sizing_mode='stretch_width', spacing=3)
 	
 	## Tabla sin normalizar
-	not_normalize_table_title = create_title('Indicadores influentes sin normalizar')
+	not_normalize_table_title = create_title('Indicadores influyentes sin normalizar')
 	not_normalize_table = create_not_normalize_plot(not_normalize_df, tipo_var)
 	not_normalize_widget_box = widgetbox([not_normalize_table_title, not_normalize_table], max_width=600, height=400, sizing_mode='stretch_both', spacing=3)
 	
