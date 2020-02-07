@@ -542,7 +542,7 @@ def modify_first_descriptive(doc):
 	print(f'periodo: {periodo}, tipo_var: {tipo_var}')
 	# desc = create_description()
 	# Llamada al webservice de RapidMiner
-	json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v2?',
+	json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v4?',
 									username='rapidminer',
 									password='rapidminer',
 									parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',

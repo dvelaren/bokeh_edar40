@@ -331,25 +331,53 @@ def create_decision_tree_plot():
 
 	return plot
 
-def create_outlier_plot(df):
+def create_outlier_plot(df, tipo_var):
 	"""Crea gráfica de outliers
 	Parameters:
 		df (Dataframe): Dataframe con los datos a mostrar en la visualización
+		tipo_var: Tipo de variable usada
 
 	Returns:
 		Figure: Gráfica de outliers
 	"""
 
+	# hover_tool = HoverTool(
+	# 	tooltips = [
+	# 		('Fecha', '@Fecha{%F}'),
+	# 		('Outlier', '@outlier')
+	# 	],
+	# 	formatters = {
+	# 		'Fecha': 'datetime',
+	# 	},
+	# 	mode = 'mouse'
+	# 	)
+	if tipo_var == 'RENDIMIENTOS':
+		tools = [
+					('Fecha', '@Fecha{%F}'),
+					('Outlier', '@outlier'),
+					('efluente_rend_elim_DBO5', "Val: @efluente_rend_elim_DBO5, Prom: @{mode(efluente_rend_elim_DBO5)}, Anom: @efluente_rend_elim_DBO5_anomalia"),
+					('efluente_rend_elim_DQOt', 'Val: @efluente_rend_elim_DQOt, Prom: @{mode(efluente_rend_elim_DQOt)}, Anom: @efluente_rend_elim_DQOt_anomalia'),
+					('efluente_rend_elim_NTK', 'Val: @efluente_rend_elim_NTK, Prom: @{mode(efluente_rend_elim_NTK)}, Anom: @efluente_rend_elim_NTK_anomalia'),
+					('efluente_rend_elim_Pt','Val: @efluente_rend_elim_Pt, Prom: @{mode(efluente_rend_elim_Pt)}, Anom: @efluente_rend_elim_Pt_anomalia'),
+					('efluente_rend_elim_SST','Val: @efluente_rend_elim_SST, Prom: @{mode(efluente_rend_elim_SST)}, Anom: @efluente_rend_elim_SST_anomalia')
+				]
+	elif tipo_var == 'ABSOLUTAS':
+		tools = [
+					('Fecha', '@Fecha{%F}'),
+					('Outlier', '@outlier'),
+					('efluente_DBO5t_conc', "Val: @efluente_DBO5t_conc, Prom: @{mode(efluente_DBO5t_conc)}, Anom: @efluente_DBO5t_conc_anomalia"),
+					('efluente_DQOt_conc', 'Val: @efluente_DQOt_conc, Prom: @{mode(efluente_DQOt_conc)}, Anom: @efluente_DQOt_conc_anomalia'),
+					('efluente_Ntk_conc', 'Val: @efluente_Ntk_conc, Prom: @{mode(efluente_Ntk_conc)}, Anom: @efluente_Ntk_conc_anomalia'),
+					('efluente_Pt_conc','Val: @efluente_Pt_conc, Prom: @{mode(efluente_Pt_conc)}, Anom: @efluente_Pt_conc_anomalia'),
+					('efluente_MES_conc','Val: @efluente_MES_conc, Prom: @{mode(efluente_MES_conc)}, Anom: @efluente_MES_conc_anomalia')
+				]
 	hover_tool = HoverTool(
-		tooltips = [
-			('Fecha', '@Fecha{%F}'),
-			('Outlier', '@outlier')
-		],
-		formatters = {
-			'Fecha': 'datetime',
-		},
-		mode = 'mouse'
-		)
+			tooltips = tools,
+			formatters = {
+				'Fecha': 'datetime',
+			},
+			mode = 'mouse'
+			)
 
 	outlier_plot = figure(plot_height=400, toolbar_location=None, sizing_mode='stretch_width', x_axis_type='datetime', output_backend="webgl")
 
@@ -653,7 +681,7 @@ def modify_second_descriptive(doc):
 	models = OrderedDict([])
 	
 	# Llamada al webservice de RapidMiner
-	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v2?',
+	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v4?',
 											username='rapidminer',
 											password='rapidminer',
 											parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
@@ -670,7 +698,7 @@ def modify_second_descriptive(doc):
 
 	# Creación de los gráficos y widgets permanentes en la interfaz
 	prediction_plot = create_prediction_plot(prediction_df)
-	outlier_plot = create_outlier_plot(outlier_df)
+	outlier_plot = create_outlier_plot(outlier_df, tipo_var)
 	simulation_title = create_div_title('Creación, Simulación y Optimización de modelos')
 	# model_title, add_model_button, model_select_menu = create_model_menu()
 	model_title, add_model_button, model_select_menu = create_model_menu(model_variables=list(total_model_dict.keys()))
