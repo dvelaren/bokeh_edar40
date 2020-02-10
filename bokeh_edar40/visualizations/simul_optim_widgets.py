@@ -149,23 +149,22 @@ class DynamicOptimRow:
 		var_title: Título de la restricción
 	"""
 	def __init__(self, var_title, ranges):
-		var_row_title = Div(text=f'{var_title}:')
-		self.var_found_value = Div(text='')
-		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=160, min_width=160)
+		var_row_title = Div(text=f'{var_title}:', width=360, sizing_mode='fixed')
+		self.var_found_value = Div(text='', width=360, sizing_mode='fixed')
+		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], width=160, sizing_mode='fixed')
 		# self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
 		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
 		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
 		# self.low_inter_text = TextInput(title='Valor1', value=ranges, max_width=80, min_width=80)
-		self.low_inter_text = Select(title='Valor1', value=ranges[0], options=ranges, max_width=160, min_width=160)
+		self.low_inter_text = Select(title='Valor1', value=ranges[0], options=ranges, width=160, sizing_mode='fixed')
 		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
 		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
 		target_col = column(children=[var_row_title, self.var_found_value],
-							  sizing_mode='stretch_width',
-							  max_width=360,
-                              min_width=360)
+							  sizing_mode='fixed',
+							  width=360)
 		self.dyn_row = row([target_col,
 							self.low_condition_select,
-							self.low_inter_text], sizing_mode='stretch_width')
+							self.low_inter_text], sizing_mode='fixed', width=700)
 							# self.high_condition_select,
 							# self.high_inter_text], sizing_mode='stretch_width')
 # 		self.low_condition_select.on_change('value', self.low_select_handler)
@@ -204,22 +203,24 @@ class DynamicOptimWidget:
 		# self.possible_targets = possible_targets
 		self.var_influyentes = var_influyentes
 		target_title = create_div_title(f'Optimización - {self.target}')
-		self.objective_select = Select(title='Objetivo', value='min', options=['min', 'max'])
-		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, min_width=110)
-		restrict_title = Div(text='<b>Restricciones</b>')
+		target_title.width=700
+		target_title.sizing_mode='fixed'
+		self.objective_select = Select(title='Objetivo', value='min', options=['min', 'max'], width=110, sizing_mode='fixed')
+		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, width=110, sizing_mode='fixed')
+		restrict_title = Div(text='<b>Restricciones</b>', width= 360, sizing_mode='fixed')
 		self.dyn_row_list = OrderedDict([])
-		columns = column([], sizing_mode='stretch_width')
+		columns = column([], width=360, sizing_mode='fixed')
 		for var in self.var_influyentes:
 			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var,ranges=self.ranges['Values'][var].split(', '))})
 			columns.children.append(self.dyn_row_list[var].dyn_row)
-		button_optimize = Button(label="Optimizar", button_type="primary", max_width=180, min_width=180)
+		button_optimize = Button(label="Optimizar", button_type="primary", width=180, sizing_mode='fixed')
 		button_optimize.on_click(self.optimizar)
 		self.div_spinner = Div(text="")
 		self.wb = widgetbox([target_title,
-							row([self.objective_select, self.target_select], sizing_mode='stretch_width'),
+							row([self.objective_select, self.target_select], sizing_mode='fixed'),
 							restrict_title,
 							columns,
-							row([button_optimize, self.div_spinner], sizing_mode='stretch_width')], sizing_mode='stretch_width', max_width=490)
+							row([button_optimize, self.div_spinner], sizing_mode='fixed')], sizing_mode='fixed', width=700)
 	def show_spinner(self):
 		spinner_text = """
 					<!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
