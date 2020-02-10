@@ -7853,3 +7853,7 @@ Traceback (most recent call last):
     if any([isinstance(x, dict) for x in y.values()] for y in data):
 AttributeError: 'str' object has no attribute 'values'
 2020-01-28 16:00:46 ERROR    500 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 247.31ms
+2020-02-10 16:36:38 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 693.30ms
+2020-02-10 16:36:39 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=ZAQ57FEBdXwg9rp6SLwmqcoag4QOwGnhjm6WEHBkrtyZ (127.0.0.1) 0.49ms
+2020-02-10 16:36:43 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1830&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 1303.09ms
+2020-02-10 16:36:43 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=DDEnCe3cuiLDzj7qKYl0bpPyvmsQSCSucBX5LuovABBt (127.0.0.1) 1.52ms

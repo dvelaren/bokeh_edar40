@@ -151,7 +151,7 @@ class DynamicOptimRow:
 	def __init__(self, var_title, ranges):
 		var_row_title = Div(text=f'{var_title}:', width=360, sizing_mode='fixed')
 		self.var_found_value = Div(text='', width=360, sizing_mode='fixed')
-		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], width=160, sizing_mode='fixed')
+		self.low_condition_select = Select(title='Condición1', value='-', options=['=', '-'], width=160, sizing_mode='fixed')
 		# self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
 		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
 		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
