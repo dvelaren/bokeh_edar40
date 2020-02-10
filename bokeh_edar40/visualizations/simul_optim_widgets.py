@@ -48,7 +48,7 @@ class DynamicSimulRow:
 		self.title = title
 		self.slider = Slider(start=self.start, end=self.end,
 							value=self.value, step=0.1,
-							title=self.title, max_width=280)
+							title=self.title, min_width=580)
 		self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
 		self.dyn_row = row([self.slider, self.text_input], sizing_mode='stretch_height')
 		self.slider.on_change('value',self.slider_handler)
@@ -148,25 +148,26 @@ class DynamicOptimRow:
 	Attributes:
 		var_title: Título de la restricción
 	"""
-	def __init__(self, var_title):
+	def __init__(self, var_title, ranges):
 		var_row_title = Div(text=f'{var_title}:')
 		self.var_found_value = Div(text='')
-		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=80, min_width=80)
+		self.low_condition_select = Select(title='Condición1', value='-', options=['<', '≤', '=', '≥', '>', '-'], max_width=160, min_width=160)
 		# self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80, visible=False)
 		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
 		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
-		self.low_inter_text = TextInput(title='Valor1', value='', max_width=80, min_width=80)
-		self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80)
-		self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80)
-		target_col = row(children=[var_row_title, self.var_found_value],
+		# self.low_inter_text = TextInput(title='Valor1', value=ranges, max_width=80, min_width=80)
+		self.low_inter_text = Select(title='Valor1', value=ranges[0], options=ranges, max_width=160, min_width=160)
+		# self.high_condition_select = Select(title='Condición2', value='-', options=['<', '≤', '≥', '>', '-'], max_width=80, min_width=80, visible=False)
+		# self.high_inter_text = TextInput(title='Valor2', value='', max_width=80, min_width=80, visible=False)
+		target_col = column(children=[var_row_title, self.var_found_value],
 							  sizing_mode='stretch_width',
-							  max_width=200,
-                              min_width=200)
+							  max_width=360,
+                              min_width=360)
 		self.dyn_row = row([target_col,
 							self.low_condition_select,
-							self.low_inter_text,
-							self.high_condition_select,
-							self.high_inter_text], sizing_mode='stretch_width')
+							self.low_inter_text], sizing_mode='stretch_width')
+							# self.high_condition_select,
+							# self.high_inter_text], sizing_mode='stretch_width')
 # 		self.low_condition_select.on_change('value', self.low_select_handler)
 # 		self.high_condition_select.on_change('value', self.high_select_handler)
 # 	def low_select_handler(self, attr, old, new):
@@ -197,8 +198,9 @@ class DynamicOptimWidget:
 		possible_targets: Lista de posibles clusters/rangos a optimizar
 		var_influyentes: Lista variables influyentes que calculadas por el optimizador
 	"""
-	def __init__(self, target, possible_targets, var_influyentes):
+	def __init__(self, target, possible_targets, var_influyentes, ranges):
 		self.target = target
+		self.ranges = ranges
 		# self.possible_targets = possible_targets
 		self.var_influyentes = var_influyentes
 		target_title = create_div_title(f'Optimización - {self.target}')
@@ -208,7 +210,7 @@ class DynamicOptimWidget:
 		self.dyn_row_list = OrderedDict([])
 		columns = column([], sizing_mode='stretch_width')
 		for var in self.var_influyentes:
-			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var)})
+			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var,ranges=self.ranges['Values'][var].split(', '))})
 			columns.children.append(self.dyn_row_list[var].dyn_row)
 		button_optimize = Button(label="Optimizar", button_type="primary", max_width=180, min_width=180)
 		button_optimize.on_click(self.optimizar)
@@ -217,7 +219,7 @@ class DynamicOptimWidget:
 							row([self.objective_select, self.target_select], sizing_mode='stretch_width'),
 							restrict_title,
 							columns,
-							row([button_optimize, self.div_spinner], sizing_mode='stretch_width')], sizing_mode='stretch_width', max_width=300)
+							row([button_optimize, self.div_spinner], sizing_mode='stretch_width')], sizing_mode='stretch_width', max_width=490)
 	def show_spinner(self):
 		spinner_text = """
 					<!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
@@ -252,28 +254,32 @@ class DynamicOptimWidget:
 		restricciones = {}
 		for var, drow in self.dyn_row_list.items():
 			condicion1 = drow.low_condition_select.value
-			condicion2 = drow.high_condition_select.value
+			# condicion2 = drow.high_condition_select.value
 			dict_condicion1 = self.create_dict_condicion(num_condicion=1,
 															condicion=condicion1,
 															val_condicion_raw=drow.low_inter_text.value)
-			dict_condicion2 = self.create_dict_condicion(num_condicion=2,
-															condicion=condicion2,
-															val_condicion_raw=drow.high_inter_text.value)
+			# dict_condicion2 = self.create_dict_condicion(num_condicion=2,
+			# 												condicion=condicion2,
+			# 												val_condicion_raw=drow.high_inter_text.value)
 			if dict_condicion1:
-				dict_condicion1.update(dict_condicion2)
+				# dict_condicion1.update(dict_condicion2)
 				restricciones.update({var: dict_condicion1})
-			self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'
+			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'
 		
 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
+		json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
+										username='rapidminer',
+										password='rapidminer',
+										parameters={'Target': arg_target, 'Restricciones': restricciones},
+										out_json=True)
+		df_optim = json_normalize(json_optim)
+		for var in self.dyn_row_list:
+			self.dyn_row_list[var].var_found_value.text = f'<b>{df_optim[var][0]}</b>'
 		self.hide_spinner()
 		print(f'Target: {arg_target}')
 		print(f'Restricciones: {restricciones}')
 		print(f'Total time: {time.time()-start}')
-		# TODO json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_JSON?,
-		#				                    username='rapidminer',
-		#				                    password='rapidminer',
-		# 				                    parameters={'Target': arg_target, 'Restricciones': restricciones},
-		# 				                    out_json=True)
+		
 
 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
 		"""Función que crea el diccionario con la restricción especificada
@@ -287,23 +293,24 @@ class DynamicOptimWidget:
 			dict_condicion: Diccionario con la restricción creada
 		"""
 #             print(f'num_condicion: {num_condicion}, condicion: {condicion}, val_condicion_raw: {val_condicion_raw}')
+		print(f'val_condicion_raw:{val_condicion_raw}')
 		if condicion != '-':
 			try:
-				val_condicion = max(0, float('0'+val_condicion_raw))
+				# val_condicion = max(0, float('0'+val_condicion_raw))
+				val_condicion = val_condicion_raw
 			except:
 				val_condicion = 0
-			dict_condicion = {f'condicion{num_condicion}': condicion,
-								f'val_condicion{num_condicion}': val_condicion}
+			dict_condicion = val_condicion
 		else:
-			dict_condicion = {}
+			dict_condicion = ''
 		return dict_condicion
 
 class SimulOptimWidget:
-	def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo):
+	def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges):
 		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df, periodo=periodo)
-		self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes)
+		self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
 		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width')
-		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, max_width=390)
+		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, max_width=690)
 		self.rb.on_click(self.select_simul_optim)
 		# tab_simulate = Panel(child=simulate_wb.wb, title="Simular")
 		# tab_optimize = Panel(child=optimize_wb.wb, title="Optimizar")
