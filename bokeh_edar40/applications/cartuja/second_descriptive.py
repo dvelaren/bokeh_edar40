@@ -766,6 +766,9 @@ def modify_second_descriptive(doc):
 			confusion_df = create_df_confusion(confusion_df_raw)
 			weight_df = df_prediction[2]
 			pred_df = df_prediction[3]
+			ranges_df = df_prediction[4]
+			ranges_df.set_index('Name', inplace=True)
+			# ranges_df['Values']=ranges_df['Values'].replace(regex=r'\(.*\)',value='')
 			slider_df = create_df_sliders(weight_df, pred_df)
 			daily_pred_df = pred_df[['Fecha', model_objective, f'prediction({model_objective})']]
 			possible_targets = sorted(list(pred_df[model_objective].unique()))
@@ -773,7 +776,7 @@ def modify_second_descriptive(doc):
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
 			# Crear nuevos gráficos
-			simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes, periodo=periodo)
+			simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df, possible_targets=possible_targets, var_influyentes=var_influyentes, periodo=periodo, ranges=ranges_df)
 			daily_pred_plot = create_daily_pred_plot(daily_pred_df, model_objective)
 			decision_tree_plot = create_decision_tree_plot()
 			decision_tree_graph = create_decision_tree_graph_renderer(decision_tree_plot, decision_tree_data)
