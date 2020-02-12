@@ -205,7 +205,7 @@ class DynamicOptimWidget:
 		target_title = create_div_title(f'Optimización - {self.target}')
 		target_title.width=700
 		target_title.sizing_mode='fixed'
-		self.objective_select = Select(title='Objetivo', value='min', options=['min', 'max'], width=110, sizing_mode='fixed')
+		self.objective_select = Select(title='Objetivo', value='max', options=['max'], width=110, sizing_mode='fixed')
 		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, width=110, sizing_mode='fixed')
 		restrict_title = Div(text='<b>Restricciones</b>', width= 360, sizing_mode='fixed')
 		self.dyn_row_list = OrderedDict([])
