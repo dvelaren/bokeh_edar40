@@ -211,34 +211,6 @@ def create_confusion_matrix(df):
 
 	return p
 
-#TODO Eliminar despues de nuevos servicios RapidMiner
-# def create_model_menu(new_models = False, new_variables = []):
-# 	"""Crea menú de selección de variables para modelización del árbol de decisión
-
-# 	Returns:
-# 		Button: Botón del menú de selección
-# 		Select: Panel de selección de variable del menú de selección
-# 	"""
-
-# 	if new_models == False:
-# 		variables_file = open('resources/model_variables.txt', 'r')
-# 		variables_file_lines = variables_file.readlines()
-
-# 		option_values = [line.rstrip('\n') for line in variables_file_lines]
-		
-# 		option_values.sort(key=lambda option_value:(option_value[:2]!='O_', option_value))
-# 	else:
-# 		option_values = new_variables
-
-# 	selected_value = 'Calidad_Agua'
-
-# 	title = create_div_title('Modelo')
-# 	select = Select(value=selected_value, options=option_values, height=35, sizing_mode='stretch_width')
-# 	button = Button(label='Modelizar', button_type='primary', height=45)
-
-# 	return title, button, select
-
-#TODO Descomentar despues de crear nuevos servicios RapidMiner
 def create_model_menu(model_variables = []):
 	"""Crea menú de selección de variables para modelización del árbol de decisión
 	Parameters:
@@ -250,9 +222,7 @@ def create_model_menu(model_variables = []):
 	"""
 
 	option_values = model_variables
-
 	selected_value = 'Calidad_Agua'
-
 	title = create_div_title('Modelo')
 	select = Select(value=selected_value, options=option_values, height=35)
 	button = Button(label='Modelizar', button_type='primary', height=45)
@@ -320,7 +290,7 @@ def create_decision_tree_plot():
 	Returns:
 		Figure: Gráfica del árbol de decisión
 	"""
-	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=500, sizing_mode='stretch_width', output_backend="webgl")
+	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=500, sizing_mode='stretch_width', output_backend="webgl", tools="")
 
 	plot.axis.visible = False
 	plot.xgrid.grid_line_color = None
@@ -738,7 +708,6 @@ def modify_second_descriptive(doc):
 
 	# Callbacks para los widgets de la interfaz
 	def prediction_callback():
-		# model_objective = model_select_menu.value
 		model_objective = model_select_menu.value
 		model_discretise = 5
 		
