@@ -33,32 +33,35 @@ def create_div_title(title = ''):
 	return div_title
 
 class Spinner:
-    def __init__(self):
-        self.spinner = Div(text="")
-    def show_spinner(self):
-            spinner_text = """
-                        <!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
-                        <div class="loader">
-                        <style scoped>
-                        .loader {
-                            border: 4px solid #f3f3f3; /* Light grey */
-                            border-top: 4px solid #3498db; /* Blue */
-                            border-radius: 50%;
-                            width: 25px;
-                            height: 25px;
-                            animation: spin 2s linear infinite;
-                        }
+	def __init__(self, size=25):
+		self.size = size	
+		self.spinner = Div(text="", min_width=self.size, min_height=self.size, sizing_mode='scale_both')
+	def show_spinner(self):
+		begin_text = """
+					<!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
+					<div class="loader">
+					<style scoped>
+					.loader {
+						border: 4px solid #f3f3f3; /* Light grey */
+						border-top: 4px solid #3498db; /* Blue */
+						border-radius: 50%;
+					"""
+		mod_text = f"width: {self.size}px;height: {self.size}px;"
+		end_text =	"""
+					animation: spin 2s linear infinite;
+					}
 
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
-                        } 
-                        </style>
-                        </div>
-                        """
-            self.spinner.text = spinner_text
-    def hide_spinner(self):
-        self.spinner.text = ""
+					@keyframes spin {
+						0% { transform: rotate(0deg); }
+						100% { transform: rotate(360deg); }
+					} 
+					</style>
+					</div>
+					"""
+		spinner_text = begin_text + mod_text + end_text
+		self.spinner.text = spinner_text
+	def hide_spinner(self):
+		self.spinner.text = ""
 
 class DynamicSimulRow:
 	"""Clase DynamicSimulRow para representar una fila dinámica con slider y textbox
@@ -100,7 +103,7 @@ class DynamicSimulWidget:
 		self.new_rows = OrderedDict([])
 		columns = column([])
 		target_title = create_div_title(f'Simulación - {self.target}')
-		target_title.min_width = 390
+		target_title.min_width = 400
 		var_title = Div(text='<b>Variables de entrada</b>')
 		for var in list(self.df.keys()):
 			delta = (self.df[var]['max']-self.df[var]['min']) * 0.1
@@ -119,7 +122,7 @@ class DynamicSimulWidget:
 							self.sim_target,
 							row([button_simulate, self.div_spinner.spinner], sizing_mode='stretch_width')],
 							min_width=390,
-							max_width=400,
+							max_width=450,
 							sizing_mode='stretch_width')
 	def simulate(self, new):
 		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
@@ -213,6 +216,7 @@ class DynamicOptimWidget:
 										parameters={'Target': arg_target, 'Restricciones': restricciones},
 										out_json=True)
 		df_optim = json_normalize(json_optim)
+		print(df_optim)
 		for var in self.dyn_row_list:
 			self.dyn_row_list[var].var_found_value.text = f'<b>{df_optim[var][0]}</b>'
 		pred = df_optim[f'prediction({self.target})'][0]
