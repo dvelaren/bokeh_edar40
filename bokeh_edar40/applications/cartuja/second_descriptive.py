@@ -1,6 +1,6 @@
 from utils.rapidminer_proxy import call_webservice
 from bokeh_edar40.visualizations.decision_tree import Node, Tree
-from bokeh_edar40.visualizations.simul_optim_widgets import SimulOptimWidget, create_div_title
+from bokeh_edar40.visualizations.simul_optim_widgets import SimulOptimWidget, create_div_title, Spinner
 import utils.bokeh_utils as bokeh_utils
 from utils.generate_model_vars import load_or_create_model_vars
 
@@ -224,9 +224,8 @@ def create_model_menu(model_variables = []):
 	option_values = model_variables
 	selected_value = 'Calidad_Agua'
 	title = create_div_title('Modelo')
-	select = Select(value=selected_value, options=option_values, height=35)
-	button = Button(label='Modelizar', button_type='primary', height=45)
-	select.max_width=190
+	select = Select(value=selected_value, options=option_values, height=35, min_width=180, max_width=180)
+	button = Button(label='Modelizar', button_type='primary', height=35, min_width=390, max_width=390)
 	return title, button, select
 
 
@@ -672,12 +671,18 @@ def modify_second_descriptive(doc):
 	simulation_title = create_div_title('Creación, Simulación y Optimización de modelos')
 	# model_title, add_model_button, model_select_menu = create_model_menu()
 	model_title, add_model_button, model_select_menu = create_model_menu(model_variables=list(total_model_dict.keys()))
-	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=190)
-	model_select_wb = widgetbox([model_title, row([model_select_menu, recreate_button], sizing_mode='stretch_width', max_width=400) , add_model_button], max_width=400, sizing_mode='stretch_width')
+	create_model_spinner = Spinner(size=16)
+	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=200, min_width=200)
+	model_select_wb = widgetbox(
+		[
+		row([model_title, create_model_spinner.spinner], sizing_mode='stretch_width', max_width=400),
+		row([model_select_menu, recreate_button], sizing_mode='stretch_width', max_width=400),
+		add_model_button
+		], max_width=400, sizing_mode='stretch_width')
 	created_models_title = create_div_title('Modelos creados')
 	created_models_checkbox = CheckboxButtonGroup(labels=list(models.keys()), height=35)
 	created_models_checkbox.active = [0]
-	delete_model_button = Button(label='Eliminar', button_type='danger', height=45, max_width=200)
+	delete_model_button = Button(label='Eliminar', button_type='danger', height=35, max_width=200)
 	created_models_wb = widgetbox([created_models_title, created_models_checkbox], max_width=900, sizing_mode='stretch_width')
 	# Callback para crear nuevamente el listado de variables de la mascara
 	def recreate_callback():
@@ -708,6 +713,7 @@ def modify_second_descriptive(doc):
 
 	# Callbacks para los widgets de la interfaz
 	def prediction_callback():
+		create_model_spinner.show_spinner()
 		model_objective = model_select_menu.value
 		model_discretise = 5
 		
@@ -760,7 +766,6 @@ def modify_second_descriptive(doc):
 				[model_title],
 				[simul_or_optim_wb.rb],
 				[simul_or_optim_wb.wb],
-				# [simul_or_optim_wb.tabs],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],
@@ -771,6 +776,7 @@ def modify_second_descriptive(doc):
 			models.move_to_end(model_objective, last=False)
 			created_models_checkbox.labels = list(models.keys())
 			created_models_checkbox.active = list(range(len(models.keys())))
+			create_model_spinner.hide_spinner()
 	add_model_button.on_click(prediction_callback)
 
 	def remove_options_handler(new):
