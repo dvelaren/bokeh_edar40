@@ -210,10 +210,12 @@ class DynamicOptimWidget:
 				restricciones.update({var: dict_condicion1})
 			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'		
 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
+		print(f'Target: {arg_target}')
+		print(f'Restricciones: {restricciones}')
 		json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
 										username='rapidminer',
 										password='rapidminer',
-										parameters={'Target': arg_target, 'Restricciones': restricciones},
+										parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
 										out_json=True)
 		df_optim = json_normalize(json_optim)
 		print(df_optim)
@@ -224,8 +226,6 @@ class DynamicOptimWidget:
 		self.div_prediccion.text=f'<b>Predicción: </b>{pred}, <b>Confianza: </b>{conf}%'
 		print(f'pred: {pred}, conf: {conf}')
 		self.div_spinner.hide_spinner()
-		print(f'Target: {arg_target}')
-		print(f'Restricciones: {restricciones}')
 		print(f'Total time: {time.time()-start}')
 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
 		"""Función que crea el diccionario con la restricción especificada
