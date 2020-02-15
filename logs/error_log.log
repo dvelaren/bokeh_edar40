@@ -7934,3 +7934,126 @@ AttributeError: 'str' object has no attribute 'values'
 2020-02-14 09:30:03 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 2.26ms
 2020-02-14 09:30:03 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=eoPiwyWxSMVRVclhxYbfQOiyA8d1SJ797x2pUK8Iu5sm (127.0.0.1) 0.48ms
 2020-02-14 09:31:55 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=j19IfrZClSddptlM1UjATKIl5ZrJUUFQAMQgmWsrxe2t (192.168.30.5) 0.44ms
+2020-02-14 09:47:30 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1431.90ms
+2020-02-14 09:47:30 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 1.30ms
+2020-02-14 09:47:30 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 1.34ms
+2020-02-14 09:47:30 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 0.96ms
+2020-02-14 09:47:30 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 0.74ms
+2020-02-14 09:47:30 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=TgXVAelKLaj4H79LRagS1ZWj5CJSOYqcZeXogcP1hFrb (127.0.0.1) 0.50ms
+2020-02-14 09:47:36 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2050.13ms
+2020-02-14 09:47:36 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=Cv9DmfHme93rCgGaJRj0Z8rfS5dmwjnKZjWVFcp8aFI3 (127.0.0.1) 0.49ms
+2020-02-14 11:16:04 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=3676&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1469.37ms
+2020-02-14 11:16:08 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=TSJ9DrIvPl6CfJNjSK9hZi7ntHuOPIvvadAqLwkT08rj (127.0.0.1) 0.47ms
+2020-02-14 11:22:56 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1454.69ms
+2020-02-14 11:22:58 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 1.28ms
+2020-02-14 11:22:58 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 1.39ms
+2020-02-14 11:22:58 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.70ms
+2020-02-14 11:22:58 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 0.51ms
+2020-02-14 11:23:00 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=qPbEgNP17BBh8SOi2WSeMH8al5fxmj5ISDRINibqcatj (127.0.0.1) 0.48ms
+2020-02-14 11:26:13 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2579.63ms
+2020-02-14 11:26:13 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=uJtUry1yRpYW9MMnJMTAxWW0yUDdBSqFiiIBlDxS6boU (127.0.0.1) 0.54ms
+2020-02-14 11:31:00 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1003&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1359.58ms
+2020-02-14 11:31:00 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=dXqADx78sG53JNIIs2FhMYgueVBGTAHpY6r9G6W1k35M (127.0.0.1) 0.48ms
+2020-02-14 11:31:03 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1004&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2512.86ms
+2020-02-14 11:31:03 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=VOhzbQPNByEVYKQ6NefTWrlh1NbIjpIODLPKJshEqda1 (127.0.0.1) 0.55ms
+2020-02-14 11:37:16 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1003&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1382.26ms
+2020-02-14 11:37:16 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=TrXtuvYymQeQgHaJx0iOWou9aGinoco3pdunPbCzMutH (127.0.0.1) 0.48ms
+2020-02-14 11:38:06 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=9989&bokeh-app-path=/bokeh/perfil&periodo=1&tipo_var=rend (127.0.0.1) 1661.28ms
+2020-02-14 11:38:07 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=h1sPrWNnUQ4Usvlx883bihIfFiVOBxc5MEljgdofhCjF (127.0.0.1) 0.48ms
+2020-02-14 11:38:17 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1004&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1345.50ms
+2020-02-14 11:38:17 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=wRabCCFu0DAFF7MNXyhYkL6ojqXgeaAFAa5bWg7WKtK0 (127.0.0.1) 0.48ms
+2020-02-14 11:38:24 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1005&bokeh-app-path=/bokeh/perfil&periodo=1&tipo_var=rend (127.0.0.1) 1283.91ms
+2020-02-14 11:38:25 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=0mMAuPs4AqyHrxpni7PWdLSFxlGmXnUoNVjdgxEyoi0H (127.0.0.1) 0.49ms
+2020-02-14 11:38:33 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=12477&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 895.72ms
+2020-02-14 11:38:34 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=jTgNzMhR2epTeWRbNKX2XoF4WkGB9ZesxeCEzruTZZCO (127.0.0.1) 0.48ms
+2020-02-14 11:38:38 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1006&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=abs (127.0.0.1) 1158.46ms
+2020-02-14 11:38:39 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=wQhcvpnxkBs6OzETtForgSN90eiIB5z8D12Wn4NSO3Tq (127.0.0.1) 0.48ms
+2020-02-14 11:39:21 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=14136&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 692.70ms
+2020-02-14 11:39:21 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=xJ6rkMmAZn6JjZKgsZS6WesPNitwPxIFJLDpqRZmJeQ1 (127.0.0.1) 0.48ms
+2020-02-14 11:43:17 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=14982&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=abs (127.0.0.1) 1415.19ms
+2020-02-14 11:43:18 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=7tMpuJfLeFPfUCxZVIKB9eNoRphH8XVYKIWqmaSkOWzc (127.0.0.1) 0.48ms
+2020-02-14 11:44:49 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1005&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1454.55ms
+2020-02-14 11:44:50 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=5u5chyOT9J0rgezxrl6IPqiDQRJu9OUS6fmTOKSl4Iiu (127.0.0.1) 0.47ms
+2020-02-14 11:55:59 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1007&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=abs (127.0.0.1) 1343.73ms
+2020-02-14 11:55:59 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=hc7Vjr8V2jBT8mffH7etRWMRAPooHrm556Y29grLKt76 (127.0.0.1) 0.48ms
+2020-02-14 11:57:09 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1006&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2373.07ms
+2020-02-14 11:57:10 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=t8DYqp2HChY0j2XbVorCQv8o3ajuakBYZfPpJUx35SKA (127.0.0.1) 0.48ms
+2020-02-14 11:58:45 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1008&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=abs (127.0.0.1) 1494.62ms
+2020-02-14 11:58:46 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=Kyyzm0qtmlOxyJLoyngaRsnj0Em02ZhAoDsipZLeGvP9 (127.0.0.1) 0.48ms
+2020-02-14 11:58:51 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1007&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1335.81ms
+2020-02-14 11:58:51 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=lpVlzkfuoxA5pAulvaxYOvzaDJwLUiluYs6yXG33PKu1 (127.0.0.1) 0.48ms
+2020-02-14 12:01:21 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1008&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=abs (127.0.0.1) 3070.34ms
+2020-02-14 12:01:21 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=iYj1JoplcPsIBrvWUnSChtFG2vT69MsBrPVH9P6lpOfQ (127.0.0.1) 0.47ms
+2020-02-14 12:02:12 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1009&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2858.16ms
+2020-02-14 12:02:13 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=kJFa7zgXYqN6B7hwuPB4gIramxZdazt1aS0b068mYaA3 (127.0.0.1) 0.49ms
+2020-02-14 12:03:48 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1010&bokeh-app-path=/bokeh/prediccion&periodo=1&tipo_var=rend (127.0.0.1) 3787.49ms
+2020-02-14 12:03:49 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=rB6UifPiYRv07yJSu2l7H4mjAS9Xtn94UbwsAjD5ES6V (127.0.0.1) 0.49ms
+2020-02-14 12:04:25 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1009&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2687.46ms
+2020-02-14 12:04:25 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=MbNCpC7VJciehTc0ygiyEehQnqKewebdof0NR4qFFEil (127.0.0.1) 0.48ms
+2020-02-14 12:04:37 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1010&bokeh-app-path=/bokeh/prediccion&periodo=1&tipo_var=rend (127.0.0.1) 3312.16ms
+2020-02-14 12:04:37 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=ua6BhJnGuBtZfYdX6MCPRxWJS9oEim3iIMydG4wvCeII (127.0.0.1) 0.49ms
+2020-02-14 12:05:02 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=27231&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2656.07ms
+2020-02-14 12:05:02 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=lE2AF12UNaVgnAiU9TulnZFwX51MqBz8HC1Tqq7Beia3 (127.0.0.1) 0.48ms
+2020-02-14 12:19:27 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1011&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2572.61ms
+2020-02-14 12:19:27 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 1.01ms
+2020-02-14 12:19:27 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 0.56ms
+2020-02-14 12:19:27 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.69ms
+2020-02-14 12:19:27 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 0.67ms
+2020-02-14 12:19:30 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=v8yWHqBYUVDvxF1UE8zBSca7oaa19wMuaLFtGvs24JAT (127.0.0.1) 0.47ms
+2020-02-14 12:31:37 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1011&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2972.17ms
+2020-02-14 12:31:38 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=YIY11O3WlXsERn0HcBn8karPPVW3Kz9SSp6kIt4cOm9f (127.0.0.1) 0.50ms
+2020-02-14 12:42:58 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1012&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2661.20ms
+2020-02-14 12:42:58 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.74ms
+2020-02-14 12:42:58 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 0.97ms
+2020-02-14 12:42:58 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 0.59ms
+2020-02-14 12:42:58 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 0.67ms
+2020-02-14 12:43:00 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=7xE2LpWQNnZfgRxQcrydU1uiASouT6m7qChYHV8zQTrz (127.0.0.1) 0.44ms
+2020-02-14 12:45:18 ERROR    Exception in callback <bound method BokehTornado._keep_alive of <bokeh.server.tornado.BokehTornado object at 0x7f480cbec6d0>>
+Traceback (most recent call last):
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/ioloop.py", line 907, in _run
+    return self.callback()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/tornado.py", line 579, in _keep_alive
+    c.send_ping()
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/bokeh/server/connection.py", line 80, in send_ping
+    self._socket.ping(codecs.encode(str(self._ping_count), "utf-8"))
+  File "/home/edar/bokeh_edar40/venv/lib/python3.7/site-packages/tornado/websocket.py", line 447, in ping
+    raise WebSocketClosedError()
+tornado.websocket.WebSocketClosedError
+2020-02-14 13:10:33 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1013&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2750.05ms
+2020-02-14 13:10:33 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 1.01ms
+2020-02-14 13:10:33 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 0.94ms
+2020-02-14 13:10:33 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 0.97ms
+2020-02-14 13:10:33 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.82ms
+2020-02-14 13:10:34 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=2BADBnZqJgG9fl13lQXOiBFBmgnptZvqeLLr12wqfGb2 (127.0.0.1) 0.49ms
+2020-02-14 14:51:04 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1013&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1526.92ms
+2020-02-14 14:51:04 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.97ms
+2020-02-14 14:51:04 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 1.08ms
+2020-02-14 14:51:04 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 0.98ms
+2020-02-14 14:51:04 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 1.26ms
+2020-02-14 14:51:05 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=BZbWzd43A2O649DGdNu0s2hBxZEgDFTeJBO8QpbvzPOf (127.0.0.1) 0.58ms
+2020-02-14 14:51:13 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1014&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2617.21ms
+2020-02-14 14:51:14 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=JRctovnjnrvO0p2JL2GV5Vh4Nx673SGC7ZwHYsfhKWAS (127.0.0.1) 0.48ms
+2020-02-14 14:51:52 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1014&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1316.12ms
+2020-02-14 14:51:52 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=SZfAZDDsGn3lLxKTaVJddZvHa0GhOaOKhwYFWZn3Lw4f (127.0.0.1) 0.49ms
+2020-02-14 19:41:00 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1253.39ms
+2020-02-14 19:41:01 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 1.11ms
+2020-02-14 19:41:01 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 1.48ms
+2020-02-14 19:41:01 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 1.21ms
+2020-02-14 19:41:01 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 2.31ms
+2020-02-14 19:41:01 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=4qDgdLFf0tmRcgvZEOXz0sBVrRGwEsvfJi6ahCW4dJPV (127.0.0.1) 0.51ms
+2020-02-14 19:41:08 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2839.28ms
+2020-02-14 19:41:08 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=y6ams14OBeL3tbAJlZt7wUPajRCwoMkPs3nRr7MGRe3j (127.0.0.1) 0.47ms
+2020-02-14 20:47:49 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js.map (127.0.0.1) 0.69ms
+2020-02-14 20:47:49 INFO     200 GET /bokeh/static/js/bokeh.min.js.map (127.0.0.1) 2.59ms
+2020-02-14 20:47:49 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js.map (127.0.0.1) 4.90ms
+2020-02-14 20:47:49 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js.map (127.0.0.1) 2.19ms
+2020-02-14 22:53:39 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1002&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 3225.84ms
+2020-02-14 22:53:39 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js?v=35738715f747a3f5672b245db261f9bc (127.0.0.1) 0.75ms
+2020-02-14 22:53:39 INFO     200 GET /bokeh/static/js/bokeh.min.js?v=ac90935137e13ae0b2c6583f2e1f3fe8 (127.0.0.1) 1.24ms
+2020-02-14 22:53:39 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js?v=bbfecfaf62fc48a3f557280273185467 (127.0.0.1) 1.87ms
+2020-02-14 22:53:39 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js?v=817fa55a6e55d1e469275e21c9b77565 (127.0.0.1) 0.53ms
+2020-02-14 22:53:40 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=aZeEHuYj47iqH6YUN5dSIUKir7aMI0ylctnpMzs97xqw (127.0.0.1) 0.47ms
+2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js.map (127.0.0.1) 0.59ms
+2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js.map (127.0.0.1) 0.85ms
+2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh.min.js.map (127.0.0.1) 2.00ms
+2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js.map (127.0.0.1) 0.65ms
