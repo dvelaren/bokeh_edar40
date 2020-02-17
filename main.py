@@ -3,6 +3,7 @@ from utils.server_config import *
 from utils.rapidminer_proxy import call_webservice
 import json
 from pandas.io.json import json_normalize
+from collections import OrderedDict
 
 import logging
 from tornado.log import enable_pretty_logging
@@ -94,8 +95,8 @@ def perfil():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -117,8 +118,8 @@ def cartuja_prediction():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -129,56 +130,72 @@ def cartuja_prediction():
 
 @app.route('/optimizacion', methods=['GET', 'POST'])
 def optimizacion():
-    try:
-        # data_test = request.args['data'].replace("'", '"')
-        # print(f'data_test: {data_test}')
-        # print(json.loads(data_test))
-        data = json.loads(request.args['data'].replace("'", '"'))
-        print(f'rcv_data: {data}')
-        target = data['target']
-        valores = data['valores']
-        var_influyentes = data['var_influyentes']
-    except:
-        target = 'Calidad_Agua'
-        valores = ['cluster_0', 'cluster_1', 'cluster_2', 'cluster_3']
-        ranges = ['range1 [-∞ - 83.400] (108)', 'range2 [83.400 - 124.800] (408)', 'range3 [124.800 - 166.200] (0)', 'range4 [166.200 - 207.600] (0)', 'range5 [207.600 - ∞] (1)']
-        var_influyentes = {
-            'influente_MV': {'pos_ranges': ranges, 'result': ''},
-            'bios_estado_fango_recirculacion_conc': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-            'bios_manipulable_Cl3Fe': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-            'bios_manipulable_O2_Bio1_Zona_2': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-            'electricidad_produccion_Turbina_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-            'fangos_estado_MV_fango_primario_a_stocker': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-            'electricidad_Consumo_SOPLANTES_BIOLOGICO_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''}
-        }
-    
-    if request.method == 'POST':
-        target_form = request.form['target']
-        vars_form = {}
-        vars_form.update({var:{'condicion':request.form[f'Condicion1_{var}'],'valor':request.form[f'Valor1_{var}']} for var in var_influyentes})
-        print(f'target: {target_form}')
-        print(vars_form)
-        arg_target = {'variable':target, 'valor':target_form, 'objetivo': 'max'}
-        restricciones = {}
-        for var, obj in vars_form.items():
-            if obj['condicion'] != '-':
-                restricciones.update({var: obj['valor']})
-        print(f'Target: {arg_target}')
-        print(f'Restricciones: {restricciones}')
-        json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
-                                     username='rapidminer',
-                                     password='rapidminer',
-                                     parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
-									 out_json=True)
-        df_optim = json_normalize(json_optim)
-        print(df_optim)
-        for var in var_influyentes:
-            var_influyentes[var]['result'] = df_optim[var][0]
-            print(f"{var}: {var_influyentes[var]['result']}")
-    return render_template('optimizacion.html',
-                            target=target,
-                            valores=valores,
-                            var_influyentes=var_influyentes)
+	try:
+		data = json.loads(request.args['data'].replace("'", '"'))
+		print(f'rcv_data: {data}')
+		target = data['target']
+		valores = data['valores']
+		var_influyentes = data['var_influyentes']
+		session['data'] = data
+		session['var_order'] = list(var_influyentes.keys())
+		arg_target = {'variable':target, 'valor':valores[0], 'objetivo': 'max'}
+		restricciones = {}
+		session['arg_target'] = arg_target
+		session['restricciones'] = restricciones
+	except:
+		if 'data' in session:
+			target = session['data']['target']
+			valores = session['data']['valores']
+			var_influyentes = session['data']['var_influyentes']
+			var_order = session['var_order']
+			var_influyentes = OrderedDict({var:var_influyentes[var] for var in var_order})
+			arg_target = session['arg_target']
+			restricciones = session['restricciones']
+		# target = 'Calidad_Agua'
+		# valores = ['cluster_0', 'cluster_1', 'cluster_2', 'cluster_3']
+		# ranges = ['range1 [-∞ - 83.400] (108)', 'range2 [83.400 - 124.800] (408)', 'range3 [124.800 - 166.200] (0)', 'range4 [166.200 - 207.600] (0)', 'range5 [207.600 - ∞] (1)']
+		# var_influyentes = {
+		# 	'influente_MV': {'pos_ranges': ranges, 'result': ''},
+		# 	'bios_estado_fango_recirculacion_conc': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+		# 	'bios_manipulable_Cl3Fe': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+		# 	'bios_manipulable_O2_Bio1_Zona_2': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+		# 	'electricidad_produccion_Turbina_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+		# 	'fangos_estado_MV_fango_primario_a_stocker': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+		# 	'electricidad_Consumo_SOPLANTES_BIOLOGICO_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''}
+		# }
+		
+	if request.method == 'POST':
+		target_form = request.form['target']
+		vars_form = {}
+		vars_form.update({var:{'condicion':request.form[f'Condicion1_{var}'],'valor':request.form[f'Valor1_{var}']} for var in var_influyentes})
+		print(f'target: {target_form}')
+		print(vars_form)
+		arg_target = {'variable':target, 'valor':target_form, 'objetivo': 'max'}
+		restricciones = {}
+		for var, obj in vars_form.items():
+			if obj['condicion'] != '-':
+				restricciones.update({var: obj['valor']})
+		session['arg_target'] = arg_target
+		session['restricciones'] = restricciones
+		print(f'Target: {arg_target}')
+		print(f'Restricciones: {restricciones}')
+		json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
+										username='rapidminer',
+										password='rapidminer',
+										parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
+										out_json=True)
+		df_optim = json_normalize(json_optim)
+		print(df_optim)
+		for var in var_influyentes:
+			var_influyentes[var]['result'] = df_optim[var][0]
+			session['data']['var_influyentes'][var]['result'] = df_optim[var][0]
+			print(f"{var}: {var_influyentes[var]['result']}")
+	return render_template('optimizacion.html',
+							target=target,
+							valores=valores,
+							var_influyentes=var_influyentes,
+							arg_target=arg_target['valor'],
+							restricciones=restricciones)
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
