@@ -143,112 +143,112 @@ class DynamicSimulWidget:
 		self.sim_target.text = f"<b>{self.target}</b>: {simul_result[f'prediction({self.target})'][0]}"
 		self.div_spinner.hide_spinner()
 
-class DynamicOptimRow:
-	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
+# class DynamicOptimRow:
+# 	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
 	
-	Attributes:
-		var_title: Título de la restricción
-	"""
-	def __init__(self, var_title, ranges):
-		var_row_title = Div(text=f'{var_title}:', width=360, sizing_mode='fixed')
-		self.var_found_value = Div(text='', width=360, sizing_mode='fixed')
-		self.low_condition_select = Select(title='Condición1', value='-', options=['=', '-'], width=160, sizing_mode='fixed')
-		self.low_inter_text = Select(title='Valor1', value=ranges[0], options=ranges, width=160, sizing_mode='fixed')
-		target_col = column(children=[var_row_title, self.var_found_value],
-							  sizing_mode='fixed',
-							  width=360)
-		self.dyn_row = row([target_col,
-							self.low_condition_select,
-							self.low_inter_text], sizing_mode='fixed', width=700)
+# 	Attributes:
+# 		var_title: Título de la restricción
+# 	"""
+# 	def __init__(self, var_title, ranges):
+# 		var_row_title = Div(text=f'{var_title}:', width=360, sizing_mode='fixed')
+# 		self.var_found_value = Div(text='', width=360, sizing_mode='fixed')
+# 		self.low_condition_select = Select(title='Condición1', value='-', options=['=', '-'], width=160, sizing_mode='fixed')
+# 		self.low_inter_text = Select(title='Valor1', value=ranges[0], options=ranges, width=160, sizing_mode='fixed')
+# 		target_col = column(children=[var_row_title, self.var_found_value],
+# 							  sizing_mode='fixed',
+# 							  width=360)
+# 		self.dyn_row = row([target_col,
+# 							self.low_condition_select,
+# 							self.low_inter_text], sizing_mode='fixed', width=700)
 
-class DynamicOptimWidget:
-	"""Clase DynamicOptimWidget para representar widget dinámicos con todas las restricciones para optimizar
+# class DynamicOptimWidget:
+# 	"""Clase DynamicOptimWidget para representar widget dinámicos con todas las restricciones para optimizar
 	
-	Attributes:
-		target: Target de optimización
-		possible_targets: Lista de posibles clusters/rangos a optimizar
-		var_influyentes: Lista variables influyentes que calculadas por el optimizador
-	"""
-	def __init__(self, target, possible_targets, var_influyentes, ranges):
-		self.target = target
-		self.ranges = ranges
-		self.var_influyentes = var_influyentes
-		target_title = create_div_title(f'Optimización - {self.target}')
-		target_title.width=700
-		target_title.sizing_mode='fixed'
-		self.objective_select = Select(title='Objetivo', value='max', options=['max'], width=110, sizing_mode='fixed')
-		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, width=110, sizing_mode='fixed')
-		restrict_title = Div(text='<b>Restricciones</b>', width= 360, sizing_mode='fixed')
-		self.dyn_row_list = OrderedDict([])
-		columns = column([], width=360, sizing_mode='fixed')
-		self.div_prediccion = Div(text=f'<b>Predicción: </b>NA, <b>Confianza: </b>NA', width=360, sizing_mode='fixed')
-		for var in self.var_influyentes:
-			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var,ranges=self.ranges['Values'][var].split(', '))})
-			columns.children.append(self.dyn_row_list[var].dyn_row)
-		button_optimize = Button(label="Optimizar", button_type="primary", width=180, sizing_mode='fixed')
-		button_optimize.on_click(self.optimizar)
-		self.div_spinner = Spinner()
-		self.wb = widgetbox([target_title,
-							row([self.objective_select, self.target_select], sizing_mode='fixed'),
-							restrict_title,
-							columns,
-							self.div_prediccion,
-							row([button_optimize, self.div_spinner.spinner], width=360, sizing_mode='fixed')], sizing_mode='fixed', width=700)
-	def optimizar(self):
-		"""Callback que optimiza y obtiene los valores de las variables influyentes según objetivo fijado
-		"""
-		start = time.time()
-		self.div_spinner.show_spinner()
-		restricciones = {}
-		for var, drow in self.dyn_row_list.items():
-			condicion1 = drow.low_condition_select.value
-			val_condicion_raw = drow.low_inter_text.value
-			dict_condicion1 = self.create_dict_condicion(num_condicion=1,
-														condicion=condicion1,
-														val_condicion_raw=val_condicion_raw)
-			if dict_condicion1:
-				restricciones.update({var: dict_condicion1})
-			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'		
-		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
-		print(f'Target: {arg_target}')
-		print(f'Restricciones: {restricciones}')
-		json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
-										username='rapidminer',
-										password='rapidminer',
-										parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
-										out_json=True)
-		df_optim = json_normalize(json_optim)
-		print(df_optim)
-		for var in self.dyn_row_list:
-			self.dyn_row_list[var].var_found_value.text = f'<b>{df_optim[var][0]}</b>'
-		pred = df_optim[f'prediction({self.target})'][0]
-		conf = round(df_optim[f'confidence({pred})'][0]*100,3)
-		self.div_prediccion.text=f'<b>Predicción: </b>{pred}, <b>Confianza: </b>{conf}%'
-		print(f'pred: {pred}, conf: {conf}')
-		self.div_spinner.hide_spinner()
-		print(f'Total time: {time.time()-start}')
-	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
-		"""Función que crea el diccionario con la restricción especificada
+# 	Attributes:
+# 		target: Target de optimización
+# 		possible_targets: Lista de posibles clusters/rangos a optimizar
+# 		var_influyentes: Lista variables influyentes que calculadas por el optimizador
+# 	"""
+# 	def __init__(self, target, possible_targets, var_influyentes, ranges):
+# 		self.target = target
+# 		self.ranges = ranges
+# 		self.var_influyentes = var_influyentes
+# 		target_title = create_div_title(f'Optimización - {self.target}')
+# 		target_title.width=700
+# 		target_title.sizing_mode='fixed'
+# 		self.objective_select = Select(title='Objetivo', value='max', options=['max'], width=110, sizing_mode='fixed')
+# 		self.target_select = Select(title='Target', value=possible_targets[-1], options=possible_targets, width=110, sizing_mode='fixed')
+# 		restrict_title = Div(text='<b>Restricciones</b>', width= 360, sizing_mode='fixed')
+# 		self.dyn_row_list = OrderedDict([])
+# 		columns = column([], width=360, sizing_mode='fixed')
+# 		self.div_prediccion = Div(text=f'<b>Predicción: </b>NA, <b>Confianza: </b>NA', width=360, sizing_mode='fixed')
+# 		for var in self.var_influyentes:
+# 			self.dyn_row_list.update({var:DynamicOptimRow(var_title=var,ranges=self.ranges['Values'][var].split(', '))})
+# 			columns.children.append(self.dyn_row_list[var].dyn_row)
+# 		button_optimize = Button(label="Optimizar", button_type="primary", width=180, sizing_mode='fixed')
+# 		button_optimize.on_click(self.optimizar)
+# 		self.div_spinner = Spinner()
+# 		self.wb = widgetbox([target_title,
+# 							row([self.objective_select, self.target_select], sizing_mode='fixed'),
+# 							restrict_title,
+# 							columns,
+# 							self.div_prediccion,
+# 							row([button_optimize, self.div_spinner.spinner], width=360, sizing_mode='fixed')], sizing_mode='fixed', width=700)
+# 	def optimizar(self):
+# 		"""Callback que optimiza y obtiene los valores de las variables influyentes según objetivo fijado
+# 		"""
+# 		start = time.time()
+# 		self.div_spinner.show_spinner()
+# 		restricciones = {}
+# 		for var, drow in self.dyn_row_list.items():
+# 			condicion1 = drow.low_condition_select.value
+# 			val_condicion_raw = drow.low_inter_text.value
+# 			dict_condicion1 = self.create_dict_condicion(num_condicion=1,
+# 														condicion=condicion1,
+# 														val_condicion_raw=val_condicion_raw)
+# 			if dict_condicion1:
+# 				restricciones.update({var: dict_condicion1})
+# 			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'		
+# 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
+# 		print(f'Target: {arg_target}')
+# 		print(f'Restricciones: {restricciones}')
+# 		json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
+# 										username='rapidminer',
+# 										password='rapidminer',
+# 										parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
+# 										out_json=True)
+# 		df_optim = json_normalize(json_optim)
+# 		print(df_optim)
+# 		for var in self.dyn_row_list:
+# 			self.dyn_row_list[var].var_found_value.text = f'<b>{df_optim[var][0]}</b>'
+# 		pred = df_optim[f'prediction({self.target})'][0]
+# 		conf = round(df_optim[f'confidence({pred})'][0]*100,3)
+# 		self.div_prediccion.text=f'<b>Predicción: </b>{pred}, <b>Confianza: </b>{conf}%'
+# 		print(f'pred: {pred}, conf: {conf}')
+# 		self.div_spinner.hide_spinner()
+# 		print(f'Total time: {time.time()-start}')
+# 	def create_dict_condicion(self, num_condicion, condicion, val_condicion_raw):
+# 		"""Función que crea el diccionario con la restricción especificada
 
-		Parameters:
-			num_condicion: Número de la condición (posible 1 o 2)
-			condicion: Tipo de condición (<, >, <=, >=, =, -)
-			val_condicion_raw: Valor ingresado por el usuario de la condición sin procesar
+# 		Parameters:
+# 			num_condicion: Número de la condición (posible 1 o 2)
+# 			condicion: Tipo de condición (<, >, <=, >=, =, -)
+# 			val_condicion_raw: Valor ingresado por el usuario de la condición sin procesar
 		
-		Returns:
-			dict_condicion: Diccionario con la restricción creada
-		"""
-		print(f'val_condicion_raw:{val_condicion_raw}')
-		if condicion != '-':
-			try:
-				# val_condicion = max(0, float('0'+val_condicion_raw))
-				val_condicion = val_condicion_raw
-			except:
-				val_condicion = 0
-			dict_condicion = val_condicion
-		else:
-			dict_condicion = ''
-		return dict_condicion
+# 		Returns:
+# 			dict_condicion: Diccionario con la restricción creada
+# 		"""
+# 		print(f'val_condicion_raw:{val_condicion_raw}')
+# 		if condicion != '-':
+# 			try:
+# 				# val_condicion = max(0, float('0'+val_condicion_raw))
+# 				val_condicion = val_condicion_raw
+# 			except:
+# 				val_condicion = 0
+# 			dict_condicion = val_condicion
+# 		else:
+# 			dict_condicion = ''
+# 		return dict_condicion
 
 def create_optim_div(target, possible_targets, var_influyentes, ranges):
 	# endpoint = "http://10.0.20.30:9995/optimizacion"
