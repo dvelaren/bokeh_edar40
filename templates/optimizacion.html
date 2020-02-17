@@ -54,7 +54,7 @@
                             <div class="col-8 col-sm-6">
                                 <select class="form-control form-control-sm select-bk" id="target" name="target">
                                     {% for valor in valores %}
-                                    <option value="{{ valor }}">{{ valor }}</option>
+                                    <option value="{{ valor }}" {% if valor == arg_target %}selected{% endif %}>{{ valor }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -83,7 +83,7 @@
                                 <select class="form-control form-control-sm select-bk-2" id="Condicion1_{{ var }}"
                                     name="Condicion1_{{ var }}">
                                     <option value='-'>-</option>
-                                    <option value='='>=</option>
+                                    <option value='='{% for sel_var in restricciones %}{% if sel_var == var %}selected{% endif %}{% endfor %}>=</option>
                                 </select>
                             </div>
                         </div>
@@ -95,7 +95,11 @@
                                 <select class="form-control form-control-sm select-bk-2" id="Valor1_{{ var }}"
                                     name="Valor1_{{ var }}">
                                     {% for range in var_influyentes[var]['pos_ranges'] %}
-                                    <option value="{{ range }}">{{ range }}</option>
+                                    <option value="{{ range }}" {% for sel_var in restricciones %}
+                                        {% if restricciones[var] == range %}
+                                        selected
+                                        {% endif %}
+                                    {% endfor %}>{{ range }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
