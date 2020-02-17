@@ -107,6 +107,11 @@
                     </div>
                 </div>
                 {% endfor %}
+                <div class="form-row">
+                    <div class="col-4">
+                        <span class="var-names">Predicción: <b>{{ pred }}</b>, Confiabilidad: <b>{{ conf }} %</b></span>
+                    </div>
+                </div>
                 <button class="btn btn-md btn-bk" type="submit">Optimizar</button>
             </form>
         </div>

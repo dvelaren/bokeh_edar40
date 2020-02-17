@@ -95,8 +95,8 @@ def perfil():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -118,8 +118,8 @@ def cartuja_prediction():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -142,6 +142,10 @@ def optimizacion():
 		restricciones = {}
 		session['arg_target'] = arg_target
 		session['restricciones'] = restricciones
+		pred = ''
+		conf = ''
+		session['pred'] = pred
+		session['conf'] = conf
 	except:
 		if 'data' in session:
 			target = session['data']['target']
@@ -151,6 +155,8 @@ def optimizacion():
 			var_influyentes = OrderedDict({var:var_influyentes[var] for var in var_order})
 			arg_target = session['arg_target']
 			restricciones = session['restricciones']
+			pred = session['pred']
+			conf = session['conf']
 		# target = 'Calidad_Agua'
 		# valores = ['cluster_0', 'cluster_1', 'cluster_2', 'cluster_3']
 		# ranges = ['range1 [-∞ - 83.400] (108)', 'range2 [83.400 - 124.800] (408)', 'range3 [124.800 - 166.200] (0)', 'range4 [166.200 - 207.600] (0)', 'range5 [207.600 - ∞] (1)']
@@ -190,12 +196,18 @@ def optimizacion():
 			var_influyentes[var]['result'] = df_optim[var][0]
 			session['data']['var_influyentes'][var]['result'] = df_optim[var][0]
 			print(f"{var}: {var_influyentes[var]['result']}")
+		pred = df_optim[f'prediction({target})'][0]
+		conf = round(df_optim[f'confidence({pred})'][0]*100,3)
+		session['pred'] = pred
+		session['conf'] = conf
 	return render_template('optimizacion.html',
 							target=target,
 							valores=valores,
 							var_influyentes=var_influyentes,
 							arg_target=arg_target['valor'],
-							restricciones=restricciones)
+							restricciones=restricciones,
+							pred=pred,
+							conf=conf)
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
