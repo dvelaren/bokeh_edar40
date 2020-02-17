@@ -251,8 +251,8 @@ class DynamicOptimWidget:
 		return dict_condicion
 
 def create_optim_div(target, possible_targets, var_influyentes, ranges):
-	endpoint = "http://10.0.20.30:9995/optimizacion"
-	# endpoint = "http://edar.vicomtech.org/optimizacion"
+	# endpoint = "http://10.0.20.30:9995/optimizacion"
+	endpoint = "http://edar.vicomtech.org/optimizacion"
 	data = {
 		'target': target,
 		'valores': possible_targets,
