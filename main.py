@@ -1,5 +1,8 @@
 from flask import Flask, render_template, session, redirect, url_for, request, flash
 from utils.server_config import *
+from utils.rapidminer_proxy import call_webservice
+import json
+from pandas.io.json import json_normalize
 
 import logging
 from tornado.log import enable_pretty_logging
@@ -123,6 +126,59 @@ def cartuja_prediction():
 			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
 	return redirect(url_for('login'))
+
+@app.route('/optimizacion', methods=['GET', 'POST'])
+def optimizacion():
+    try:
+        # data_test = request.args['data'].replace("'", '"')
+        # print(f'data_test: {data_test}')
+        # print(json.loads(data_test))
+        data = json.loads(request.args['data'].replace("'", '"'))
+        print(f'rcv_data: {data}')
+        target = data['target']
+        valores = data['valores']
+        var_influyentes = data['var_influyentes']
+    except:
+        target = 'Calidad_Agua'
+        valores = ['cluster_0', 'cluster_1', 'cluster_2', 'cluster_3']
+        ranges = ['range1 [-∞ - 83.400] (108)', 'range2 [83.400 - 124.800] (408)', 'range3 [124.800 - 166.200] (0)', 'range4 [166.200 - 207.600] (0)', 'range5 [207.600 - ∞] (1)']
+        var_influyentes = {
+            'influente_MV': {'pos_ranges': ranges, 'result': ''},
+            'bios_estado_fango_recirculacion_conc': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+            'bios_manipulable_Cl3Fe': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+            'bios_manipulable_O2_Bio1_Zona_2': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+            'electricidad_produccion_Turbina_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+            'fangos_estado_MV_fango_primario_a_stocker': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
+            'electricidad_Consumo_SOPLANTES_BIOLOGICO_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''}
+        }
+    
+    if request.method == 'POST':
+        target_form = request.form['target']
+        vars_form = {}
+        vars_form.update({var:{'condicion':request.form[f'Condicion1_{var}'],'valor':request.form[f'Valor1_{var}']} for var in var_influyentes})
+        print(f'target: {target_form}')
+        print(vars_form)
+        arg_target = {'variable':target, 'valor':target_form, 'objetivo': 'max'}
+        restricciones = {}
+        for var, obj in vars_form.items():
+            if obj['condicion'] != '-':
+                restricciones.update({var: obj['valor']})
+        print(f'Target: {arg_target}')
+        print(f'Restricciones: {restricciones}')
+        json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v0?',
+                                     username='rapidminer',
+                                     password='rapidminer',
+                                     parameters={'Target': str(arg_target), 'Restricciones': str(restricciones)},
+									 out_json=True)
+        df_optim = json_normalize(json_optim)
+        print(df_optim)
+        for var in var_influyentes:
+            var_influyentes[var]['result'] = df_optim[var][0]
+            print(f"{var}: {var_influyentes[var]['result']}")
+    return render_template('optimizacion.html',
+                            target=target,
+                            valores=valores,
+                            var_influyentes=var_influyentes)
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':

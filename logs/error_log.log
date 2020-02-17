@@ -8057,3 +8057,9 @@ tornado.websocket.WebSocketClosedError
 2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh-widgets.min.js.map (127.0.0.1) 0.85ms
 2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh.min.js.map (127.0.0.1) 2.00ms
 2020-02-14 23:09:31 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js.map (127.0.0.1) 0.65ms
+2020-02-17 17:23:03 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=qVc7RsR07PQVBCN8Wlg6xHwJtYz9JHmIATgu9PHvzP3b (192.168.30.31) 0.52ms
+2020-02-17 17:23:07 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1359.04ms
+2020-02-17 17:23:08 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=RN1v9d2XhG8t4OQG8FD6WbPmHqP0WJVyA1hAp80gCH8I (127.0.0.1) 0.48ms
+2020-02-17 17:23:12 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1831&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2717.04ms
+2020-02-17 17:23:13 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=BlT6zXNqjijPxprtIvNaVkaMA3TzSHBDWCGaZc1foDSr (127.0.0.1) 0.47ms
+2020-02-17 17:24:19 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 1481.95ms

@@ -250,10 +250,42 @@ class DynamicOptimWidget:
 			dict_condicion = ''
 		return dict_condicion
 
+def create_optim_div(target, possible_targets, var_influyentes, ranges):
+	endpoint = "http://10.0.20.30:9995/optimizacion"
+	# endpoint = "http://edar.vicomtech.org/optimizacion"
+	data = {
+		'target': target,
+		'valores': possible_targets,
+		'var_influyentes': {}
+	}
+	data['var_influyentes'] = {var: {'pos_ranges': ranges['Values'][var].split(', '), 'result': ''} for var in var_influyentes}
+	payload = endpoint + "?data=" + str(data)
+	div_optim = Div(text = f"""
+							<iframe
+							src="{payload}"
+							height="100%"
+							width="100%"
+							marginwidth="0"
+							marginheight="0"
+							scrolling="no"
+							frameborder="no">
+							</iframe>
+							""",
+					sizing_mode='stretch_width',
+					min_width = 1900,
+					height = 600,
+					style={
+						'height': '100%',
+						'width': '100%'
+					}
+	)
+	return div_optim
+
 class SimulOptimWidget:
 	def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges):
 		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df, periodo=periodo)
-		self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
+		# self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
+		self.optimize_wb = create_optim_div(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
 		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width')
 		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, max_width=690)
 		self.rb.on_click(self.select_simul_optim)
@@ -261,4 +293,4 @@ class SimulOptimWidget:
 		if new == 0:
 			self.wb.children = [self.simulate_wb.wb]
 		else:
-			self.wb.children = [self.optimize_wb.wb]
+			self.wb.children = [self.optimize_wb]
