@@ -272,7 +272,8 @@ def create_optim_div(target, possible_targets, var_influyentes, ranges):
 							</iframe>
 							""",
 					sizing_mode='stretch_width',
-					min_width = 1900,
+					min_width = 1300,
+					max_width = 1300,
 					height = 630,
 					style={
 						'height': '100%',

@@ -65,7 +65,7 @@ body {
 .select-bk {
     background-color: #fff;
     border: 1px solid #ccc;
-    width: 110px;
+    width: 95px;
     align-items: center;
     text-align: start;
 }
@@ -73,15 +73,55 @@ body {
 .select-bk-2 {
     background-color: #fff;
     border: 1px solid #ccc;
-    width: 160px;
+    width: 95px;
     align-items: center;
     text-align: start;   
 }
 
-.btn-bk {
+.btn-bk { 
     width: 180px;
     font-size: 12px;
-    color: #fff;
-    background-color: #428bca;
-    border-color: #357ebd;
-}
+    color: #FFFFFF; 
+    background-color: #428BCA; 
+    border-color: #357EBD; 
+  } 
+   
+  .btn-bk:hover, 
+  .btn-bk:focus, 
+  .btn-bk:active, 
+  .btn-bk.active, 
+  .open .dropdown-toggle.btn-bk { 
+    color: #FFFFFF; 
+    background-color: #3680C1; 
+    border-color: #357EBD; 
+  } 
+   
+  .btn-bk:active, 
+  .btn-bk.active, 
+  .open .dropdown-toggle.btn-bk { 
+    background-image: none; 
+  } 
+   
+  .btn-bk.disabled, 
+  .btn-bk[disabled], 
+  fieldset[disabled] .btn-bk, 
+  .btn-bk.disabled:hover, 
+  .btn-bk[disabled]:hover, 
+  fieldset[disabled] .btn-bk:hover, 
+  .btn-bk.disabled:focus, 
+  .btn-bk[disabled]:focus, 
+  fieldset[disabled] .btn-bk:focus, 
+  .btn-bk.disabled:active, 
+  .btn-bk[disabled]:active, 
+  fieldset[disabled] .btn-bk:active, 
+  .btn-bk.disabled.active, 
+  .btn-bk[disabled].active, 
+  fieldset[disabled] .btn-bk.active { 
+    background-color: #428BCA; 
+    border-color: #357EBD; 
+  } 
+   
+  .btn-bk .badge { 
+    color: #428BCA; 
+    background-color: #FFFFFF; 
+  }
