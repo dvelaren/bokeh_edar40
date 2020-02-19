@@ -2,7 +2,7 @@ from utils.rapidminer_proxy import call_webservice
 from bokeh_edar40.visualizations.decision_tree import Node, Tree
 from bokeh_edar40.visualizations.simul_optim_widgets import SimulOptimWidget, create_div_title, Spinner
 import utils.bokeh_utils as bokeh_utils
-from utils.generate_model_vars import load_or_create_model_vars
+from utils.generate_model_vars import load_or_create_model_vars, load_obj, save_obj
 
 # from bokeh.core.properties import value
 from bokeh.models import ColumnDataSource, Div, HoverTool, GraphRenderer, StaticLayoutProvider, Rect, MultiLine, LinearAxis, Legend, Span, Label, BasicTicker, ColorBar, LinearColorMapper, PrintfTickFormatter, MonthsTicker, LinearAxis, Range1d
@@ -648,6 +648,10 @@ def modify_second_descriptive(doc):
 												force_create=False)
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
+	try:
+		created_models = load_obj(name='resources/created_models.pkl')
+	except:
+		created_models = ['Calidad_Agua']
 	
 	# Llamada al webservice de RapidMiner
 	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v4?',
@@ -705,16 +709,19 @@ def modify_second_descriptive(doc):
 		# print(total_model_dict.keys())
 		model_select_menu.options = list(total_model_dict.keys())
 		model_select_menu.value = 'Calidad_Agua'
-		models.clear()
-		model_plots.children = []
-		created_models_checkbox.labels = []
-		created_models_checkbox.active = []
+		# models.clear()
+		# model_plots.children = []
+		# created_models_checkbox.labels = []
+		# created_models_checkbox.active = []
 	recreate_button.on_click(recreate_callback)
 
 	# Callbacks para los widgets de la interfaz
-	def prediction_callback():
+	def prediction_callback(model='Calidad_Agua'):
 		create_model_spinner.show_spinner()
-		model_objective = model_select_menu.value
+		if initialize == False:
+			model_objective = model_select_menu.value
+		else:
+			model_objective = model
 		model_discretise = 5
 		
 		# Verificar que el modelo no ha sido creado antes
@@ -775,11 +782,14 @@ def modify_second_descriptive(doc):
 				[decision_tree_plot]
 			], name=model_objective, sizing_mode='stretch_width')
 			model_plots.children.append(new_plots)
+			if model_objective not in created_models:
+				created_models.append(model_objective)
+			save_obj(created_models, 'resources/created_models.pkl')
 			models.update({model_objective: new_plots})
 			models.move_to_end(model_objective, last=False)
 			created_models_checkbox.labels = list(models.keys())
 			created_models_checkbox.active = list(range(len(models.keys())))
-			create_model_spinner.hide_spinner()
+		create_model_spinner.hide_spinner()
 	add_model_button.on_click(prediction_callback)
 
 	def remove_options_handler(new):
@@ -788,6 +798,9 @@ def modify_second_descriptive(doc):
 			for element in selected_labels:
 				models.pop(element)
 				model_plots.children.remove(doc.get_model_by_name(element))
+				created_models.remove(element)
+			print(created_models)
+			save_obj(created_models, 'resources/created_models.pkl')
 		except:
 			for element in selected_labels:
 				print(f"El modelo {element} no existe")
@@ -806,8 +819,10 @@ def modify_second_descriptive(doc):
 
 	# Creación del layout dinámico de la interfaz
 	model_plots = column([])
-	prediction_callback()
-
+	initialize = True
+	for model in created_models:
+		prediction_callback(model=model)
+	initialize = False
 	# Creación del layout estático de la interfaz
 	l = layout([
 		[prediction_plot],
