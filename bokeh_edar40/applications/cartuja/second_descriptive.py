@@ -646,6 +646,7 @@ def modify_second_descriptive(doc):
 															'METEO'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
 												force_create=False)
+
 	# Inicialización del diccionario ordenado para almacenar los modelos creados
 	models = OrderedDict([])
 	try:
@@ -673,7 +674,6 @@ def modify_second_descriptive(doc):
 	prediction_plot = create_prediction_plot(prediction_df)
 	outlier_plot = create_outlier_plot(outlier_df, tipo_var)
 	simulation_title = create_div_title('Creación, Simulación y Optimización de modelos')
-	# model_title, add_model_button, model_select_menu = create_model_menu()
 	model_title, add_model_button, model_select_menu = create_model_menu(model_variables=list(total_model_dict.keys()))
 	create_model_spinner = Spinner(size=16)
 	recreate_button = Button(label='Recrear', button_type='success', height=35, max_width=200, min_width=200)
@@ -688,6 +688,7 @@ def modify_second_descriptive(doc):
 	created_models_checkbox.active = [0]
 	delete_model_button = Button(label='Eliminar', button_type='danger', height=35, max_width=200)
 	created_models_wb = widgetbox([created_models_title, created_models_checkbox], max_width=900, sizing_mode='stretch_width')
+
 	# Callback para crear nuevamente el listado de variables de la mascara
 	def recreate_callback():
 		print('Recreando lista de variables para modelizar')
@@ -705,14 +706,8 @@ def modify_second_descriptive(doc):
 															'METEO'],
 												cols = ['OUT', 'IN', 'MANIPULABLES', 'PROCESOS_IN'],
 												force_create=True)
-		# print('Nuevas variables: ')
-		# print(total_model_dict.keys())
 		model_select_menu.options = list(total_model_dict.keys())
 		model_select_menu.value = 'Calidad_Agua'
-		# models.clear()
-		# model_plots.children = []
-		# created_models_checkbox.labels = []
-		# created_models_checkbox.active = []
 	recreate_button.on_click(recreate_callback)
 
 	# Callbacks para los widgets de la interfaz
@@ -726,7 +721,6 @@ def modify_second_descriptive(doc):
 		
 		# Verificar que el modelo no ha sido creado antes
 		if model_objective not in models:		
-			# import pdb; pdb.set_trace()
 			# print(f'Objetivo: {model_objective}')
 			# print(f'Discretizacion: {model_discretise}')
 			# print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv')
@@ -781,6 +775,8 @@ def modify_second_descriptive(doc):
 				[decision_tree_title],
 				[decision_tree_plot]
 			], name=model_objective, sizing_mode='stretch_width')
+
+			# Almacenar en RAM y algunos gráficos y en ROM algunos modelos creados
 			model_plots.children.append(new_plots)
 			if model_objective not in created_models:
 				created_models.append(model_objective)
@@ -792,32 +788,32 @@ def modify_second_descriptive(doc):
 		create_model_spinner.hide_spinner()
 	add_model_button.on_click(prediction_callback)
 
-	def remove_options_handler(new):
+	# Callback para eliminar algunos modelos seleccionados
+	def remove_model_handler(new):
 		selected_labels = [created_models_checkbox.labels[elements] for elements in created_models_checkbox.active]
 		try:
 			for element in selected_labels:
 				models.pop(element)
 				model_plots.children.remove(doc.get_model_by_name(element))
 				created_models.remove(element)
-			print(created_models)
 			save_obj(created_models, 'resources/created_models.pkl')
 		except:
 			for element in selected_labels:
 				print(f"El modelo {element} no existe")
 		created_models_checkbox.labels = list(models.keys())
 		created_models_checkbox.active = list(range(len(models.keys())))
-	delete_model_button.on_click(remove_options_handler)
+	delete_model_button.on_click(remove_model_handler)
 
+	# Callback para mostrar u ocultar los gráficos de los modelos creados
 	def show_hide_plots(new):
 		selected_labels = [created_models_checkbox.labels[elements] for elements in new]
-		# model_plots.children = []
 		children = []
 		for element in selected_labels:
 			children.append(models[element])
 		model_plots.children = children
 	created_models_checkbox.on_click(show_hide_plots)
 
-	# Creación del layout dinámico de la interfaz
+	# Creación del layout inicial de la interfaz
 	model_plots = column([])
 	initialize = True
 	for model in created_models:

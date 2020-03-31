@@ -157,18 +157,6 @@ def optimizacion():
 			restricciones = session['restricciones']
 			pred = session['pred']
 			conf = session['conf']
-		# target = 'Calidad_Agua'
-		# valores = ['cluster_0', 'cluster_1', 'cluster_2', 'cluster_3']
-		# ranges = ['range1 [-∞ - 83.400] (108)', 'range2 [83.400 - 124.800] (408)', 'range3 [124.800 - 166.200] (0)', 'range4 [166.200 - 207.600] (0)', 'range5 [207.600 - ∞] (1)']
-		# var_influyentes = {
-		# 	'influente_MV': {'pos_ranges': ranges, 'result': ''},
-		# 	'bios_estado_fango_recirculacion_conc': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-		# 	'bios_manipulable_Cl3Fe': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-		# 	'bios_manipulable_O2_Bio1_Zona_2': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-		# 	'electricidad_produccion_Turbina_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-		# 	'fangos_estado_MV_fango_primario_a_stocker': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''},
-		# 	'electricidad_Consumo_SOPLANTES_BIOLOGICO_kWdia': {'pos_ranges': ['range_1', 'range_2', 'range_3', 'range_4', 'range_5'], 'result': ''}
-		# }
 		
 	if request.method == 'POST':
 		target_form = request.form['target']
