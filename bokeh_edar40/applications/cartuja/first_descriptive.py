@@ -545,12 +545,12 @@ def modify_first_descriptive(doc):
 	json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v4?',
 									username='rapidminer',
 									password='rapidminer',
-									# parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
-									# 			'Ruta_tipo_variable': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
-									# 			'Normalizacion': 1},
-									parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
-												'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+									parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+												'Ruta_tipo_variable': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
 												'Normalizacion': 1},
+									# parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+									# 			'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+									# 			'Normalizacion': 1},
 									out_json=True)
 
 	df_perfil = [json_normalize(data) for data in json_document]
