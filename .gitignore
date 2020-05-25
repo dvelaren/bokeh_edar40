@@ -146,3 +146,5 @@ logs/error_log.log
 .vscode/launch.json
 bokeh_edar40/visualizations/__pycache__/decision_tree.cpython-37.pyc
 bokeh_edar40/visualizations/__pycache__/treemap.cpython-37.pyc
+bokeh_edar40/visualizations/__pycache__/decision_tree.cpython-37.pyc
+bokeh_edar40/visualizations/__pycache__/treemap.cpython-37.pyc
