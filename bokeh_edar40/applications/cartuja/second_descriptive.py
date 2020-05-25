@@ -726,7 +726,7 @@ def modify_second_descriptive(doc):
 			# print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv')
 			# print(f'IN_MODELO: {total_model_dict[model_objective]}')
 			# Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
-			json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v3?',
+			json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v4?',
 														username='rapidminer',
 														password='rapidminer',
 														parameters={'Objetivo': model_objective,
