@@ -132,10 +132,14 @@ class DynamicSimulWidget:
 		json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
 									username='rapidminer',
 									password='rapidminer',
-									parameters={'Modelo': self.target, 'Variables_influyentes': str(vars_influyentes), 'Ruta_periodo':f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'},
+									parameters={
+										'Modelo': self.target,
+										'Variables_influyentes': str(vars_influyentes),
+										'Ruta_periodo':f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
+										},
 									out_json=True)
 		print(f'Modelo: {self.target}')
-		print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
+		print(f'Ruta_periodo: https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
 		print(vars_influyentes)
 		simul_result = json_normalize(json_simul)
 		print(simul_result[f'prediction({self.target})'][0])

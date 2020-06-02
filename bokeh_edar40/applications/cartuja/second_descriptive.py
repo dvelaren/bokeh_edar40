@@ -655,13 +655,14 @@ def modify_second_descriptive(doc):
 		created_models = ['Calidad_Agua']
 	
 	# Llamada al webservice de RapidMiner
-	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v4?',
+	json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
 											username='rapidminer',
 											password='rapidminer',
-											parameters={'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
-														'Ruta_tipo_variable': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+											parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+														'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
 														'Normalizacion': 1},
 											out_json=True)
+	print(f'json_perfil_document: {json_perfil_document}')
 	
 	# Extracción de los datos web
 	df_perfil = [json_normalize(data) for data in json_perfil_document]
@@ -726,13 +727,13 @@ def modify_second_descriptive(doc):
 			# print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv')
 			# print(f'IN_MODELO: {total_model_dict[model_objective]}')
 			# Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
-			json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v4?',
+			json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v5?',
 														username='rapidminer',
 														password='rapidminer',
 														parameters={'Objetivo': model_objective,
 																	'Discretizacion': model_discretise,
 																	'Numero_Atributos': 4,
-																	'Ruta_periodo': f'/home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+																	'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
 																	'IN_MODELO': str(total_model_dict[model_objective])
 																	},
 														out_json=True)	
