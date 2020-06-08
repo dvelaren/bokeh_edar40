@@ -279,7 +279,7 @@ def append_labels_to_decision_tree(plot, graph, tree):
 	plot.text(node_text_x, node_text_y, text=node_text, text_font_size={'value': '10pt'}, text_align='center')
 
 	middle_x, middle_y, middle_text = tree.get_line_text_positions()
-	plot.text(middle_x, middle_y, text=middle_text, text_font_size={'value': '11pt'}, text_align='center')
+	plot.text(middle_x, middle_y, text=middle_text, text_font_size={'value': '10pt'}, text_align='center')
 	return plot
 
 
@@ -289,7 +289,7 @@ def create_decision_tree_plot():
 	Returns:
 		Figure: Gráfica del árbol de decisión
 	"""
-	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=500, sizing_mode='stretch_width', output_backend="webgl", tools="")
+	plot = figure(x_range=(-1.1,1.1), y_range=(0,1.1), toolbar_location=None, plot_height=800, sizing_mode='stretch_width', output_backend="webgl", tools="")
 
 	plot.axis.visible = False
 	plot.xgrid.grid_line_color = None
