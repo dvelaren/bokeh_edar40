@@ -499,26 +499,31 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 		for i in range(len(leaf)+1):
 			if i < len(leaf):
 				node = leaf[i].split(' ', 1)
-				# print(node)
+	#             print(node)
 				node_name = node[0]
 				tree_node = Node(count+1, node_name, i, '#c2e8e0')
-				# print(f"tree_node = Node({count+1}, '{node_name}', {i}, '#c2e8e0')")
+	#             print(f"tree_node = Node({count+1}, '{node_name}', {i}, '#c2e8e0')")
 				tree.order_nodes(tree_node, node[1])
-				# print(f"tree.order_nodes(tree_node, '{node[1]}')")
+	#             print(f"tree.order_nodes(tree_node, '{node[1]}')")
 			else:
 				if target == 'Calidad_Agua':
-					node_name = df['Prediction'][j]
+					count_text = ""
+					for key in df:
+						if "cluster" in key:
+							count_text += f"c{key[-1]}: {df[key][j]}\n"
+					count_text = count_text[:-1]
+					node_name = df['Prediction'][j] + '\n' + count_text
 					color = color_palette[df['Prediction'][j]]
 				else:
 					range_split = df['Prediction'][j].split(' ', 1)
-					# print(f'range_split[0]:{range_split[0]}')
-					# print(f'range_split[1]:{range_split[1]}')
+	#                 print(f'range_split[0]:{range_split[0]}')
+	#                 print(f'range_split[1]:{range_split[1]}')
 					node_name = range_split[0] + '\n' + range_split[1]
 					color = color_palette[range_split[0]]
-				# print(f"tree_node = Node({count+1}, '{node_name}', {i}, '{color}')")
+	#             print(f"tree_node = Node({count+1}, '{node_name}', {i}, '{color}')")
 				tree_node = Node(count+1, node_name, i, color)
 				tree.order_nodes(tree_node, node[1])
-				# print(f"tree.order_nodes(tree_node, '{node[1]}')")
+	#             print(f"tree.order_nodes(tree_node, '{node[1]}')")
 			count = count + 1
 
 	return tree

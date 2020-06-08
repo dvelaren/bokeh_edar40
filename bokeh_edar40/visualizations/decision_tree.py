@@ -66,9 +66,13 @@ class Tree:
 		x = []
 		y = []
 		text = []
-		for node in self.node_list:	
-			x.append(node.x) 
-			y.append(node.y-(self.NODE_HEIGHT/2)+0.04)
+		for node in self.node_list:
+			x.append(node.x)
+		#             print(f'node: {node.name}')
+			if 'cluster' in node.name:
+				y.append(node.y-(self.NODE_HEIGHT/2)-0.02)
+			else:
+				y.append(node.y-(self.NODE_HEIGHT/2)+0.06)
 			text.append(node.name)
 		return x, y, text
 			
