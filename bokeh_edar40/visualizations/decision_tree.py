@@ -69,7 +69,7 @@ class Tree:
 		for node in self.node_list:
 			x.append(node.x)
 		#             print(f'node: {node.name}')
-			if 'cluster' in node.name:
+			if ('cluster' or 'range') in node.name:
 				y.append(node.y-(self.NODE_HEIGHT/2))
 			else:
 				y.append(node.y-(self.NODE_HEIGHT/2)+0.06)

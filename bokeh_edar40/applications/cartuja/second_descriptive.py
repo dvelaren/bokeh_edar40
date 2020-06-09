@@ -507,9 +507,9 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 	#             print(f"tree.order_nodes(tree_node, '{node[1]}')")
 			else:
 				if target == 'Calidad_Agua':
-					count_text = ""
+					count_text = ''
 					for key in df:
-						if "cluster" in key:
+						if 'cluster' in key:
 							count_text += f"c{key[-1]}: {df[key][j]}\n"
 					count_text = count_text[:-1]
 					node_name = df['Prediction'][j] + '\n' + count_text
@@ -518,7 +518,12 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 					range_split = df['Prediction'][j].split(' ', 1)
 	#                 print(f'range_split[0]:{range_split[0]}')
 	#                 print(f'range_split[1]:{range_split[1]}')
-					node_name = range_split[0] + '\n' + range_split[1]
+					count_text = ''
+					for key in df:
+						if 'range' in key:
+							count_text += f"c{key[-1]}: {df[key][j]}\n"
+					count_text = count_text[:-1]
+					node_name = range_split[0] + '\n' + range_split[1] + '\n' + count_text
 					color = color_palette[range_split[0]]
 	#             print(f"tree_node = Node({count+1}, '{node_name}', {i}, '{color}')")
 				tree_node = Node(count+1, node_name, i, color)
