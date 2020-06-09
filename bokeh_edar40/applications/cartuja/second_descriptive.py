@@ -521,7 +521,7 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 					count_text = ''
 					for key in df:
 						if 'range' in key:
-							count_text += f"c{key[11]}: {df[key][j]}\n"
+							count_text += f"r{key[11]}: {df[key][j]}\n"
 					count_text = count_text[:-1]
 					node_name = range_split[0] + '\n' + range_split[1] + '\n' + count_text
 					color = color_palette[range_split[0]]
