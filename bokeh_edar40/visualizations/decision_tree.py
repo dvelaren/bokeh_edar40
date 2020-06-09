@@ -72,7 +72,7 @@ class Tree:
 			if 'cluster' in node.name:
 				y.append(node.y-(self.NODE_HEIGHT/2))
 			elif 'range' in node.name:
-				y.append(node.y-(self.NODE_HEIGHT/2)-0.02)
+				y.append(node.y-(self.NODE_HEIGHT/2)-0.07)
 			else:
 				y.append(node.y-(self.NODE_HEIGHT/2)+0.06)
 			text.append(node.name)
