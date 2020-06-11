@@ -16,6 +16,7 @@ from bokeh.transform import dodge, transform
 import xml.etree.ElementTree as et
 import pandas as pd
 import numpy as np
+import re
 from pandas.io.json import json_normalize
 from collections import OrderedDict
 from datetime import datetime as dt
@@ -481,23 +482,23 @@ def create_df_confusion(df_original):
 	return df
 
 def append_count(df):
-    """Agrega columna con información de contadores
-    Parameters:
-        df: Dataframe con los datos del arbol
-    Returns:
-        df: Dataframe con la nueva columna
-    
-    """
-    col_sorted_text = []
-    for row in range(len(df.index)):
-        test_df = df.loc[row, df.columns.str.contains('range|cluster')].sort_values(ascending=False)
-        sorted_text = []
-        for key, value in test_df.items():
-            new_key = re.sub('count_| \[.*?\]', '', key)
-            sorted_text.append(f"{new_key}: {value}")
-        col_sorted_text.append('\n'.join(sorted_text))
-    df['Prediction_desc'] = col_sorted_text
-    return df
+	"""Agrega columna con información de contadores
+	Parameters:
+		df: Dataframe con los datos del arbol
+	Returns:
+		df: Dataframe con la nueva columna
+
+	"""
+	col_sorted_text = []
+	for row in range(len(df.index)):
+		test_df = df.loc[row, df.columns.str.contains('range|cluster')].sort_values(ascending=False)
+		sorted_text = []
+		for key, value in test_df.items():
+			new_key = re.sub("count_| \[.*?\]", '', key)
+			sorted_text.append(f"{new_key}: {value}")
+		col_sorted_text.append('\n'.join(sorted_text))
+	df['Prediction_desc'] = col_sorted_text
+	return df
 
 def create_decision_tree_data(df, target='Calidad_Agua'):
 	"""Crea el Tree del decision tree
@@ -526,7 +527,7 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 	#             print(f"tree.order_nodes(tree_node, '{node[1]}')")
 			else:
 				if target == 'Calidad_Agua':
-					node_name = df['Prediction'][j]
+					node_name = df['Prediction_desc'][j]
 					color = color_palette[df['Prediction'][j]]
 				else:
 					range_split = df['Prediction'][j].split(' ', 1)
