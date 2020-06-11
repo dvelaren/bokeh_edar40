@@ -84,7 +84,7 @@ def create_corrects_plot(df, target):
 	xloc = calc_xoffset_corrects_plot(num_vals=len(xlabels), bar_width=bar_width)
 	for i, label in enumerate(xlabels):
 		r = corrects_plot.vbar(x=dodge('Actual', xloc[i], range=corrects_plot.x_range), top=label, width=bar_width, source=source,
-				color=bokeh_utils.BAR_COLORS_PALETTE[i], legend_label=label, name=xlabels[i])
+				color=bokeh_utils.COLORS_DICT[re.sub(' \[.*?\]','',label)], legend_label=label, name=xlabels[i])
 		hover = HoverTool(tooltips=[
 			("Predicción", "$name"),
 			("Aciertos", "@$name")
@@ -508,8 +508,6 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 	Returns:
 		tree: Arbol listo para graficar con sus nodos
 	"""
-	color_palette = {'cluster_0': bokeh_utils.BAR_COLORS_PALETTE[0], 'cluster_1': bokeh_utils.BAR_COLORS_PALETTE[1], 'cluster_2': bokeh_utils.BAR_COLORS_PALETTE[2], 'cluster_3': bokeh_utils.BAR_COLORS_PALETTE[3], 
-	'range1': bokeh_utils.BAR_COLORS_PALETTE[0], 'range2': bokeh_utils.BAR_COLORS_PALETTE[1], 'range3': bokeh_utils.BAR_COLORS_PALETTE[2], 'range4': bokeh_utils.BAR_COLORS_PALETTE[3], 'range5': bokeh_utils.BAR_COLORS_PALETTE[4]}
 
 	tree = Tree()
 	count = 0
@@ -528,11 +526,11 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 			else:
 				if target == 'Calidad_Agua':
 					node_name = df['Prediction_desc'][j]
-					color = color_palette[df['Prediction'][j]]
+					color = bokeh_utils.COLORS_DICT[df['Prediction'][j]]
 				else:
 					range_split = df['Prediction'][j].split(' ', 1)
 					node_name = df['Prediction_desc'][j]
-					color = color_palette[range_split[0]]
+					color = bokeh_utils.COLORS_DICT[range_split[0]]
 	#             print(f"tree_node = Node({count+1}, '{node_name}', {i}, '{color}')")
 				tree_node = Node(count+1, node_name, i, color)
 				tree.order_nodes(tree_node, node[1])
@@ -680,7 +678,6 @@ def modify_second_descriptive(doc):
 														'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
 														'Normalizacion': 1},
 											out_json=True)
-	print(f'json_perfil_document: {json_perfil_document}')
 	
 	# Extracción de los datos web
 	df_perfil = [json_normalize(data) for data in json_perfil_document]
