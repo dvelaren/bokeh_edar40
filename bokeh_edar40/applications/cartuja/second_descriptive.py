@@ -480,6 +480,25 @@ def create_df_confusion(df_original):
 	df = df.apply(pd.to_numeric)
 	return df
 
+def append_count(df):
+    """Agrega columna con información de contadores
+    Parameters:
+        df: Dataframe con los datos del arbol
+    Returns:
+        df: Dataframe con la nueva columna
+    
+    """
+    col_sorted_text = []
+    for row in range(len(df.index)):
+        test_df = df.loc[row, df.columns.str.contains('range|cluster')].sort_values(ascending=False)
+        sorted_text = []
+        for key, value in test_df.items():
+            new_key = re.sub('count_| \[.*?\]', '', key)
+            sorted_text.append(f"{new_key}: {value}")
+        col_sorted_text.append('\n'.join(sorted_text))
+    df['Prediction_desc'] = col_sorted_text
+    return df
+
 def create_decision_tree_data(df, target='Calidad_Agua'):
 	"""Crea el Tree del decision tree
 	Parameters:
@@ -507,23 +526,11 @@ def create_decision_tree_data(df, target='Calidad_Agua'):
 	#             print(f"tree.order_nodes(tree_node, '{node[1]}')")
 			else:
 				if target == 'Calidad_Agua':
-					count_text = ''
-					for key in df:
-						if 'cluster' in key:
-							count_text += f"c{key[-1]}: {df[key][j]}\n"
-					count_text = count_text[:-1]
-					node_name = df['Prediction'][j] + '\n' + count_text
+					node_name = df['Prediction'][j]
 					color = color_palette[df['Prediction'][j]]
 				else:
 					range_split = df['Prediction'][j].split(' ', 1)
-	#                 print(f'range_split[0]:{range_split[0]}')
-	#                 print(f'range_split[1]:{range_split[1]}')
-					count_text = ''
-					for key in df:
-						if 'range' in key:
-							count_text += f"r{key[11]}: {df[key][j]}\n"
-					count_text = count_text[:-1]
-					node_name = range_split[0] + '\n' + range_split[1] + '\n' + count_text
+					node_name = df['Prediction_desc'][j]
 					color = color_palette[range_split[0]]
 	#             print(f"tree_node = Node({count+1}, '{node_name}', {i}, '{color}')")
 				tree_node = Node(count+1, node_name, i, color)
@@ -752,6 +759,7 @@ def modify_second_descriptive(doc):
 			df_prediction = [json_normalize(data) for data in json_prediction_document]
 
 			decision_tree_df = df_prediction[0]
+			decision_tree_df = append_count(decision_tree_df)
 			confusion_df_raw = df_prediction[1].reindex(columns=list(json_prediction_document[1][0].keys()))
 			confusion_df = create_df_confusion(confusion_df_raw)
 			weight_df = df_prediction[2]
