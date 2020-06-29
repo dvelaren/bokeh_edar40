@@ -95,8 +95,8 @@ def perfil():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -118,8 +118,8 @@ def cartuja_prediction():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -132,7 +132,7 @@ def cartuja_prediction():
 def optimizacion():
 	try:
 		data = json.loads(request.args['data'].replace("'", '"'))
-		print(f'rcv_data: {data}')
+		# print(f'rcv_data: {data}')
 		target = data['target']
 		valores = data['valores']
 		var_influyentes = data['var_influyentes']
