@@ -1,3 +1,4 @@
+APScheduler==3.6.3
 astroid==2.3.2
 bokeh==1.4.0
 certifi==2019.9.11
@@ -16,6 +17,7 @@ numpy==1.17.3
 packaging==19.2
 pandas==0.25.3
 Pillow==6.2.1
+pkg-resources==0.0.0
 pylint==2.4.3
 pyparsing==2.4.4
 python-dateutil==2.8.1
@@ -25,6 +27,7 @@ requests==2.22.0
 six==1.12.0
 tornado==6.0.3
 typed-ast==1.4.0
+tzlocal==2.1
 urllib3==1.25.6
 Werkzeug==0.16.0
 wrapt==1.11.2
