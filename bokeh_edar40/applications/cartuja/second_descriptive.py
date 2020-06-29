@@ -632,6 +632,42 @@ def create_df_sliders(weight_df, pred_df):
 
 	return df_sliders
 
+def create_div_text(text):
+	"""Crea un texto dentro de un Div
+	Parameters:
+		text: Texto a escribir
+	
+	Returns:
+		div_text: Div con el texto formateado
+	"""
+	div_text = Div(
+				text=text,
+				style={
+					'font-weight': 'bold',
+					'font-size': '14px',
+					'color': bokeh_utils.LABEL_FONT_COLOR,
+					'margin-top': '2px',
+					'font-family': 'inherit'},
+				height=20,
+				sizing_mode='stretch_width')
+	
+	return div_text
+
+def create_ranges_description(possible_targets, target='Calidad_Agua'):
+	"""Crea los rangos posibles para el target
+	Parameters:
+		possible_targets: Lista con los posibles valores para los rangos
+	
+	Returns:
+		col: Columna con todos los rangos posibles
+	"""
+	title = create_div_title(f'Listado de rangos - {target}')
+	rows = column([])
+	for ran in possible_targets:
+		rows.children.append(create_div_text(ran))
+	col = widgetbox([title, rows], margin=(0,0,0,10))
+
+	return col
 
 def modify_second_descriptive(doc):
 	# Captura de los argumentos pasados desde flask
@@ -768,6 +804,7 @@ def modify_second_descriptive(doc):
 			slider_df = create_df_sliders(weight_df, pred_df)
 			daily_pred_df = pred_df[['Fecha', model_objective, f'prediction({model_objective})']]
 			possible_targets = sorted(list(pred_df[model_objective].unique()))
+			# print(f'Targets: {possible_targets}')
 			var_influyentes = list(weight_df['Attribute'])
 			decision_tree_data = create_decision_tree_data(decision_tree_df, model_objective)
 			
@@ -783,10 +820,11 @@ def modify_second_descriptive(doc):
 			model_title = create_div_title(f'Modelo - {model_objective}')
 			confusion_title = create_div_title(f'Matriz de confusión - {model_objective}')
 			decision_tree_title = create_div_title(f'Arbol de decisión - {model_objective}')
+			ranges_description = create_ranges_description(possible_targets, model_objective)
 			new_plots = layout([
 				[model_title],
 				[simul_or_optim_wb.rb],
-				[simul_or_optim_wb.wb],
+				[row([simul_or_optim_wb.wb, ranges_description], min_width=1400, sizing_mode='stretch_width')],
 				[daily_pred_plot],
 				[column([confusion_title, confusion_matrix], sizing_mode='stretch_width'), weight_plot, corrects_plot],
 				[decision_tree_title],

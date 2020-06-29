@@ -122,7 +122,7 @@ class DynamicSimulWidget:
 							self.sim_target,
 							row([button_simulate, self.div_spinner.spinner], sizing_mode='stretch_width')],
 							min_width=390,
-							max_width=450,
+							max_width=700,
 							sizing_mode='stretch_width')
 	def simulate(self, new):
 		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
@@ -292,8 +292,8 @@ class SimulOptimWidget:
 		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df, periodo=periodo)
 		# self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
 		self.optimize_wb = create_optim_div(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
-		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width')
-		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, max_width=690)
+		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width', max_width=690)
+		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, min_width=690, max_width=690)
 		self.rb.on_click(self.select_simul_optim)
 	def select_simul_optim(self, new):
 		if new == 0:

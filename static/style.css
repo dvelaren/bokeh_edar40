@@ -70,6 +70,14 @@ body {
     text-align: start;
 }
 
+.select-bk-target {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    width: 240px;
+    align-items: center;
+    text-align: start;
+}
+
 .select-bk-2 {
     background-color: #fff;
     border: 1px solid #ccc;

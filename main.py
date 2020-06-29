@@ -132,7 +132,7 @@ def cartuja_prediction():
 def optimizacion():
 	try:
 		data = json.loads(request.args['data'].replace("'", '"'))
-		print(f'rcv_data: {data}')
+		# print(f'rcv_data: {data}')
 		target = data['target']
 		valores = data['valores']
 		var_influyentes = data['var_influyentes']

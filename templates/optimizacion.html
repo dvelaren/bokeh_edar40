@@ -52,7 +52,7 @@
                         <span class="var-names">Target</span>
                         <div class="form-row">
                             <div class="col-8 col-sm-6">
-                                <select class="form-control form-control-sm select-bk" id="target" name="target">
+                                <select class="form-control form-control-sm select-bk-target" id="target" name="target">
                                     {% for valor in valores %}
                                     <option value="{{ valor }}" {% if valor == arg_target %}selected{% endif %}>{{ valor }}</option>
                                     {% endfor %}
