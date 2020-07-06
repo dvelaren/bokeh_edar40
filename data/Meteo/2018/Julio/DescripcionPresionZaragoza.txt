@@ -1,0 +1,27 @@
+Campos incluidos:
+     Indicativo: Indicativo climatológico
+     NOMBRE: Nombre estación
+     ALTITUD:  Altitud de la estación (metros)
+     LONGITUD: Longitud geográfica
+          (La última cifra indica la orientación: 1 para longitud E y 2 para W)
+     LATITUD: Latitud geográfica
+
+     PRES00: Presión a las 00
+     PRES07: Presión a las 07
+     PRES13: Presión a las 13
+     PRES18: Presión a las 18
+     PRESMAX: Presión máxima
+     HPRESMAX: Hora de la presión máxima
+     PRESMIN: Presión mínima
+     HPRESMIN: Hora de la presión mínima
+
+Unidades y valores especiales:
+
+     Horas UTC (Tiempo Universal Coordinado)
+
+
+     Presión en décimas de hectopascal
+
+     Hora de la presión máxima/mínima en horas enteras (hora entera más próxima al instante en que se registra la presión máxima/mínima)
+	Valores especiales de hora de presión máxima/mínima:
+		99: La presión máxima/mínima se repite varias veces en el día

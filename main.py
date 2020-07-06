@@ -20,10 +20,10 @@ from subprocess import Popen
 
 # Import Scheduler
 from apscheduler.schedulers.background import BackgroundScheduler
-from parser_edar40.parser import parser
+from parser_edar40.app import parser
 sched = BackgroundScheduler(daemon=True)
 # sched.add_job(job_function, 'cron', day_of_week='mon-sun', hour=5, minute=00, seconds=00)
-sched.add_job(parser,'interval',seconds=10)
+sched.add_job(parser,'interval',seconds=2000)
 sched.start()
 
 app = Flask(__name__)
@@ -103,8 +103,8 @@ def perfil():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/perfil', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
@@ -126,8 +126,8 @@ def cartuja_prediction():
 		print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
 		username = str(session.get('username'))
 		if username == 'rapidminer':
-			script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
-			# script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			# script = server_document(url=r'/bokeh/prediccion', relative_urls=True, arguments={'periodo':periodo, 'tipo_var':tipo_var})
+			script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion', arguments={'periodo':periodo, 'tipo_var':tipo_var})
 			if tipo_var == 'abs':
 				tipo_var_title = 'Absolutas'
 			elif tipo_var == 'rend':
