@@ -18,6 +18,14 @@ from threading import Thread
 # import pam
 from subprocess import Popen
 
+# Import Scheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from parser_edar40.app import parser
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(parser, 'cron', day_of_week='mon-sun', hour=5, minute=00, seconds=00)
+# sched.add_job(parser,'interval',seconds=2000)
+sched.start()
+
 app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
