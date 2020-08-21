@@ -1,6 +1,6 @@
-Atributo,Valor_MAX_NORMA
-efluente_MES_conc,35
-efluente_DBO5t_conc,25
-efluente_DQOt_conc,125
-efluente_Pt_conc,1
-efluente_Ntk_conc,10
+Atributo;Valor_MAX_NORMA
+efluente_MES_conc;35
+efluente_DBO5t_conc;25
+efluente_DQOt_conc;125
+efluente_Pt_conc;1
+efluente_Ntk_conc;10
