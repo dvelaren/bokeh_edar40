@@ -150,3 +150,5 @@ bokeh_edar40/visualizations/__pycache__/decision_tree.cpython-37.pyc
 bokeh_edar40/visualizations/__pycache__/treemap.cpython-37.pyc
 bokeh_edar40/visualizations/__pycache__/decision_tree.cpython-37.pyc
 bokeh_edar40/visualizations/__pycache__/treemap.cpython-37.pyc
+resources/created_models.pkl
+resources/total_model_dict.pkl
