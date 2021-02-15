@@ -1,6 +1,8 @@
 # Required Libraries
 import pandas as pd
+import numpy as np
 import time
+from datetime import date, timedelta, datetime
 
 # Constants
 from parser_edar40.common.constants import *
@@ -113,8 +115,9 @@ def parser():
                                                                         "influente_SO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
     df_ID_influente.loc[start_row:, "influente_P-PO4"] = df_ID_influente.loc[start_row:,
                                                                             "influente_P-PO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
-    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:,
-                                                                                        "influente_DBO5t_conc"] / df_ID_influente.loc[start_row:, "influente_DQOt_conc"]
+    # df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:,
+    #                                                                                     "influente_DBO5t_conc"] / df_ID_influente.loc[start_row:, "influente_DQOt_conc"]
+    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:, "influente_DBO5t_conc"].div(df_ID_influente.loc[start_row:, "influente_DQOt_conc"].where(df_ID_influente.loc[start_row:, "influente_DQOt_conc"]!=0,np.nan))
 
     # 1.2 Open file specifiying variables to be read from sheet ID_BIOS (HEADER position does not need to be specified bacause it is 0)
     (df_ID_bios,
@@ -141,8 +144,9 @@ def parser():
     else:
         start_row = 0
 
-    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:,
-                                                                            "bios_IN_DBO5t_conc"] / df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]
+    # df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:,
+    #                                                                         "bios_IN_DBO5t_conc"] / df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]
+    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:, "bios_IN_DBO5t_conc"].div(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"].where(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]!=0,np.nan))
     df_ID_bios.loc[start_row:, "bios_manipulable_O2_Promedio_Zona_1"] = (df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio1_Zona_1"] +
                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_1"] +
                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_1"]) / 3
@@ -473,8 +477,34 @@ def parser():
     df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
                             COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
 
+    ## Check for new live data ##
+    last_timestamp = df_METEO.index[-1].to_pydatetime().date() # Obtain last stored timestamp
+    today = datetime.now().date() # Obtain today timestamp
+    remaining_timestamps = pd.date_range(start=last_timestamp+timedelta(days=1), end=today, freq='d') # Compute remaining days to be compleated with live file
+
+    # Obtain latest METEO_LIVE df
+    df_meteo_live = pd.read_excel(IN_METEO_LIVE_FILE,
+                              usecols=['day','month','year']+list(COLUMN_NAMES_METEO_LIVE.values()),
+                              parse_dates={'Fecha':['year','month','day']})
+    df_meteo_live.set_index('Fecha', inplace=True)
+
+    # Convert METEO_LIVE units to destiny units
+    df_meteo_live_units = df_meteo_live.copy()
+    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['P24']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['P24']] * 10 # Convert precipitation [cm -> mm]
+    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['TMED']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['TMED']] * 10 # Convert temperature [°C -> (1/10)°C]
+    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['PRES']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['PRES']] * 100 # Convert pressure [kPa -> hPa]
+
+    # Build dataframe with required format to add
+    columns_inverted = {v: k for k, v in COLUMN_NAMES_METEO_LIVE.items()}
+    df_new_data = df_meteo_live_units.loc[df_meteo_live_units.index.intersection(remaining_timestamps)].rename(columns=columns_inverted)
+    df_new_data = df_new_data.assign(PRES00=df_new_data['PRES'], PRES07=df_new_data['PRES'], PRES13=df_new_data['PRES'], PRES18=df_new_data['PRES'])
+    df_new_data = df_new_data.drop(['PRES'], axis=1)
+    
+    # Add new data to PERIOD_2
+    df_METEO = df_METEO.append(df_new_data)
     df_METEO.to_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2,
                     sheet_name=METEO_SHEET_NAME_PERIOD_2)
+    ## End live data ##
 
     # PERIOD_2
     df_OUT_date_filtered_PERIOD_2.set_index(
