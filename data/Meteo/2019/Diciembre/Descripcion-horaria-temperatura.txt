@@ -1,0 +1,52 @@
+Campos incluidos:
+     Indicativo: Indicativo climatológico
+     NOMBRE: Nombre estación
+     ALTITUD: Altitud de la estación (metros)
+     LONGITUD: Longitud geográfica
+          (La última cifra indica la orientación: 1 para longitud E y 2 para W)
+     LATITUD: Latitud geográfica
+
+     T00: Temperatura a las 00
+     T01: Temperatura a las 01
+     T02: Temperatura a las 02
+     T03: Temperatura a las 03
+     T04: Temperatura a las 04
+     T05: Temperatura a las 05
+     T06: Temperatura a las 06
+     T07: Temperatura a las 07
+     T08: Temperatura a las 08
+     T09: Temperatura a las 09
+     T10: Temperatura a las 10
+     T11: Temperatura a las 11
+     T12: Temperatura a las 12
+     T13: Temperatura a las 13
+     T14: Temperatura a las 14
+     T15: Temperatura a las 15
+     T16: Temperatura a las 16
+     T17: Temperatura a las 17
+     T18: Temperatura a las 18
+     T19: Temperatura a las 19
+     T20: Temperatura a las 20
+     T21: Temperatura a las 21
+     T22: Temperatura a las 22
+     T23: Temperatura a las 23
+     TH00: Temperatura del húmedo a las 00
+     TH07: Temperatura del húmedo a las 07
+     TH13: Temperatura del húmedo a las 13
+     TH18: Temperatura del húmedo a las 18
+     TMIN_JS: Temperatura mínima junto al suelo
+     MAX: Temperatura máxima
+     HTMAX: Hora de la temperatura máxima
+     MIN: Temperatura mínima
+     HTMIN: Hora de la temperatura mínima
+     OBSERVACIONES: Observaciones
+
+Unidades y valores especiales:
+
+     Horas UTC (Tiempo Universal Coordinado)
+
+     Temperaturas en décimas de grado centígrado
+
+     Hora de la temperatura máxima/mínima en horas y minutos
+	Valores especiales de hora de la temperatura máxima/mínima:
+		9999: La temperatura máxima/mínima se repite varias veces en el día
