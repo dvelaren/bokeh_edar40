@@ -458,7 +458,6 @@ def parser():
         df_OUT_date_filtered_PERIOD_2 = pd.concat(
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_2])
 
-
     # Now save the data to the output data file. Before that, reset the index again.
     # PERIOD_1
     df_OUT_date_filtered_PERIOD_1.set_index(
@@ -473,9 +472,12 @@ def parser():
     df_OUT_date_filtered_PERIOD_1.to_csv(
         OUT_DATA_FILE_NAME_PERIOD_1, sep=',', encoding='latin-1', decimal='.')
 
-    # Create Meteo PERIOD 2 files
-    df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
-                            COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
+    # Create Meteo PERIOD 2 files **This can't be executed with new version
+    # df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
+    #                         COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
+    # Obtain latest version of PERIOD 2 files
+    df_METEO=pd.read_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2)
+    df_METEO.set_index('Fecha', inplace=True)
 
     ## Check for new live data ##
     last_timestamp = df_METEO.index[-1].to_pydatetime().date() # Obtain last stored timestamp
