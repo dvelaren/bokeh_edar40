@@ -2,6 +2,14 @@ import pandas as pd
 from functools import reduce
 from parser_edar40.common.constants import DATE_COLUMN_NAME
 
+# Flatten list function
+def flatten(A):
+    rt = []
+    for i in A:
+        if isinstance(i,list): rt.extend(flatten(i))
+        else: rt.append(i)
+    return rt
+
 # Define function to create vars mask df
 def create_vars_mask_df(column_names, vars):
     df = pd.DataFrame(vars.items(), columns=column_names)

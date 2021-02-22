@@ -11,7 +11,7 @@ from parser_edar40.common.constants import *
 from parser_edar40.common.settings import *
 
 # Helpers
-from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df
+from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, flatten
 
 def parser():
     print('Ejecutando parser')
@@ -484,10 +484,15 @@ def parser():
     today = datetime.now().date() # Obtain today timestamp
     remaining_timestamps = pd.date_range(start=last_timestamp+timedelta(days=1), end=today, freq='d') # Compute remaining days to be compleated with live file
 
+    # Flatten column names of the list
+    col_names_flat = flatten(COLUMN_NAMES_METEO_LIVE.values())
+
     # Obtain latest METEO_LIVE df
     df_meteo_live = pd.read_excel(IN_METEO_LIVE_FILE,
-                              usecols=['day','month','year']+list(COLUMN_NAMES_METEO_LIVE.values()),
-                              parse_dates={'Fecha':['year','month','day']})
+                              usecols=['Fecha']+col_names_flat,
+                              parse_dates=['Fecha'],
+                              sheet_name='Presion')
+    df_meteo_live = df_meteo_live.dropna()
     df_meteo_live.set_index('Fecha', inplace=True)
 
     # Convert METEO_LIVE units to destiny units
@@ -496,14 +501,8 @@ def parser():
     df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['TMED']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['TMED']] * 10 # Convert temperature [°C -> (1/10)°C]
     df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['PRES']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['PRES']] * 100 # Convert pressure [kPa -> hPa]
 
-    # Build dataframe with required format to add
-    columns_inverted = {v: k for k, v in COLUMN_NAMES_METEO_LIVE.items()}
-    df_new_data = df_meteo_live_units.loc[df_meteo_live_units.index.intersection(remaining_timestamps)].rename(columns=columns_inverted)
-    df_new_data = df_new_data.assign(PRES00=df_new_data['PRES'], PRES07=df_new_data['PRES'], PRES13=df_new_data['PRES'], PRES18=df_new_data['PRES'])
-    df_new_data = df_new_data.drop(['PRES'], axis=1)
-    
     # Add new data to PERIOD_2
-    df_METEO = df_METEO.append(df_new_data)
+    df_METEO = df_METEO.append(df_meteo_live_units)
     df_METEO.to_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2,
                     sheet_name=METEO_SHEET_NAME_PERIOD_2)
     ## End live data ##
