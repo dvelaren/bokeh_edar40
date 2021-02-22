@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import time
-from datetime import date, timedelta, datetime
+from datetime import date
 
 # Constants
 from parser_edar40.common.constants import *
@@ -11,7 +11,7 @@ from parser_edar40.common.constants import *
 from parser_edar40.common.settings import *
 
 # Helpers
-from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, flatten
+from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, create_meteo_live_df
 
 def parser():
     print('Ejecutando parser')
@@ -475,37 +475,15 @@ def parser():
     # Create Meteo PERIOD 2 files **This can't be executed with new version
     # df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
     #                         COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
-    # Obtain latest version of PERIOD 2 files
-    df_METEO=pd.read_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2)
-    df_METEO.set_index('Fecha', inplace=True)
-
-    ## Check for new live data ##
-    last_timestamp = df_METEO.index[-1].to_pydatetime().date() # Obtain last stored timestamp
-    today = datetime.now().date() # Obtain today timestamp
-    remaining_timestamps = pd.date_range(start=last_timestamp+timedelta(days=1), end=today, freq='d') # Compute remaining days to be compleated with live file
-
-    # Flatten column names of the list
-    col_names_flat = flatten(COLUMN_NAMES_METEO_LIVE.values())
-
-    # Obtain latest METEO_LIVE df
-    df_meteo_live = pd.read_excel(IN_METEO_LIVE_FILE,
-                              usecols=['Fecha']+col_names_flat,
-                              parse_dates=['Fecha'],
-                              sheet_name='Presion')
-    df_meteo_live = df_meteo_live.dropna()
-    df_meteo_live.set_index('Fecha', inplace=True)
-
-    # Convert METEO_LIVE units to destiny units
-    df_meteo_live_units = df_meteo_live.copy()
-    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['P24']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['P24']] * 10 # Convert precipitation [cm -> mm]
-    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['TMED']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['TMED']] * 10 # Convert temperature [°C -> (1/10)°C]
-    df_meteo_live_units[COLUMN_NAMES_METEO_LIVE['PRES']] = df_meteo_live[COLUMN_NAMES_METEO_LIVE['PRES']] * 100 # Convert pressure [kPa -> hPa]
-
-    # Add new data to PERIOD_2
-    df_METEO = df_METEO.append(df_meteo_live_units)
-    df_METEO.to_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2,
-                    sheet_name=METEO_SHEET_NAME_PERIOD_2)
-    ## End live data ##
+    
+    # Update PERIOD_2 meteo file with new LIVE data
+    df_METEO = create_meteo_live_df(
+        meteo_period2_file_name=OUT_METEO_DATA_FILE_NAME_PERIOD_2,
+        meteo_period2_sheet_name=METEO_SHEET_NAME_PERIOD_2,
+        meteo_live_file_name=IN_METEO_LIVE_FILE,
+        live_file_column_names=COLUMN_NAMES_METEO_LIVE,
+        live_file_sheet_name=METEO_LIVE_SHEET_NAME
+    )
 
     # PERIOD_2
     df_OUT_date_filtered_PERIOD_2.set_index(

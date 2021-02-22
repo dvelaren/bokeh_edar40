@@ -55,6 +55,8 @@ UNITS={'Fecha':'NaT','P24':'mm','TMED':'(1/10)C','PRES00':'(1/10)hPa','PRES07':'
 
 METEO_SHEET_NAME_PERIOD_2='PERIOD2(2018-NOW)'
 
+METEO_LIVE_SHEET_NAME='Presion'
+
 ## Main Constants 
 # Specify INPUT data Excel file name provided by Veolia/UTEDEZA (EDAR Cartuja)
 IN_DATA_FILE_NAME=Path('./data/ID 2013-2019. UTEDEZA EDAR 4.0.xlsx')
