@@ -44,6 +44,7 @@ Pdd2
 MES
 DQO
 Ptotal
+P-PO4
 SSV.1
 pH.3
 MESt.4
@@ -72,13 +73,13 @@ PH.2
 MS.3
 MV.6
 PH.3
-Unnamed: 74
+pH1
 MES 1
-Unnamed: 76
+pH2
 MES 2
-Unnamed: 78
+pH3
 MES  3
-Unnamed: 80
+pH4
 MES 4
 MS.4
 MV.7
@@ -106,7 +107,6 @@ pH.6
 Cond..3
 MS.5
 MV.8
-Unnamed: 108
 Unnamed: 109
 Unnamed: 110
 Unnamed: 111
@@ -128,3 +128,4 @@ Unnamed: 126
 Unnamed: 127
 Unnamed: 128
 Unnamed: 129
+Unnamed: 130

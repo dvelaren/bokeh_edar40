@@ -89,12 +89,14 @@ def create_meteo_live_df(
     df_meteo_live_units[live_file_column_names['P24']] = df_meteo_live[live_file_column_names['P24']] * 10 # Convert precipitation [cm -> mm]
     df_meteo_live_units[live_file_column_names['TMED']] = df_meteo_live[live_file_column_names['TMED']] * 10 # Convert temperature [°C -> (1/10)°C]
     df_meteo_live_units[live_file_column_names['PRES']] = df_meteo_live[live_file_column_names['PRES']] * 100 # Convert pressure [kPa -> hPa]
+    df_meteo_live_units = df_meteo_live_units.astype('int32')
 
     # Build dataframe with remaining timestamps
     df_new_data = df_meteo_live_units.loc[df_meteo_live_units.index.intersection(remaining_timestamps)]
 
     # Add new data to PERIOD_2
     df_period_2 = df_period_2.append(df_new_data)
+    df_period_2.index.name = 'Fecha'
     df_period_2.to_excel(meteo_period2_file_name, sheet_name=meteo_period2_sheet_name)
     
     return df_period_2
