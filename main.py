@@ -211,5 +211,6 @@ def send_js(filename):
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
+	parser() # Ejecutamos cuando se lanza la aplicación el parser
 	app.secret_key = '[]V\xf0\xed\r\x84L,p\xc59n\x98\xbc\x92'
 	app.run(port=9995, debug=False, host='0.0.0.0')

@@ -453,6 +453,11 @@ def parser():
             str_end_date_filter_PERIOD_2, errors="coerce", format="%Y-%m-%d")
         df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(
             df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= pd_end_date_filter_PERIOD_2)]
+    else:
+        # Filter data only until yesterday
+        yesterday = pd.to_datetime(datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
+        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
+        
 
     # Previous filtering deletes UNITS row. Therefore, it must be recovered.
     if (blnConsider_UNITS == True):
@@ -460,10 +465,7 @@ def parser():
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_1])
         df_OUT_date_filtered_PERIOD_2 = pd.concat(
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_2])
-    else:
-        # Filter data only until yesterday
-        yesterday = pd.to_datetime(datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
-        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
+    
 
     # Now save the data to the output data file. Before that, reset the index again.
     # PERIOD_1
