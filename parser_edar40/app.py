@@ -1,6 +1,8 @@
 # Required Libraries
 import pandas as pd
+import numpy as np
 import time
+from datetime import date, datetime, timedelta
 
 # Constants
 from parser_edar40.common.constants import *
@@ -9,7 +11,7 @@ from parser_edar40.common.constants import *
 from parser_edar40.common.settings import *
 
 # Helpers
-from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df
+from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, create_meteo_live_df
 
 def parser():
     print('Ejecutando parser')
@@ -113,8 +115,9 @@ def parser():
                                                                         "influente_SO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
     df_ID_influente.loc[start_row:, "influente_P-PO4"] = df_ID_influente.loc[start_row:,
                                                                             "influente_P-PO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
-    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:,
-                                                                                        "influente_DBO5t_conc"] / df_ID_influente.loc[start_row:, "influente_DQOt_conc"]
+    # df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:,
+    #                                                                                     "influente_DBO5t_conc"] / df_ID_influente.loc[start_row:, "influente_DQOt_conc"]
+    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:, "influente_DBO5t_conc"].div(df_ID_influente.loc[start_row:, "influente_DQOt_conc"].where(df_ID_influente.loc[start_row:, "influente_DQOt_conc"]!=0,np.nan))
 
     # 1.2 Open file specifiying variables to be read from sheet ID_BIOS (HEADER position does not need to be specified bacause it is 0)
     (df_ID_bios,
@@ -141,8 +144,9 @@ def parser():
     else:
         start_row = 0
 
-    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:,
-                                                                            "bios_IN_DBO5t_conc"] / df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]
+    # df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:,
+    #                                                                         "bios_IN_DBO5t_conc"] / df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]
+    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:, "bios_IN_DBO5t_conc"].div(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"].where(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]!=0,np.nan))
     df_ID_bios.loc[start_row:, "bios_manipulable_O2_Promedio_Zona_1"] = (df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio1_Zona_1"] +
                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_1"] +
                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_1"]) / 3
@@ -236,6 +240,9 @@ def parser():
     # 2. We now process sheet YOKO
     # 2.0 Call the Excel file parsing function, specifiying SHEET NAME and HEADER in order to create main df_YOKO dataframe.
     df_YOKO = xl.parse(sheet_name=IN_DATA_SHEET_NAME_YOKO, header=4)
+
+    # Remove first two columns, as 2021 version introduced this columns for external references
+    df_YOKO = df_YOKO.drop(df_YOKO.columns[[0, 1]], axis=1)
 
     # NOTE: we do need to get UNITS information in another dataframe as we do for ID and ANALITIC because in YOKO
     #       units information os below header row.
@@ -446,6 +453,11 @@ def parser():
             str_end_date_filter_PERIOD_2, errors="coerce", format="%Y-%m-%d")
         df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(
             df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= pd_end_date_filter_PERIOD_2)]
+    else:
+        # Filter data only until yesterday
+        yesterday = pd.to_datetime(datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
+        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
+        
 
     # Previous filtering deletes UNITS row. Therefore, it must be recovered.
     if (blnConsider_UNITS == True):
@@ -453,7 +465,7 @@ def parser():
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_1])
         df_OUT_date_filtered_PERIOD_2 = pd.concat(
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_2])
-
+    
 
     # Now save the data to the output data file. Before that, reset the index again.
     # PERIOD_1
@@ -469,12 +481,18 @@ def parser():
     df_OUT_date_filtered_PERIOD_1.to_csv(
         OUT_DATA_FILE_NAME_PERIOD_1, sep=',', encoding='latin-1', decimal='.')
 
-    # Create Meteo PERIOD 2 files
-    df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
-                            COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
-
-    df_METEO.to_excel(OUT_METEO_DATA_FILE_NAME_PERIOD_2,
-                    sheet_name=METEO_SHEET_NAME_PERIOD_2)
+    # Create Meteo PERIOD 2 files **This can't be executed with new version
+    # df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
+    #                         COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
+    
+    # Update PERIOD_2 meteo file with new LIVE data
+    df_METEO = create_meteo_live_df(
+        meteo_period2_file_name=OUT_METEO_DATA_FILE_NAME_PERIOD_2,
+        meteo_period2_sheet_name=METEO_SHEET_NAME_PERIOD_2,
+        meteo_live_file_name=IN_METEO_LIVE_FILE,
+        live_file_column_names=COLUMN_NAMES_METEO_LIVE,
+        live_file_sheet_name=METEO_LIVE_SHEET_NAME
+    )
 
     # PERIOD_2
     df_OUT_date_filtered_PERIOD_2.set_index(

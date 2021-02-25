@@ -1,0 +1,46 @@
+Campos incluidos:
+     Indicativo: Indicativo climatológico
+     NOMBRE: Nombre estación
+     ALTITUD: Altitud de la estación (metros)
+     LONGITUD: Longitud geográfica
+          (La última cifra indica la orientación: 1 para longitud E y 2 para W)
+     LATITUD: Latitud geográfica
+
+     HU00: Humedad a 00
+     HU01: Humedad a 01
+     HU02: Humedad a 02
+     HU03: Humedad a 03
+     HU04: Humedad a 04
+     HU05: Humedad a 05
+     HU06: Humedad a 06
+     HU07: Humedad a 07
+     HU08: Humedad a 08
+     HU09: Humedad a 09
+     HU10: Humedad a 10
+     HU11: Humedad a 11
+     HU12: Humedad a 12
+     HU13: Humedad a 13
+     HU14: Humedad a 14
+     HU15: Humedad a 15
+     HU16: Humedad a 16
+     HU17: Humedad a 17
+     HU18: Humedad a 18
+     HU19: Humedad a 19
+     HU20: Humedad a 20
+     HU21: Humedad a 21
+     HU22: Humedad a 22
+     HU23: Humedad a 23
+     HUMAX: Humedad máxima
+     HHUMAX: Hora humedad máxima
+     HUMIN: Humedad mínima
+     HHUMIN: Hora humedad mínima
+
+Unidades y valores especiales:
+
+     Horas UTC (Tiempo Universal Coordinado)
+
+     Humedad relativa en %
+
+     Hora de humedad máxima/mínima en horas y minutos  
+	Valores especiales de hora humedad máxima/mínima:
+		9999: La humedad máxima/mínima se repite varias veces en el día
