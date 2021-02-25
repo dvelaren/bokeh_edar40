@@ -549,7 +549,7 @@ def modify_first_descriptive(doc):
 												'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
 												'Normalizacion': 1},
 									out_json=True)
-	print(f'json_doc: {json_document}')
+	# print(f'json_doc: {json_document}')
 	df_perfil = [json_normalize(data) for data in json_document]
 
 	# Extracción de los dataframe
