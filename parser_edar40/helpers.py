@@ -22,7 +22,9 @@ def create_meteo_df(units,
                     year_months,
                     column_names,
                     in_data_file_dir,
-                    data_file_names):
+                    data_file_names,
+                    meteo_period2_file_name,
+                    meteo_period2_sheet_name):
     # Create units dataframe
     units_df = pd.DataFrame([units], columns=list(units.keys()))
     units_df['Fecha'] = pd.to_datetime(units_df['Fecha'])
@@ -54,7 +56,7 @@ def create_meteo_df(units,
     df_full['Fecha'] = pd.to_datetime(df_full['Fecha'])
 
     df_full.set_index('Fecha', inplace=True)
-    
+    df_full.to_excel(meteo_period2_file_name, sheet_name=meteo_period2_sheet_name)
     return df_full
 
 def create_meteo_live_df(

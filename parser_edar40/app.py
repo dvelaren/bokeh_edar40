@@ -13,7 +13,7 @@ from parser_edar40.common.settings import *
 # Helpers
 from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, create_meteo_live_df
 
-def parser():
+def parser(recreate=False):
     print('Ejecutando parser')
     # 0 Create Vars ABSOLUTAS csv file
     df_abs = create_vars_mask_df(VARS_COLUMN_NAMES, VARS_NORMA_ABSOLUTAS)
@@ -484,7 +484,19 @@ def parser():
     # Create Meteo PERIOD 2 files **This can't be executed with new version
     # df_METEO = create_meteo_df(UNITS, YEAR_FOLDERS, YEAR_MONTHS,
     #                         COLUMN_NAMES, IN_METEO_DATA_FILE_DIR, DATA_FILE_NAMES)
-    
+    if recreate == True:
+        df_METEO = create_meteo_df(
+            units=UNITS,
+            year_folders=YEAR_FOLDERS,
+            year_months=YEAR_MONTHS,
+            column_names=COLUMN_NAMES,
+            in_data_file_dir=IN_METEO_DATA_FILE_DIR,
+            data_file_names=DATA_FILE_NAMES,
+            meteo_period2_file_name=OUT_METEO_DATA_FILE_NAME_PERIOD_2,
+            meteo_period2_sheet_name=METEO_SHEET_NAME_PERIOD_2
+        )
+        print(f'Recreated {OUT_METEO_DATA_FILE_NAME_PERIOD_2}')
+        
     # Update PERIOD_2 meteo file with new LIVE data
     df_METEO = create_meteo_live_df(
         meteo_period2_file_name=OUT_METEO_DATA_FILE_NAME_PERIOD_2,

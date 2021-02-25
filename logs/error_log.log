@@ -138,3 +138,7 @@ KeyError: 'añomes'
 2021-02-25 16:40:45 INFO     200 GET /bokeh/static/js/bokeh-tables.min.js.map (127.0.0.1) 2.47ms
 2021-02-25 16:40:45 INFO     200 GET /bokeh/static/js/bokeh-gl.min.js.map (127.0.0.1) 2.29ms
 2021-02-25 16:40:45 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=WIGizOGisqpwn6CAGU8dDPVljQp2iAtx64jHoHDxF1tc (127.0.0.1) 1.54ms
+2021-02-25 16:47:05 INFO     200 GET /bokeh/perfil/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/perfil&periodo=2&tipo_var=rend (127.0.0.1) 896.44ms
+2021-02-25 16:47:05 INFO     101 GET /bokeh/perfil/ws?bokeh-protocol-version=1.0&bokeh-session-id=i5zt0bGRJPQbRCnOE0Vzso3mix45oYMEJzpmBHMPaQM2 (127.0.0.1) 1.73ms
+2021-02-25 16:47:12 INFO     200 GET /bokeh/prediccion/autoload.js?bokeh-autoload-element=1001&bokeh-app-path=/bokeh/prediccion&periodo=2&tipo_var=rend (127.0.0.1) 2420.81ms
+2021-02-25 16:47:12 INFO     101 GET /bokeh/prediccion/ws?bokeh-protocol-version=1.0&bokeh-session-id=nDCUBH09zB9ksvQM4kxSKaAf3FPMXijh6F9Vck0hlmz1 (127.0.0.1) 1.53ms
