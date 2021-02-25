@@ -20,6 +20,7 @@ import re
 from pandas.io.json import json_normalize
 from collections import OrderedDict
 from datetime import datetime as dt
+from datetime import timedelta
 import time
 
 
@@ -301,7 +302,7 @@ def create_decision_tree_plot():
 
 	return plot
 
-def create_outlier_plot(df, tipo_var):
+def create_outlier_plot(df, prediction_df, tipo_var):
 	"""Crea gráfica de outliers
 	Parameters:
 		df (Dataframe): Dataframe con los datos a mostrar en la visualización
@@ -354,10 +355,14 @@ def create_outlier_plot(df, tipo_var):
 	df['Fecha'] = pd.to_datetime(df['Fecha'])
 	df['outlier'] = pd.to_numeric(pd.Series(df['outlier'].values))
 
+	prediction_df['añomes'] = pd.to_datetime(prediction_df['añomes'], format='%m/%d/%y %I:%M %p').dt.normalize()
+
 	source_cluster_0 = create_data_source_from_dataframe(df, 'cluster', 'cluster_0')
 	source_cluster_1 = create_data_source_from_dataframe(df, 'cluster', 'cluster_1')
 	source_cluster_2 = create_data_source_from_dataframe(df, 'cluster', 'cluster_2')
 	source_cluster_3 = create_data_source_from_dataframe(df, 'cluster', 'cluster_3')
+
+	x_axis_tick_vals = prediction_df['añomes'].unique().astype(int) / 10**6
 
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_0, color=bokeh_utils.LINE_COLORS_PALETTE[0], size=6, legend_label='Cluster 0')
 	# outlier_plot.circle(x='timestamp', y='outlier', source=source_cluster_1, color=bokeh_utils.LINE_COLORS_PALETTE[1], size=6, legend_label='Cluster 1')
@@ -371,6 +376,7 @@ def create_outlier_plot(df, tipo_var):
 	outlier_plot.circle(x='Fecha', y='outlier', source=source_cluster_3, color=bokeh_utils.LINE_COLORS_PALETTE[3], alpha=alpha, size=size, legend_label='Cluster 3')
 
 
+	outlier_plot.xaxis.major_label_orientation = np.pi/4
 	outlier_plot.xaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 	outlier_plot.yaxis.major_label_text_color = bokeh_utils.LABEL_FONT_COLOR
 
@@ -379,7 +385,14 @@ def create_outlier_plot(df, tipo_var):
 	outlier_plot.legend.click_policy = 'hide'
 	outlier_plot.legend.label_text_color = bokeh_utils.LABEL_FONT_COLOR
 
-	outlier_plot.xaxis[0].formatter = DatetimeTickFormatter(years=['%Y'])
+	
+	outlier_plot.x_range = Range1d(prediction_df['añomes'].min()-pd.DateOffset(months=1), prediction_df['añomes'].max()+pd.DateOffset(months=1))
+
+	# outlier_plot.xaxis[0].formatter = DatetimeTickFormatter(years=['%Y'])
+	outlier_plot.xaxis[0].formatter = DatetimeTickFormatter(months="%b %Y")
+	outlier_plot.xaxis[0].ticker = FixedTicker(ticks=list(x_axis_tick_vals))
+
+	
 
 	outlier_plot.title.text = 'Probabilidad de Outliers'
 	outlier_plot.title.text_color = bokeh_utils.TITLE_FONT_COLOR
@@ -441,11 +454,12 @@ def create_prediction_plot(df):
 	prediction_plot.xaxis[0].formatter = DatetimeTickFormatter(months=['%b %Y'])
 	prediction_plot.xaxis[0].ticker = FixedTicker(ticks=list(x_axis_tick_vals))
 	# Linea vertical para definir el horizonte de predicción
-	prediction_date = time.mktime(dt(2019, 9, 29, 0, 0, 0).timetuple())*1000
+	current_date = dt.now() - timedelta(days=1)
+	prediction_date = time.mktime(current_date.timetuple())*1000
 	vline = Span(location=prediction_date, dimension='height', line_color='gray', line_alpha=0.6, line_dash='dotted', line_width=2)
 	prediction_plot.add_layout(vline)
 	# Etiqueta linea horizontal
-	vlabel = Label(x=prediction_date, y=40, text='→Predicción', text_color='gray', text_alpha=0.6, text_font_size='14px')
+	vlabel = Label(x=prediction_date, y=25, text='→Predicción', text_color='gray', text_alpha=0.6, text_font_size='14px')
 	prediction_plot.add_layout(vlabel)
 
 	prediction_plot.title.text = 'Predicción de los clusters a futuro'
@@ -724,7 +738,7 @@ def modify_second_descriptive(doc):
 
 	# Creación de los gráficos y widgets permanentes en la interfaz
 	prediction_plot = create_prediction_plot(prediction_df)
-	outlier_plot = create_outlier_plot(outlier_df, tipo_var)
+	outlier_plot = create_outlier_plot(outlier_df, prediction_df, tipo_var)
 	simulation_title = create_div_title('Creación, Simulación y Optimización de modelos')
 	model_title, add_model_button, model_select_menu = create_model_menu(model_variables=list(total_model_dict.keys()))
 	create_model_spinner = Spinner(size=16)

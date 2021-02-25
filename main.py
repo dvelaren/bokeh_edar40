@@ -5,6 +5,8 @@ import json
 from pandas.io.json import json_normalize
 from collections import OrderedDict
 
+from datetime import datetime, timedelta
+
 import logging
 from tornado.log import enable_pretty_logging
 enable_pretty_logging()
@@ -29,6 +31,9 @@ sched.start()
 app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
+
+current_date = datetime.now().date() - timedelta(days=1)
+current_date = current_date.strftime("%m/%d/%Y")
 
 #Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
 
@@ -110,7 +115,7 @@ def perfil():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
 #Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
@@ -133,7 +138,7 @@ def cartuja_prediction():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
 @app.route('/optimizacion', methods=['GET', 'POST'])
@@ -211,6 +216,6 @@ def send_js(filename):
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
-	parser() # Ejecutamos cuando se lanza la aplicación el parser
+	# parser() # Ejecutamos cuando se lanza la aplicación el parser
 	app.secret_key = '[]V\xf0\xed\r\x84L,p\xc59n\x98\xbc\x92'
 	app.run(port=9995, debug=False, host='0.0.0.0')

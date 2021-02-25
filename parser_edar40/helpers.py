@@ -71,7 +71,7 @@ def create_meteo_live_df(
     ## Check for new live data ##
     last_timestamp = df_period_2.index[-1].to_pydatetime().date() # Obtain last stored timestamp
     today = datetime.now().date() # Obtain today timestamp
-    remaining_timestamps = pd.date_range(start=last_timestamp+timedelta(days=1), end=today, freq='d') # Compute remaining days to be compleated with live file
+    remaining_timestamps = pd.date_range(start=last_timestamp+timedelta(days=1), end=today-timedelta(days=1), freq='d') # Compute remaining days to be compleated with live file
 
     # Flatten column names of the list
     col_names_flat = flatten(live_file_column_names.values())
