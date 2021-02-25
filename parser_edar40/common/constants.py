@@ -18,6 +18,8 @@ VARS_NORMA_RENDIMIENTOS = {'efluente_rend_elim_SST': 0.7, 'efluente_rend_elim_DB
 ## Meteo Constants
 # Specify INPUT data Excel file name provided by Veolia/UTEDEZA (EDAR Cartuja)
 IN_METEO_DATA_FILE_DIR=Path('./data/Meteo/')
+# IN_METEO_LIVE_FILE = Path('./data/METEO UTEDEZA EDAR 4.0.xlsx') # No dropbox
+IN_METEO_LIVE_FILE = Path('/home/edar/Dropbox/Data/METEO UTEDEZA EDAR 4.0.xlsx') # Dropbox
 
 # OUT_DATA_FILE_NAME_PERIOD_2='../OUT_data/EDAR4.0_EDAR_Cartuja_METEO_PERIOD_2.csv'
 OUT_METEO_DATA_FILE_NAME_PERIOD_2=Path('./data/METEO_PERIOD_2.xlsx')
@@ -42,14 +44,24 @@ DATA_FILE_NAMES = {'P24':'PrecipitacionHorariaZaragoza.csv', 'TMED':'Temperatura
 # Columns that will be parsed
 COLUMN_NAMES={'P24':['P24'],'TMED':['TMED'],'PRES':['PRES00','PRES07','PRES13','PRES18']}
 
+# Meteo live column names mapping
+COLUMN_NAMES_METEO_LIVE = {
+    'P24':'P24',
+    'TMED':'TMED',
+    'PRES':['PRES00', 'PRES07', 'PRES13', 'PRES18']
+}
+
 # Units row to add at the beginning of dataframe
-UNITS={'Fecha':'NaT','P24':'mm','TMED':'F','PRES00':'hPa','PRES07':'hPa','PRES13':'hPa','PRES18':'hPa'}
+UNITS={'Fecha':'NaT','P24':'mm','TMED':'(1/10)C','PRES00':'(1/10)hPa','PRES07':'(1/10)hPa','PRES13':'(1/10)hPa','PRES18':'(1/10)hPa'}
 
 METEO_SHEET_NAME_PERIOD_2='PERIOD2(2018-NOW)'
 
+METEO_LIVE_SHEET_NAME='Presion'
+
 ## Main Constants 
 # Specify INPUT data Excel file name provided by Veolia/UTEDEZA (EDAR Cartuja)
-IN_DATA_FILE_NAME=Path('./data/ID 2013-2019. UTEDEZA EDAR 4.0.xlsx')
+# IN_DATA_FILE_NAME=Path('./data/ID UTEDEZA EDAR 4.0.xlsx') # No dropbox
+IN_DATA_FILE_NAME=Path('/home/edar/Dropbox/Data/ID UTEDEZA EDAR 4.0.xlsx') # Dropbox
 
 # Specify INPUT data for metereologic info
 IN_METEO_FILE_NAME_PERIOD_1=Path('./data/METEO_PERIOD_1.xlsx')

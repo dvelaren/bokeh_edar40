@@ -222,8 +222,10 @@ Promedio
 Caudal .1
 MES.18
 Caudal.6
+Tn/mes poli liquido
+Tn/mes poli sólido
 Caudal Poly activo
-Unnamed: 225
+Unnamed: 227
 AUXILIAR
 MS REAL
 Caudal fango Yoko
@@ -288,22 +290,41 @@ Total electricity Ratio 2
 P removal
 Polymer
 Sludge Dryness
-Unnamed: 290
-Unnamed: 291
 Unnamed: 292
 Unnamed: 293
 Unnamed: 294
 Unnamed: 295
 Unnamed: 296
 Unnamed: 297
-1.4
-1.4.1
-vel hazen diseño
-m2 necesarios
-nº decantaodres
-m2 necesartios con Voriginal
-kg MS lodo a evacuar/h
+Unnamed: 298
+Unnamed: 299
+Unnamed: 300
+Unnamed: 301
+Unnamed: 302
+Unnamed: 303
+Unnamed: 304
 Unnamed: 305
-Ratio polimero real total
-medias acumuladas
+Unnamed: 306
+Unnamed: 307
 Unnamed: 308
+Unnamed: 309
+Unnamed: 310
+Unnamed: 311
+Unnamed: 312
+Unnamed: 313
+Unnamed: 314
+Unnamed: 315
+Unnamed: 316
+Unnamed: 317
+Unnamed: 318
+Unnamed: 319
+Unnamed: 320
+Unnamed: 321
+Unnamed: 322
+Unnamed: 323
+Unnamed: 324
+Unnamed: 325
+Unnamed: 326
+Unnamed: 327
+Unnamed: 328
+Unnamed: 329

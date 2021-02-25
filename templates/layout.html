@@ -42,8 +42,8 @@
 					<form class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
 						<select class="form-control mr-2" id="periodo"
 								name="periodo" data-toggle="tooltip"
-								title={% if periodo=='2' %}"01/05/2018 - 29/09/2019"{% else %}"01/01/2013 - 31/12/2014"{% endif %}>
-								<option value="2" {% if periodo=='2' %}selected{% endif %} data-toggle="tooltip" title="01/05/2018 - 29/09/2019">Periodo 2</option>
+								title={% if periodo=='2' %}"01/05/2018 - {{ current_date }}"{% else %}"01/01/2013 - 31/12/2014"{% endif %}>
+								<option value="2" {% if periodo=='2' %}selected{% endif %} data-toggle="tooltip" title="01/05/2018 - {{ current_date }}">Periodo 2</option>
 								<option value="1" {% if periodo=='1' %}selected{% endif %} data-toggle="tooltip" title="01/01/2013 - 31/12/2014">Periodo 1</option>
 						</select>
 						<select class="form-control mr-2" id="tipo_var" name="tipo_var">
@@ -63,6 +63,7 @@
 							<span>{{ session['username'] }}</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+							<a class="dropdown-item" href="{{ url_for('recreate_db') }}">Recrear DB</a>
 							<a class="dropdown-item" href="{{ url_for('logout') }}">Cerrar sesión</a>
 						</div>
 					</li>

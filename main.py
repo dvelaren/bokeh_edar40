@@ -1,9 +1,13 @@
+import os
+from pathlib import Path
 from flask import Flask, render_template, session, redirect, url_for, request, flash, send_from_directory
 from utils.server_config import *
 from utils.rapidminer_proxy import call_webservice
 import json
 from pandas.io.json import json_normalize
 from collections import OrderedDict
+
+from datetime import datetime, timedelta
 
 import logging
 from tornado.log import enable_pretty_logging
@@ -30,9 +34,13 @@ app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
 
+current_date = datetime.now().date() - timedelta(days=1)
+current_date = current_date.strftime("%m/%d/%Y")
+
 #Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
 
 if __name__ != '__main__':
+	parser() # Ejecutamos cuando se lanza la aplicación el parser
 	formatter = logging.Formatter(fmt='%(asctime)s %(levelname)-8s %(message)s',
                               datefmt='%Y-%m-%d %H:%M:%S')
 	app.secret_key = '[]V\xf0\xed\r\x84L,p\xc59n\x98\xbc\x92'
@@ -64,6 +72,38 @@ def index():
 	if 'username' in session:
 		username = str(session.get('username'))
 		if username == 'rapidminer':
+			return redirect(url_for('perfil'))
+	return redirect(url_for('login'))
+
+@app.route('/recreatedb')
+def recreate_db():
+	if 'username' in session:
+		username = str(session.get('username'))
+		if username == 'rapidminer':
+			METEO_PERIOD_2_FILE = Path('./data/METEO_PERIOD_2.xlsx')
+			if os.path.isfile(METEO_PERIOD_2_FILE):
+				os.remove(METEO_PERIOD_2_FILE)
+				print(f'Eliminando {METEO_PERIOD_2_FILE}')
+			
+			RESOURCES_FOLDER = Path('./resources')
+			CARTUJA_DATOS_FOLDER = Path('./static/Cartuja_Datos/')
+			
+			model_files = ['created_models.pkl', 'total_model_dict.pkl']
+			cartuja_datos_files = [f.name for f in os.scandir(CARTUJA_DATOS_FOLDER)]
+
+			for file in model_files:
+				file_path = os.path.join(RESOURCES_FOLDER, file)
+				if os.path.isfile(file_path):
+					os.remove(file_path)
+					print(f'Eliminando {file_path}')
+			
+			for file in cartuja_datos_files:
+				file_path = os.path.join(CARTUJA_DATOS_FOLDER, file)
+				if os.path.isfile(file_path):
+					os.remove(file_path)
+					print(f'Eliminando {file_path}')
+			
+			parser(recreate=True)
 			return redirect(url_for('perfil'))
 	return redirect(url_for('login'))
 
@@ -110,7 +150,7 @@ def perfil():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
 #Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
@@ -133,7 +173,7 @@ def cartuja_prediction():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
-			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var)
+			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
 @app.route('/optimizacion', methods=['GET', 'POST'])
@@ -211,5 +251,6 @@ def send_js(filename):
 
 #Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
 if __name__ == '__main__':
+	# parser() # Ejecutamos cuando se lanza la aplicación el parser
 	app.secret_key = '[]V\xf0\xed\r\x84L,p\xc59n\x98\xbc\x92'
 	app.run(port=9995, debug=False, host='0.0.0.0')
