@@ -95,7 +95,7 @@ def create_meteo_live_df(
     df_new_data = df_meteo_live_units.loc[df_meteo_live_units.index.intersection(remaining_timestamps)]
 
     # Add new data to PERIOD_2
-    df_period_2 = df_period_2.append(df_new_data)
+    df_period_2 = df_period_2.append(df_new_data, sort=True, verify_integrity=True)
     df_period_2.index.name = 'Fecha'
     df_period_2.to_excel(meteo_period2_file_name, sheet_name=meteo_period2_sheet_name)
     
