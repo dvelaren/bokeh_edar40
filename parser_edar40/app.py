@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 import time
-from datetime import date
+from datetime import date, datetime, timedelta
 
 # Constants
 from parser_edar40.common.constants import *
@@ -241,6 +241,9 @@ def parser():
     # 2.0 Call the Excel file parsing function, specifiying SHEET NAME and HEADER in order to create main df_YOKO dataframe.
     df_YOKO = xl.parse(sheet_name=IN_DATA_SHEET_NAME_YOKO, header=4)
 
+    # Remove first two columns, as 2021 version introduced this columns for external references
+    df_YOKO = df_YOKO.drop(df_YOKO.columns[[0, 1]], axis=1)
+
     # NOTE: we do need to get UNITS information in another dataframe as we do for ID and ANALITIC because in YOKO
     #       units information os below header row.
 
@@ -457,6 +460,10 @@ def parser():
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_1])
         df_OUT_date_filtered_PERIOD_2 = pd.concat(
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_2])
+    else:
+        # Filter data only until yesterday
+        yesterday = pd.to_datetime(datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
+        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
 
     # Now save the data to the output data file. Before that, reset the index again.
     # PERIOD_1
