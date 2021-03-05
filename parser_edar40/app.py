@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import time
+import pickle
 from datetime import date, datetime, timedelta
 
 # Constants
@@ -518,3 +519,6 @@ def parser(recreate=False):
     # df_OUT_date_filtered_PERIOD_2.drop_duplicates(keep=False,inplace=True)
     df_OUT_date_filtered_PERIOD_2.to_csv(
         OUT_DATA_FILE_NAME_PERIOD_2, sep=',', encoding='latin-1', decimal='.')
+    most_recent_date = df_OUT_date_filtered_PERIOD_2.index.max()
+    pickle.dump(most_recent_date, open(LATEST_DATE_FILE, "wb"))
+    print(most_recent_date)

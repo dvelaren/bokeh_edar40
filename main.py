@@ -1,8 +1,10 @@
 import os
+import pickle
 from pathlib import Path
 from flask import Flask, render_template, session, redirect, url_for, request, flash, send_from_directory
 from utils.server_config import *
 from utils.rapidminer_proxy import call_webservice
+from parser_edar40.common.constants import LATEST_DATE_FILE
 import json
 from pandas.io.json import json_normalize
 from collections import OrderedDict
@@ -34,8 +36,7 @@ app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
 
-current_date = datetime.now().date() - timedelta(days=1)
-current_date = current_date.strftime("%m/%d/%Y")
+
 
 #Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
 
@@ -85,6 +86,10 @@ def recreate_db():
 				os.remove(METEO_PERIOD_2_FILE)
 				print(f'Eliminando {METEO_PERIOD_2_FILE}')
 			
+			if os.path.isfile(LATEST_DATE_FILE):
+				os.remove(LATEST_DATE_FILE)
+				print(f'Eliminando {LATEST_DATE_FILE}')
+
 			RESOURCES_FOLDER = Path('./resources')
 			CARTUJA_DATOS_FOLDER = Path('./static/Cartuja_Datos/')
 			
@@ -150,6 +155,13 @@ def perfil():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
+			
+			current_date = datetime.now().date() - timedelta(days=1)
+			try:
+				current_date = pickle.load(open(LATEST_DATE_FILE, "rb"))
+			except:
+				print("Cannot load current date")
+			current_date = current_date.strftime("%d/%m/%Y")
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
@@ -173,6 +185,12 @@ def cartuja_prediction():
 			elif tipo_var == 'rend':
 				tipo_var_title = 'Rendimientos'
 			title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
+			current_date = datetime.now().date() - timedelta(days=1)
+			try:
+				current_date = pickle.load(open(LATEST_DATE_FILE, "rb"))
+			except:
+				print("Cannot load current date")
+			current_date = current_date.strftime("%d/%m/%Y")
 			return render_template('cartuja.html', script=script, active_page=active_page, title = title, periodo=periodo, tipo_var=tipo_var, current_date=current_date)
 	return redirect(url_for('login'))
 
