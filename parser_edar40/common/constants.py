@@ -123,6 +123,7 @@ VARS_CALCULADAS_COL_NAME = 'CALCULADAS'
 # Specify OUTPUT DATA CSV file (for PERIODS 1 & 2; see time filters for PERIOD 1 & 2 below)
 OUT_DATA_FILE_NAME_PERIOD_1=Path('./static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_1.csv')
 OUT_DATA_FILE_NAME_PERIOD_2=Path('./static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_2.csv')
+LATEST_DATE_FILE=Path('./data/latest_date.pkl')
 
 # Other constants of interest
 DATE_COLUMN_NAME = 'Fecha'

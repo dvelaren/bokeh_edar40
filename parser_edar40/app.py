@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import time
+import pickle
 from datetime import date, datetime, timedelta
 
 # Constants
@@ -13,7 +14,7 @@ from parser_edar40.common.settings import *
 # Helpers
 from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, create_meteo_live_df
 
-def parser(recreate=False):
+def parser(recreate=True):
     print('Ejecutando parser')
     # 0 Create Vars ABSOLUTAS csv file
     df_abs = create_vars_mask_df(VARS_COLUMN_NAMES, VARS_NORMA_ABSOLUTAS)
@@ -518,3 +519,6 @@ def parser(recreate=False):
     # df_OUT_date_filtered_PERIOD_2.drop_duplicates(keep=False,inplace=True)
     df_OUT_date_filtered_PERIOD_2.to_csv(
         OUT_DATA_FILE_NAME_PERIOD_2, sep=',', encoding='latin-1', decimal='.')
+    most_recent_date = df_OUT_date_filtered_PERIOD_2.index.max()
+    pickle.dump(most_recent_date, open(LATEST_DATE_FILE, "wb"))
+    print(most_recent_date)
