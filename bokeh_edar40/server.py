@@ -1,16 +1,18 @@
 from bokeh.server.server import Server
 from tornado.ioloop import IOLoop
-
 from utils.server_config import SERVER_IP
-from bokeh_edar40.applications.cartuja.first_descriptive import modify_first_descriptive
-from bokeh_edar40.applications.cartuja.second_descriptive import modify_second_descriptive
 
-#Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
+from bokeh_edar40.applications.cartuja.first_descriptive import \
+    modify_first_descriptive
+from bokeh_edar40.applications.cartuja.second_descriptive import \
+    modify_second_descriptive
+
+
+# Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
 def bk_worker():
-	# server = Server({'/cartuja/perfil': modify_first_descriptive, '/cartuja/prediccion': modify_second_descriptive}, io_loop=IOLoop(), allow_websocket_origin=['127.0.0.1:9995','127.0.0.1:9090','localhost:9995','10.0.20.30:9995', '192.168.10.130:9995', '192.168.10.130:9090', '10.0.20.30:9090', '3.10.15.221:9090', '3.10.15.221:9995','edar.vicomtech.org'], port=9090)
-	# server = Server({'/perfil': modify_first_descriptive, '/prediccion': modify_second_descriptive}, io_loop=IOLoop(), allow_websocket_origin=[f'{SERVER_IP}:9995', f'{SERVER_IP}:9090', 'bokeh.edar.vicomtech.org', 'edar.vicomtech.org'], port=9090)
-	# server = Server({'/perfil': modify_first_descriptive, '/prediccion': modify_second_descriptive}, io_loop=IOLoop(), allow_websocket_origin=['*'], port=9090)	
-	kws = {'port': 9090, 'prefix': '/bokeh', 'allow_websocket_origin': ['*']} # Prefix is very important... It is used for NGINX proxy inverse!
-	server = Server({'/perfil': modify_first_descriptive, '/prediccion': modify_second_descriptive}, io_loop=IOLoop(), **kws)
-	server.start()
-	server.io_loop.start()
+    # Prefix is very important... It is used for NGINX proxy inverse!
+    kws = {'port': 9090, 'prefix': '/bokeh', 'allow_websocket_origin': ['*']}
+    server = Server({'/perfil': modify_first_descriptive,
+                     '/prediccion': modify_second_descriptive}, io_loop=IOLoop(), **kws)
+    server.start()
+    server.io_loop.start()

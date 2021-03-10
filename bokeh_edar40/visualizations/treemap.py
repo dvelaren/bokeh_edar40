@@ -5,7 +5,8 @@ def normalize_sizes(sizes, dx, dy):
     sizes = list(map(float, sizes))
     sizes = list(map(lambda size: size * total_area / total_size, sizes))
     return sizes
-   
+
+
 def layoutrow(sizes, x, y, dx, dy):
     covered_area = sum(sizes)
     width = covered_area / dy
@@ -14,6 +15,7 @@ def layoutrow(sizes, x, y, dx, dy):
         rects.append({'x': x, 'y': y, 'dx': width, 'dy': size / width})
         y += size / width
     return rects
+
 
 def layoutcol(sizes, x, y, dx, dy):
     covered_area = sum(sizes)
@@ -24,8 +26,10 @@ def layoutcol(sizes, x, y, dx, dy):
         x += size / height
     return rects
 
+
 def layout(sizes, x, y, dx, dy):
     return layoutrow(sizes, x, y, dx, dy) if dx >= dy else layoutcol(sizes, x, y, dx, dy)
+
 
 def leftoverrow(sizes, x, y, dx, dy):
     covered_area = sum(sizes)
@@ -36,6 +40,7 @@ def leftoverrow(sizes, x, y, dx, dy):
     leftover_dy = dy
     return (leftover_x, leftover_y, leftover_dx, leftover_dy)
 
+
 def leftovercol(sizes, x, y, dx, dy):
     covered_area = sum(sizes)
     height = covered_area / dx
@@ -45,11 +50,14 @@ def leftovercol(sizes, x, y, dx, dy):
     leftover_dy = dy - height
     return (leftover_x, leftover_y, leftover_dx, leftover_dy)
 
+
 def leftover(sizes, x, y, dx, dy):
     return leftoverrow(sizes, x, y, dx, dy) if dx >= dy else leftovercol(sizes, x, y, dx, dy)
-   
+
+
 def worst_ratio(sizes, x, y, dx, dy):
     return max([max(rect['dx'] / rect['dy'], rect['dy'] / rect['dx']) for rect in layout(sizes, x, y, dx, dy)])
+
 
 def squarify(sizes, x, y, dx, dy):
     sizes = list(map(float, sizes))
@@ -62,5 +70,6 @@ def squarify(sizes, x, y, dx, dy):
         i += 1
     current = sizes[:i]
     remaining = sizes[i:]
-    (leftover_x, leftover_y, leftover_dx, leftover_dy) = leftover(current, x, y, dx, dy)
+    (leftover_x, leftover_y, leftover_dx,
+     leftover_dy) = leftover(current, x, y, dx, dy)
     return layout(current, x, y, dx, dy) + squarify(remaining, leftover_x, leftover_y, leftover_dx, leftover_dy)

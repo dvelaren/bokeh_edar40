@@ -159,18 +159,18 @@ class Tree:
 
 class Node:
 
-	"""Clase Node para representar un nodo en el árbol de decisión
+	"""Clase Node para representar un nodo en el árbol de decisión.
 	
 	Attributes:
-		id (int): Id del nodo
-		name (string): Nombre del nodo
-		level (int): Nivel de profundida del nodo en el árbol
-		color (string): Color con cual pintar el nodo en la figura
-		link_text (string): Relaciones de condición del nodo para los nodos hijos
-		childrens (list): Lista de nodos hijos del nodo
-		parent (Node): Nodo padre
-		x (float): Valor de posición coordenada X en el plano
-		y (float): Valor de posición coordenada Y en el plano
+		id (int): Id del nodo.
+		name (string): Nombre del nodo.
+		level (int): Nivel de profundida del nodo en el árbol.
+		color (string): Color con cual pintar el nodo en la figura.
+		link_text (string): Relaciones de condición del nodo para los nodos hijos.
+		childrens (list): Lista de nodos hijos del nodo.
+		parent (Node): Nodo padre.
+		x (float): Valor de posición coordenada X en el plano.
+		y (float): Valor de posición coordenada Y en el plano.
 	"""
 
 	def __init__(self, id, name, level, color, link_text=None, childrens=None, parent=None, x=None, y=None):
@@ -186,10 +186,10 @@ class Node:
 
 
 	def add_children(self, children):
-		"""Añade un nodo hijo
+		"""Añade un nodo hijo.
 
 		Attributes:
-			children (Node): Nodo hijo
+			children (Node): Nodo hijo.
 		"""
 		if self.childrens == None:
 			self.childrens = []
@@ -199,8 +199,8 @@ class Node:
 		"""Obtiene relaciones de cada nodo.
 
 		Attributes:
-			start (list): Lista de ID-s del nodo de inicio de cada relación
-			end (list): Lista de ID-s del nodo final de cada relación
+			start (list): Lista de ID-s del nodo de inicio de cada relación.
+			end (list): Lista de ID-s del nodo final de cada relación.
 
 		Returns:
 			list: List of start relations.
@@ -213,11 +213,11 @@ class Node:
 		return start, end
 
 	def get_text_position(self):
-		"""Obtiene posición del texto de nombre del nodo en el plano
+		"""Obtiene posición del texto de nombre del nodo en el plano.
 
 		Returns:
-			float: Valor coordenada X en el plano
-			float: Valor coordenada Y en el plano
+			float: Valor coordenada X en el plano.
+			float: Valor coordenada Y en el plano.
 		"""
 
 		x = self.x - 0.02
@@ -225,19 +225,19 @@ class Node:
 		return x, y
 
 	def add_link_text(self, text_link):
-		"""Añade una relación de condición al nodo
+		"""Añade una relación de condición al nodo.
 		"""
 		if self.link_text == None:
 			self.link_text = []
 		self.link_text.append(text_link)
 
 	def get_layout_position(self, nodes_in_levels, num_levels, x_range):
-		"""Obtiene posición del nodo en el plano
+		"""Obtiene posición del nodo en el plano.
 
 		Attributes:
-			nodes_in_levels (dict): Diccionario conteniendo los niveles de profundidad que tiene el árbol como clave, y el número de nodos en cada nivel como valor
-			num_levels (int): El número de niveles de profundidad que tiene el árbol (TODO: Esto puede conseguirse del diccionario anterior, no hace falta pasarlo)
-			x_range (float): El rango del plano en el eje X, esto es, la anchura de la figura
+			nodes_in_levels (dict): Diccionario conteniendo los niveles de profundidad que tiene el árbol como clave, y el número de nodos en cada nivel como valor.
+			num_levels (int): El número de niveles de profundidad que tiene el árbol.
+			x_range (float): El rango del plano en el eje X, esto es, la anchura de la figura.
 		"""
 		y_pos = 1 - (self.level/num_levels) # Dividimos el rango en el eje Y del plano por el número de niveles de profundidad del árbol. Así encontramos el valor de coordenada Y de los nodos de cada nivel de profundidad del árbol
 		if self.parent is None: # Si se trata del nodo raíz, el valor de la coordenada X es el 0, suponiendo que el valor 0 es el cetro del rango X.
