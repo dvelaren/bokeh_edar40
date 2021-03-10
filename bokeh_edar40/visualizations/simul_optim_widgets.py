@@ -1,43 +1,48 @@
+import random
+import time
+from collections import OrderedDict
 
 import utils.bokeh_utils as bokeh_utils
-import time
-import random
-from collections import OrderedDict
-from pandas.io.json import json_normalize
-
-from utils.rapidminer_proxy import call_webservice
+from bokeh.layouts import column, row, widgetbox
 from bokeh.models import Div, Panel, Tabs
-from bokeh.models.widgets import Select, Button, Slider, TextInput, RadioButtonGroup
-from bokeh.layouts import widgetbox, column, row
+from bokeh.models.widgets import (Button, RadioButtonGroup, Select, Slider,
+                                  TextInput)
+from pandas.io.json import json_normalize
+from utils.rapidminer_proxy import call_webservice
 
-def create_div_title(title = ''):
-	"""Crea el título para un objeto de la interfaz bokeh
-	Parameters:
-		title: String con el título a crear
-	
-	Returns:
-		div_title: Objeto Div de bokeh con el título creado
-	"""
 
-	div_title = Div(
-				text=title,
-				style={
-					'font-weight': 'bold',
-					'font-size': '16px',
-					'color': bokeh_utils.TITLE_FONT_COLOR,
-					'margin-top': '2px',
-					'font-family': 'inherit'},
-				height=20,
-				sizing_mode='stretch_width')
-	
-	return div_title
+def create_div_title(title=''):
+    """Crea el título para un objeto de la interfaz bokeh.
+
+    Parameters:
+        title (str): String con el título a crear.
+
+    Returns:
+        div_title: Objeto Div de bokeh con el título creado.
+    """
+
+    div_title = Div(
+        text=title,
+        style={
+            'font-weight': 'bold',
+            'font-size': '16px',
+            'color': bokeh_utils.TITLE_FONT_COLOR,
+            'margin-top': '2px',
+            'font-family': 'inherit'},
+        height=20,
+        sizing_mode='stretch_width')
+
+    return div_title
+
 
 class Spinner:
-	def __init__(self, size=25):
-		self.size = size	
-		self.spinner = Div(text="", min_width=self.size, min_height=self.size, sizing_mode='scale_both')
-	def show_spinner(self):
-		begin_text = """
+    def __init__(self, size=25):
+        self.size = size
+        self.spinner = Div(text="", min_width=self.size,
+                           min_height=self.size, sizing_mode='scale_both')
+
+    def show_spinner(self):
+        begin_text = """
 					<!-- https://www.w3schools.com/howto/howto_css_loader.asp -->
 					<div class="loader">
 					<style scoped>
@@ -46,8 +51,8 @@ class Spinner:
 						border-top: 4px solid #3498db; /* Blue */
 						border-radius: 50%;
 					"""
-		mod_text = f"width: {self.size}px;height: {self.size}px;"
-		end_text =	"""
+        mod_text = f"width: {self.size}px;height: {self.size}px;"
+        end_text = """
 					animation: spin 2s linear infinite;
 					}
 
@@ -58,98 +63,110 @@ class Spinner:
 					</style>
 					</div>
 					"""
-		spinner_text = begin_text + mod_text + end_text
-		self.spinner.text = spinner_text
-	def hide_spinner(self):
-		self.spinner.text = ""
+        spinner_text = begin_text + mod_text + end_text
+        self.spinner.text = spinner_text
+
+    def hide_spinner(self):
+        self.spinner.text = ""
+
 
 class DynamicSimulRow:
-	"""Clase DynamicSimulRow para representar una fila dinámica con slider y textbox
-	
-	Attributes:
+    """Clase DynamicSimulRow para representar una fila dinámica con slider y textbox.
+
+    Attributes:
 		start: Valor inicial del slider
 		end: Valor final del slider
 		value: Valor por defecto del slider y el textbox
 		title: Título del slider
-	"""
-	def __init__(self, start, end, value, title):
-		self.start = start
-		self.end = end
-		self.value = value
-		self.title = title
-		self.slider = Slider(start=self.start, end=self.end,
-							value=self.value, step=0.1,
-							title=self.title, min_width=580)
-		self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
-		self.dyn_row = row([self.slider, self.text_input], sizing_mode='stretch_height')
-		self.slider.on_change('value',self.slider_handler)
-		self.text_input.on_change('value',self.text_handler)
-	def slider_handler(self, attrname, old, new):
-		self.text_input.value = f"{new:.2f}"
-	def text_handler(self, attrname, old, new):
-		self.slider.value = float(new)
+    """
+
+    def __init__(self, start, end, value, title):
+        self.start = start
+        self.end = end
+        self.value = value
+        self.title = title
+        self.slider = Slider(start=self.start, end=self.end,
+                             value=self.value, step=0.1,
+                             title=self.title, min_width=580)
+        self.text_input = TextInput(value=f"{self.value:.2f}", max_width=100)
+        self.dyn_row = row([self.slider, self.text_input],
+                           sizing_mode='stretch_height')
+        self.slider.on_change('value', self.slider_handler)
+        self.text_input.on_change('value', self.text_handler)
+
+    def slider_handler(self, attrname, old, new):
+        self.text_input.value = f"{new:.2f}"
+
+    def text_handler(self, attrname, old, new):
+        self.slider.value = float(new)
+
 
 class DynamicSimulWidget:
-	"""Clase DynamicSimulWidget para representar widget dinámicos con sliders y textbox de simulación
-	
-	Attributes:
-		df: Dataframe con las estadisticas para min, mean, max de los sliders
-		target: Target de simulación
-	"""
-	def __init__(self, target, df, periodo):
-		self.target = target
-		self.df = df
-		self.periodo = periodo
-		self.new_rows = OrderedDict([])
-		columns = column([])
-		target_title = create_div_title(f'Simulación - {self.target}')
-		target_title.min_width = 400
-		var_title = Div(text='<b>Variables de entrada</b>')
-		for var in list(self.df.keys()):
-			delta = (self.df[var]['max']-self.df[var]['min']) * 0.1
-			self.new_rows.update({var: DynamicSimulRow(start=max(0,self.df[var]['min']-delta),
-														end=self.df[var]['max']+delta,
-                                          				value=self.df[var]['mean'],
-                                          				title=var)})
-			columns.children.append(self.new_rows[var].dyn_row)
-		button_simulate = Button(label="Simular", button_type="primary", max_width=180, min_width=180)
-		button_simulate.on_click(self.simulate)
-		self.sim_target = Div(text=f'<b>{self.target}:</b>')
-		self.div_spinner = Spinner()
-		self.wb = widgetbox([target_title,
-							var_title,
-							columns,
-							self.sim_target,
-							row([button_simulate, self.div_spinner.spinner], sizing_mode='stretch_width')],
-							min_width=390,
-							max_width=700,
-							sizing_mode='stretch_width')
-	def simulate(self, new):
-		"""Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
-		"""
-		self.div_spinner.show_spinner()
-		vars_influyentes = {var: round(drow.slider.value,2) for (var, drow) in self.new_rows.items()}
-		json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
-									username='rapidminer',
-									password='rapidminer',
-									parameters={
-										'Modelo': self.target,
-										'Variables_influyentes': str(vars_influyentes),
-										'Ruta_periodo':f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
-										},
-									out_json=True)
-		print(f'Modelo: {self.target}')
-		print(f'Ruta_periodo: https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
-		print(vars_influyentes)
-		simul_result = json_normalize(json_simul)
-		print(simul_result[f'prediction({self.target})'][0])
-		# self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
-		self.sim_target.text = f"<b>{self.target}</b>: {simul_result[f'prediction({self.target})'][0]}"
-		self.div_spinner.hide_spinner()
+    """Clase DynamicSimulWidget para representar widget dinámicos con sliders y textbox de simulación.
+
+    Attributes:
+		df: Dataframe con las estadisticas para min, mean, max de los sliders.
+		target: Target de simulación.
+    """
+
+    def __init__(self, target, df, periodo):
+        self.target = target
+        self.df = df
+        self.periodo = periodo
+        self.new_rows = OrderedDict([])
+        columns = column([])
+        target_title = create_div_title(f'Simulación - {self.target}')
+        target_title.min_width = 400
+        var_title = Div(text='<b>Variables de entrada</b>')
+        for var in list(self.df.keys()):
+            delta = (self.df[var]['max']-self.df[var]['min']) * 0.1
+            self.new_rows.update({var: DynamicSimulRow(start=max(0, self.df[var]['min']-delta),
+                                                       end=self.df[var]['max']+delta,
+                                                       value=self.df[var]['mean'],
+                                                       title=var)})
+            columns.children.append(self.new_rows[var].dyn_row)
+        button_simulate = Button(
+            label="Simular", button_type="primary", max_width=180, min_width=180)
+        button_simulate.on_click(self.simulate)
+        self.sim_target = Div(text=f'<b>{self.target}:</b>')
+        self.div_spinner = Spinner()
+        self.wb = widgetbox([target_title,
+                             var_title,
+                             columns,
+                             self.sim_target,
+                             row([button_simulate, self.div_spinner.spinner], sizing_mode='stretch_width')],
+                            min_width=390,
+                            max_width=700,
+                            sizing_mode='stretch_width')
+
+    def simulate(self, new):
+        """Callback que simula y obtiene una predicción con los valores fijados por el usuario en los sliders
+        """
+        self.div_spinner.show_spinner()
+        vars_influyentes = {var: round(drow.slider.value, 2)
+                            for (var, drow) in self.new_rows.items()}
+        json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
+                                     username='rapidminer',
+                                     password='rapidminer',
+                                     parameters={
+                                         'Modelo': self.target,
+                                         'Variables_influyentes': str(vars_influyentes),
+                                         'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
+                                     },
+                                     out_json=True)
+        print(f'Modelo: {self.target}')
+        print(
+            f'Ruta_periodo: https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
+        print(vars_influyentes)
+        simul_result = json_normalize(json_simul)
+        print(simul_result[f'prediction({self.target})'][0])
+        # self.sim_target.text = f'<b>{self.target}</b>: cluster_{random.randint(0,4)}'
+        self.sim_target.text = f"<b>{self.target}</b>: {simul_result[f'prediction({self.target})'][0]}"
+        self.div_spinner.hide_spinner()
 
 # class DynamicOptimRow:
 # 	"""Clase DynamicOptimRow para representar una fila dinámica con cada variable influyente y sus respectivos combobox para las restricciones
-	
+
 # 	Attributes:
 # 		var_title: Título de la restricción
 # 	"""
@@ -167,7 +184,7 @@ class DynamicSimulWidget:
 
 # class DynamicOptimWidget:
 # 	"""Clase DynamicOptimWidget para representar widget dinámicos con todas las restricciones para optimizar
-	
+
 # 	Attributes:
 # 		target: Target de optimización
 # 		possible_targets: Lista de posibles clusters/rangos a optimizar
@@ -212,7 +229,7 @@ class DynamicSimulWidget:
 # 														val_condicion_raw=val_condicion_raw)
 # 			if dict_condicion1:
 # 				restricciones.update({var: dict_condicion1})
-# 			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'		
+# 			# self.dyn_row_list[var].var_found_value.text = f'<b>{round(random.uniform(0,20),2)}</b>'
 # 		arg_target = {'variable':self.target, 'valor':self.target_select.value, 'objetivo': self.objective_select.value}
 # 		print(f'Target: {arg_target}')
 # 		print(f'Restricciones: {restricciones}')
@@ -238,7 +255,7 @@ class DynamicSimulWidget:
 # 			num_condicion: Número de la condición (posible 1 o 2)
 # 			condicion: Tipo de condición (<, >, <=, >=, =, -)
 # 			val_condicion_raw: Valor ingresado por el usuario de la condición sin procesar
-		
+
 # 		Returns:
 # 			dict_condicion: Diccionario con la restricción creada
 # 		"""
@@ -254,18 +271,20 @@ class DynamicSimulWidget:
 # 			dict_condicion = ''
 # 		return dict_condicion
 
+
 def create_optim_div(target, possible_targets, var_influyentes, ranges):
-	# endpoint = "http://10.0.20.30:9995/optimizacion"
-	# endpoint = "http://localhost:9995/optimizacion"
-	endpoint = "https://edar.vicomtech.org/optimizacion"
-	data = {
-		'target': target,
-		'valores': possible_targets,
-		'var_influyentes': {}
-	}
-	data['var_influyentes'] = {var: {'pos_ranges': ranges['Values'][var].split(', '), 'result': ''} for var in var_influyentes}
-	payload = endpoint + "?data=" + str(data)
-	div_optim = Div(text = f"""
+    # endpoint = "http://10.0.20.30:9995/optimizacion"
+    # endpoint = "http://localhost:9995/optimizacion"
+    endpoint = "https://edar.vicomtech.org/optimizacion"
+    data = {
+        'target': target,
+        'valores': possible_targets,
+        'var_influyentes': {}
+    }
+    data['var_influyentes'] = {var: {'pos_ranges': ranges['Values'][var].split(
+        ', '), 'result': ''} for var in var_influyentes}
+    payload = endpoint + "?data=" + str(data)
+    div_optim = Div(text=f"""
 							<iframe
 							src="{payload}"
 							height="100%"
@@ -276,27 +295,33 @@ def create_optim_div(target, possible_targets, var_influyentes, ranges):
 							frameborder="no">
 							</iframe>
 							""",
-					sizing_mode='stretch_width',
-					min_width = 1300,
-					max_width = 1300,
-					height = 630,
-					style={
-						'height': '100%',
-						'width': '100%'
-					}
-	)
-	return div_optim
+                    sizing_mode='stretch_width',
+                    min_width=1300,
+                    max_width=1300,
+                    height=630,
+                    style={
+                        'height': '100%',
+                        'width': '100%'
+                    }
+                    )
+    return div_optim
+
 
 class SimulOptimWidget:
-	def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges):
-		self.simulate_wb = DynamicSimulWidget(target=target, df=simul_df, periodo=periodo)
-		# self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
-		self.optimize_wb = create_optim_div(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
-		self.wb = widgetbox([self.simulate_wb.wb], sizing_mode='stretch_width', max_width=690)
-		self.rb = RadioButtonGroup(labels=['Simular', 'Optimizar'], height=35, active=0, min_width=690, max_width=690)
-		self.rb.on_click(self.select_simul_optim)
-	def select_simul_optim(self, new):
-		if new == 0:
-			self.wb.children = [self.simulate_wb.wb]
-		else:
-			self.wb.children = [self.optimize_wb]
+    def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges):
+        self.simulate_wb = DynamicSimulWidget(
+            target=target, df=simul_df, periodo=periodo)
+        # self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
+        self.optimize_wb = create_optim_div(
+            target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
+        self.wb = widgetbox([self.simulate_wb.wb],
+                            sizing_mode='stretch_width', max_width=690)
+        self.rb = RadioButtonGroup(
+            labels=['Simular', 'Optimizar'], height=35, active=0, min_width=690, max_width=690)
+        self.rb.on_click(self.select_simul_optim)
+
+    def select_simul_optim(self, new):
+        if new == 0:
+            self.wb.children = [self.simulate_wb.wb]
+        else:
+            self.wb.children = [self.optimize_wb]

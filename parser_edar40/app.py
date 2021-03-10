@@ -1,18 +1,19 @@
 # Required Libraries
-import pandas as pd
-import numpy as np
-import time
 import pickle
+import time
 from datetime import date, datetime, timedelta
+
+import numpy as np
+import pandas as pd
 
 # Constants
 from parser_edar40.common.constants import *
-
 # Settings
 from parser_edar40.common.settings import *
-
 # Helpers
-from parser_edar40.helpers import create_vars_mask_df, Create_Partial_DF, create_meteo_df, create_meteo_live_df
+from parser_edar40.helpers import (Create_Partial_DF, create_meteo_df,
+                                   create_meteo_live_df, create_vars_mask_df)
+
 
 def parser(recreate=True):
     print('Ejecutando parser')
@@ -30,7 +31,7 @@ def parser(recreate=True):
     xl = pd.ExcelFile(IN_DATA_FILE_NAME)
     end_t = time.time()
     print("\nComputation time for reading COMPLETE Excel file is %g seconds.\n" %
-        (end_t - start_t))
+          (end_t - start_t))
 
     # 1. We start processing sheet ID.
     # 1.0 Call the Excel file parsing function, specifiying SHEET NAME and HEADER in order to create main df_ID dataframe.
@@ -77,7 +78,8 @@ def parser(recreate=True):
     df_ID[DATE_COLUMN_NAME] = df_ID[DATE_COLUMN_NAME].dt.date
 
     # Remove duplicates
-    df_ID.drop_duplicates(subset=[DATE_COLUMN_NAME], keep='first', inplace=True)
+    df_ID.drop_duplicates(subset=[DATE_COLUMN_NAME],
+                          keep='first', inplace=True)
     df_ID.reset_index(drop=True, inplace=True)
 
     # Create list of column names of sheet ID, if requested
@@ -89,15 +91,15 @@ def parser(recreate=True):
 
     # 1.1 Open file specifiying variables to be read from sheet ID_INFLUENTE (HEADER position does not need to be specified bacause it is 0)
     (df_ID_influente,
-    columns_with_all_NaNs_list_ID_influente,
-    columns_not_found_in_original_list_ID_influente) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                        VARIABLES_FILE_SHEET_ID_INFLUENTE,
-                                                                        VARS_ORIGEN_COL_NAME,
-                                                                        VARS_DESTINO_COL_NAME,
-                                                                        df_ID,
-                                                                        colum_names_sheet_ID_list,
-                                                                        True,
-                                                                        blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_influente,
+     columns_not_found_in_original_list_ID_influente) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                          VARIABLES_FILE_SHEET_ID_INFLUENTE,
+                                                                          VARS_ORIGEN_COL_NAME,
+                                                                          VARS_DESTINO_COL_NAME,
+                                                                          df_ID,
+                                                                          colum_names_sheet_ID_list,
+                                                                          True,
+                                                                          blnConsider_UNITS)
 
     # Work out variables to be calculated
     # 1. SO4 entrada influente (KG SO4/dia) = SO4 entrada influente (mg SO4/l) * Caudal influente (m3/dia) / 1000
@@ -113,24 +115,25 @@ def parser(recreate=True):
         start_row = 0
 
     df_ID_influente.loc[start_row:, "influente_SO4"] = df_ID_influente.loc[start_row:,
-                                                                        "influente_SO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
+                                                                           "influente_SO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
     df_ID_influente.loc[start_row:, "influente_P-PO4"] = df_ID_influente.loc[start_row:,
-                                                                            "influente_P-PO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
+                                                                             "influente_P-PO4_conc"] * df_ID_influente.loc[start_row:, "influente_CAUDAL"] / 1000
     # df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:,
     #                                                                                     "influente_DBO5t_conc"] / df_ID_influente.loc[start_row:, "influente_DQOt_conc"]
-    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:, "influente_DBO5t_conc"].div(df_ID_influente.loc[start_row:, "influente_DQOt_conc"].where(df_ID_influente.loc[start_row:, "influente_DQOt_conc"]!=0,np.nan))
+    df_ID_influente.loc[start_row:, "influente_ratio_DBO5t_DQOt"] = df_ID_influente.loc[start_row:, "influente_DBO5t_conc"].div(
+        df_ID_influente.loc[start_row:, "influente_DQOt_conc"].where(df_ID_influente.loc[start_row:, "influente_DQOt_conc"] != 0, np.nan))
 
     # 1.2 Open file specifiying variables to be read from sheet ID_BIOS (HEADER position does not need to be specified bacause it is 0)
     (df_ID_bios,
-    columns_with_all_NaNs_list_ID_bios,
-    columns_not_found_in_original_list_ID_bios) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                    VARIABLES_FILE_SHEET_ID_BIOS,
-                                                                    VARS_ORIGEN_COL_NAME,
-                                                                    VARS_DESTINO_COL_NAME,
-                                                                    df_ID,
-                                                                    colum_names_sheet_ID_list,
-                                                                    True,
-                                                                    blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_bios,
+     columns_not_found_in_original_list_ID_bios) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                     VARIABLES_FILE_SHEET_ID_BIOS,
+                                                                     VARS_ORIGEN_COL_NAME,
+                                                                     VARS_DESTINO_COL_NAME,
+                                                                     df_ID,
+                                                                     colum_names_sheet_ID_list,
+                                                                     True,
+                                                                     blnConsider_UNITS)
 
     # Work out variables to be calculated
     # 4. Ratio DBO5/DQO entrada bios = DBO5 entrada BIOS(mg DBO5/l) / DQO entrada BIOS (mg DQO/l)
@@ -147,90 +150,91 @@ def parser(recreate=True):
 
     # df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:,
     #                                                                         "bios_IN_DBO5t_conc"] / df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]
-    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:, "bios_IN_DBO5t_conc"].div(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"].where(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"]!=0,np.nan))
+    df_ID_bios.loc[start_row:, "bios_IN_ratio_DBO5t_DQOt"] = df_ID_bios.loc[start_row:, "bios_IN_DBO5t_conc"].div(
+        df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"].where(df_ID_bios.loc[start_row:, "bios_IN_DQOt_conc"] != 0, np.nan))
     df_ID_bios.loc[start_row:, "bios_manipulable_O2_Promedio_Zona_1"] = (df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio1_Zona_1"] +
-                                                                        df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_1"] +
-                                                                        df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_1"]) / 3
+                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_1"] +
+                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_1"]) / 3
     df_ID_bios.loc[start_row:, "bios_manipulable_O2_Promedio_Zona_2"] = (df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio1_Zona_2"] +
-                                                                        df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_2"] +
-                                                                        df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_2"]) / 3
+                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio2_Zona_2"] +
+                                                                         df_ID_bios.loc[start_row:, "bios_manipulable_O2_Bio3_Zona_2"]) / 3
 
     # 1.3 Open file specifiying variables to be read from sheet ID_FANGOS (HEADER position does not need to be specified bacause it is 0)
     (df_ID_fangos,
-    columns_with_all_NaNs_list_ID_fangos,
-    columns_not_found_in_original_list_ID_fangos) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                    VARIABLES_FILE_SHEET_ID_FANGOS,
-                                                                    VARS_ORIGEN_COL_NAME,
-                                                                    VARS_DESTINO_COL_NAME,
-                                                                    df_ID,
-                                                                    colum_names_sheet_ID_list,
-                                                                    True,
-                                                                    blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_fangos,
+     columns_not_found_in_original_list_ID_fangos) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                       VARIABLES_FILE_SHEET_ID_FANGOS,
+                                                                       VARS_ORIGEN_COL_NAME,
+                                                                       VARS_DESTINO_COL_NAME,
+                                                                       df_ID,
+                                                                       colum_names_sheet_ID_list,
+                                                                       True,
+                                                                       blnConsider_UNITS)
 
     # 1.4 Open file specifiying variables to be read from sheet ID_HORNO (HEADER position does not need to be specified bacause it is 0)
     (df_ID_horno,
-    columns_with_all_NaNs_list_ID_horno,
-    columns_not_found_in_original_list_ID_horno) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                    VARIABLES_FILE_SHEET_ID_HORNO,
-                                                                    VARS_ORIGEN_COL_NAME,
-                                                                    VARS_DESTINO_COL_NAME,
-                                                                    df_ID,
-                                                                    colum_names_sheet_ID_list,
-                                                                    True,
-                                                                    blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_horno,
+     columns_not_found_in_original_list_ID_horno) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                      VARIABLES_FILE_SHEET_ID_HORNO,
+                                                                      VARS_ORIGEN_COL_NAME,
+                                                                      VARS_DESTINO_COL_NAME,
+                                                                      df_ID,
+                                                                      colum_names_sheet_ID_list,
+                                                                      True,
+                                                                      blnConsider_UNITS)
 
     # 1.5 Open file specifiying variables to be read from sheet ID_EFLUENTE (HEADER position does not need to be specified bacause it is 0)
     (df_ID_efluente,
-    columns_with_all_NaNs_list_ID_efluente,
-    columns_not_found_in_original_list_ID_efluente) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                        VARIABLES_FILE_SHEET_ID_EFLUENTE,
-                                                                        VARS_ORIGEN_COL_NAME,
-                                                                        VARS_DESTINO_COL_NAME,
-                                                                        df_ID,
-                                                                        colum_names_sheet_ID_list,
-                                                                        True,
-                                                                        blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_efluente,
+     columns_not_found_in_original_list_ID_efluente) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                         VARIABLES_FILE_SHEET_ID_EFLUENTE,
+                                                                         VARS_ORIGEN_COL_NAME,
+                                                                         VARS_DESTINO_COL_NAME,
+                                                                         df_ID,
+                                                                         colum_names_sheet_ID_list,
+                                                                         True,
+                                                                         blnConsider_UNITS)
 
     # 1.6 Open file specifiying variables to be read from sheet ID_ELECTRICIDAD (HEADER position does not need to be specified bacause it is 0)
     (df_ID_electricidad,
-    columns_with_all_NaNs_list_ID_electricidad,
-    columns_not_found_in_original_list_ID_electricidad) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                            VARIABLES_FILE_SHEET_ID_ELECTRICIDAD,
-                                                                            VARS_ORIGEN_COL_NAME,
-                                                                            VARS_DESTINO_COL_NAME,
-                                                                            df_ID,
-                                                                            colum_names_sheet_ID_list,
-                                                                            True,
-                                                                            blnConsider_UNITS)
+     columns_with_all_NaNs_list_ID_electricidad,
+     columns_not_found_in_original_list_ID_electricidad) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                             VARIABLES_FILE_SHEET_ID_ELECTRICIDAD,
+                                                                             VARS_ORIGEN_COL_NAME,
+                                                                             VARS_DESTINO_COL_NAME,
+                                                                             df_ID,
+                                                                             colum_names_sheet_ID_list,
+                                                                             True,
+                                                                             blnConsider_UNITS)
 
     # Aggregate all columns with all NaN values in a unique list
     columns_with_all_NaNs_list_ID = (columns_with_all_NaNs_list_ID_influente
-                                    + columns_with_all_NaNs_list_ID_bios
-                                    + columns_with_all_NaNs_list_ID_fangos
-                                    + columns_with_all_NaNs_list_ID_horno
-                                    + columns_with_all_NaNs_list_ID_efluente
-                                    + columns_with_all_NaNs_list_ID_electricidad)
+                                     + columns_with_all_NaNs_list_ID_bios
+                                     + columns_with_all_NaNs_list_ID_fangos
+                                     + columns_with_all_NaNs_list_ID_horno
+                                     + columns_with_all_NaNs_list_ID_efluente
+                                     + columns_with_all_NaNs_list_ID_electricidad)
 
     # Aggregate all columns not found in the original vars list in a unique list
     columns_not_found_in_original_list_ID = (columns_not_found_in_original_list_ID_influente
-                                            + columns_not_found_in_original_list_ID_bios
-                                            + columns_not_found_in_original_list_ID_fangos
-                                            + columns_not_found_in_original_list_ID_horno
-                                            + columns_not_found_in_original_list_ID_efluente
-                                            + columns_not_found_in_original_list_ID_electricidad)
+                                             + columns_not_found_in_original_list_ID_bios
+                                             + columns_not_found_in_original_list_ID_fangos
+                                             + columns_not_found_in_original_list_ID_horno
+                                             + columns_not_found_in_original_list_ID_efluente
+                                             + columns_not_found_in_original_list_ID_electricidad)
 
     # 1.7 Join all dataframes of interest.
     # Set as index column DATE_COLUMN_NAME on dataframes to be joined.
     df_ID_influente.set_index(keys=DATE_COLUMN_NAME,
-                            drop=True, inplace=True, verify_integrity=True)
+                              drop=True, inplace=True, verify_integrity=True)
     df_ID_bios.set_index(keys=DATE_COLUMN_NAME, drop=True,
-                        inplace=True, verify_integrity=True)
+                         inplace=True, verify_integrity=True)
     df_ID_fangos.set_index(keys=DATE_COLUMN_NAME, drop=True,
-                        inplace=True, verify_integrity=True)
+                           inplace=True, verify_integrity=True)
     df_ID_horno.set_index(keys=DATE_COLUMN_NAME, drop=True,
-                        inplace=True, verify_integrity=True)
+                          inplace=True, verify_integrity=True)
     df_ID_efluente.set_index(keys=DATE_COLUMN_NAME, drop=True,
-                            inplace=True, verify_integrity=True)
+                             inplace=True, verify_integrity=True)
     df_ID_electricidad.set_index(
         keys=DATE_COLUMN_NAME, drop=True, inplace=True, verify_integrity=True)
 
@@ -266,7 +270,8 @@ def parser(recreate=True):
         df_YOKO.reset_index(drop=True, inplace=True)
 
     # Rename column 0 (which has date information but a non specific colun name) to DATE_COLUMN_NAME.
-    df_YOKO.rename(columns={df_YOKO.columns[0]: DATE_COLUMN_NAME}, inplace=True)
+    df_YOKO.rename(
+        columns={df_YOKO.columns[0]: DATE_COLUMN_NAME}, inplace=True)
 
     # Convert column DATE_COLUMN_NAME of df_influente to pandas timestamp format.
     df_YOKO[DATE_COLUMN_NAME] = pd.to_datetime(df_YOKO[DATE_COLUMN_NAME].astype(
@@ -278,7 +283,8 @@ def parser(recreate=True):
     df_YOKO[DATE_COLUMN_NAME] = df_YOKO[DATE_COLUMN_NAME].dt.date
 
     # Remove duplicates
-    df_YOKO.drop_duplicates(subset=[DATE_COLUMN_NAME], keep='first', inplace=True)
+    df_YOKO.drop_duplicates(
+        subset=[DATE_COLUMN_NAME], keep='first', inplace=True)
     df_YOKO.reset_index(drop=True, inplace=True)
 
     # Create list of column names of sheet YOKO, if requested
@@ -291,15 +297,15 @@ def parser(recreate=True):
     # 2.1 Open file specifiying variables to be read from sheet YOKO (HEADER position does not need to be specified bacause it is 0)
 
     (df_YOKO_partial,
-    columns_with_all_NaNs_list_YOKO_partial,
-    columns_not_found_in_original_list_YOKO_partial) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                        VARIABLES_FILE_SHEET_YOKO,
-                                                                        VARS_ORIGEN_COL_NAME,
-                                                                        VARS_DESTINO_COL_NAME,
-                                                                        df_YOKO,
-                                                                        colum_names_sheet_YOKO_list,
-                                                                        True,
-                                                                        blnConsider_UNITS)
+     columns_with_all_NaNs_list_YOKO_partial,
+     columns_not_found_in_original_list_YOKO_partial) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                          VARIABLES_FILE_SHEET_YOKO,
+                                                                          VARS_ORIGEN_COL_NAME,
+                                                                          VARS_DESTINO_COL_NAME,
+                                                                          df_YOKO,
+                                                                          colum_names_sheet_YOKO_list,
+                                                                          True,
+                                                                          blnConsider_UNITS)
 
     # Aggregate all columns with all NaN values in a unique list
     columns_with_all_NaNs_list_YOKO = columns_with_all_NaNs_list_YOKO_partial
@@ -311,7 +317,7 @@ def parser(recreate=True):
 
     # Set as index column DATE_COLUMN_NAME on dataframes to be joined.
     df_YOKO_partial.set_index(keys=DATE_COLUMN_NAME,
-                            drop=True, inplace=True, verify_integrity=True)
+                              drop=True, inplace=True, verify_integrity=True)
 
     # Now, join the dataframes
     df_YOKO_out = df_YOKO_partial
@@ -378,15 +384,15 @@ def parser(recreate=True):
     # 3.1 Open file specifiying variables to be read from sheet ANALITICA (HEADER position does not need to be specified bacause it is 0)
 
     (df_ANALITICA_partial,
-    columns_with_all_NaNs_list_ANALITICA_partial,
-    columns_not_found_in_original_list_ANALITICA_partial) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
-                                                                            VARIABLES_FILE_SHEET_ANALITICA,
-                                                                            VARS_ORIGEN_COL_NAME,
-                                                                            VARS_DESTINO_COL_NAME,
-                                                                            df_ANALITICA,
-                                                                            colum_names_sheet_ANALITICA_list,
-                                                                            True,
-                                                                            blnConsider_UNITS)
+     columns_with_all_NaNs_list_ANALITICA_partial,
+     columns_not_found_in_original_list_ANALITICA_partial) = Create_Partial_DF(VARIABLES_TO_READ_FILE_NAME,
+                                                                               VARIABLES_FILE_SHEET_ANALITICA,
+                                                                               VARS_ORIGEN_COL_NAME,
+                                                                               VARS_DESTINO_COL_NAME,
+                                                                               df_ANALITICA,
+                                                                               colum_names_sheet_ANALITICA_list,
+                                                                               True,
+                                                                               blnConsider_UNITS)
 
     # Aggregate all columns with all NaN values in a unique list
     columns_with_all_NaNs_list_ANALITICA = columns_with_all_NaNs_list_ANALITICA_partial
@@ -456,9 +462,10 @@ def parser(recreate=True):
             df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= pd_end_date_filter_PERIOD_2)]
     else:
         # Filter data only until yesterday
-        yesterday = pd.to_datetime(datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
-        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
-        
+        yesterday = pd.to_datetime(
+            datetime.now().date() - timedelta(days=1), format="%Y-%m-%d")
+        df_OUT_date_filtered_PERIOD_2 = df_OUT_date_filtered_PERIOD_2.loc[(
+            df_OUT_date_filtered_PERIOD_2[DATE_COLUMN_NAME] <= yesterday)]
 
     # Previous filtering deletes UNITS row. Therefore, it must be recovered.
     if (blnConsider_UNITS == True):
@@ -466,7 +473,6 @@ def parser(recreate=True):
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_1])
         df_OUT_date_filtered_PERIOD_2 = pd.concat(
             [df_OUT[0:1], df_OUT_date_filtered_PERIOD_2])
-    
 
     # Now save the data to the output data file. Before that, reset the index again.
     # PERIOD_1
@@ -497,7 +503,7 @@ def parser(recreate=True):
             meteo_period2_sheet_name=METEO_SHEET_NAME_PERIOD_2
         )
         print(f'Recreated {OUT_METEO_DATA_FILE_NAME_PERIOD_2}')
-        
+
     # Update PERIOD_2 meteo file with new LIVE data
     df_METEO = create_meteo_live_df(
         meteo_period2_file_name=OUT_METEO_DATA_FILE_NAME_PERIOD_2,
