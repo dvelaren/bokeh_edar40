@@ -56,7 +56,7 @@
 				</ul>
 				<ul class="navbar-nav navbar-right">
 					{% if session['username'] %}
-					<div class="nav-link active">
+					<div class="nav-link active" data-toggle="tooltip" title="Último dato registrado">
 						<i class="fas fa-history"></i>
 						<span>{{ current_date }}</span>
 					</div>
