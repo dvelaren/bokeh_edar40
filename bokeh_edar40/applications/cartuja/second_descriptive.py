@@ -818,7 +818,7 @@ def modify_second_descriptive(doc):
     # Llamada al webservice de RapidMiner
     json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
                                            username='rapidminer',
-                                           password='rapidminer',
+                                           password='Edar2021*',
                                            parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
                                                        'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                        'Normalizacion': 1},
@@ -898,7 +898,7 @@ def modify_second_descriptive(doc):
             # Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
             json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v5?',
                                                        username='rapidminer',
-                                                       password='rapidminer',
+                                                       password='Edar2021*',
                                                        parameters={'Objetivo': model_objective,
                                                                    'Discretizacion': model_discretise,
                                                                    'Numero_Atributos': 4,

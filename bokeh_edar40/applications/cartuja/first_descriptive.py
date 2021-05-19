@@ -583,7 +583,7 @@ def modify_first_descriptive(doc):
     # Llamada al webservice de RapidMiner
     json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
                                     username='rapidminer',
-                                    password='rapidminer',
+                                    password='Edar2021*',
                                     parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
                                                 'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                 'Normalizacion': 1},

@@ -147,7 +147,7 @@ class DynamicSimulWidget:
                             for (var, drow) in self.new_rows.items()}
         json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
                                      username='rapidminer',
-                                     password='rapidminer',
+                                     password='Edar2021*',
                                      parameters={
                                          'Modelo': self.target,
                                          'Variables_influyentes': str(vars_influyentes),
@@ -274,8 +274,8 @@ class DynamicSimulWidget:
 
 def create_optim_div(target, possible_targets, var_influyentes, ranges):
     # endpoint = "http://10.0.20.30:9995/optimizacion"
-    # endpoint = "http://localhost:9995/optimizacion"
-    endpoint = "https://edar.vicomtech.org/optimizacion"
+    endpoint = "http://localhost:9995/optimizacion"
+    # endpoint = "https://edar.vicomtech.org/optimizacion"
     data = {
         'target': target,
         'valores': possible_targets,
