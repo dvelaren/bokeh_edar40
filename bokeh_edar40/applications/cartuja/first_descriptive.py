@@ -1,3 +1,4 @@
+from pathlib import Path
 import xml.etree.ElementTree as et
 
 import numpy as np
@@ -15,6 +16,7 @@ from bokeh.models.tools import HoverTool
 from bokeh.models.widgets import Panel, Tabs
 from bokeh.plotting import curdoc, figure, show
 from bokeh_edar40.visualizations.treemap import normalize_sizes, squarify
+from utils.utils import create_custom_period
 from pandas.io.json import json_normalize
 from utils.rapidminer_proxy import call_webservice
 
@@ -572,19 +574,30 @@ def modify_first_descriptive(doc):
     try:
         periodo = int(args.get('periodo')[0])
         tipo_var = args.get('tipo_var')[0].decode('ascii')
+        periodo_custom_start = args.get('periodo_custom_start')[0].decode('ascii')
+        periodo_custom_end = args.get('periodo_custom_end')[0].decode('ascii')
     except:
         periodo = 0
         tipo_var = ''
+        periodo_custom_start = ''
+        periodo_custom_end = ''
     if tipo_var == 'abs':
         tipo_var = 'ABSOLUTAS'
     elif tipo_var == 'rend':
         tipo_var = 'RENDIMIENTOS'
-    print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+    print(f'periodo: {periodo}, tipo_var: {tipo_var}, periodo_custom_start: {periodo_custom_start}, periodo_custom_end: {periodo_custom_end}')
+
+    ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
+    # Crear nuevo archivo custom si periodo=3
+    if periodo == 3:
+        create_custom_period(periodo_custom_start, periodo_custom_end)
+        ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+
     # Llamada al webservice de RapidMiner
     json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
                                     username='rapidminer',
                                     password='Edar2021*',
-                                    parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+                                    parameters={'Ruta_periodo': ruta_periodo,
                                                 'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                 'Normalizacion': 1},
                                     out_json=True)

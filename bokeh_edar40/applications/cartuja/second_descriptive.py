@@ -8,6 +8,7 @@ from datetime import timedelta
 import numpy as np
 import pandas as pd
 import utils.bokeh_utils as bokeh_utils
+from utils.utils import create_custom_period
 from bokeh.layouts import column, layout, row, widgetbox
 # from bokeh.core.properties import value
 from bokeh.models import (BasicTicker, ColorBar, ColumnDataSource, Div,
@@ -783,14 +784,18 @@ def modify_second_descriptive(doc):
     try:
         periodo = int(args.get('periodo')[0])
         tipo_var = args.get('tipo_var')[0].decode('ascii')
+        periodo_custom_start = args.get('periodo_custom_start')[0].decode('ascii')
+        periodo_custom_end = args.get('periodo_custom_end')[0].decode('ascii')
     except:
         periodo = 0
         tipo_var = ''
+        periodo_custom_start = ''
+        periodo_custom_end = ''
     if tipo_var == 'abs':
         tipo_var = 'ABSOLUTAS'
     elif tipo_var == 'rend':
         tipo_var = 'RENDIMIENTOS'
-    print(f'periodo: {periodo}, tipo_var: {tipo_var}')
+    print(f'periodo: {periodo}, tipo_var: {tipo_var}, periodo_custom_start: {periodo_custom_start}, periodo_custom_end: {periodo_custom_end}')
 
     # Creación/Carga en RAM del diccionario con las variables a modelizar
     total_model_dict = load_or_create_model_vars(model_vars_file='resources/total_model_dict.pkl',
@@ -815,11 +820,18 @@ def modify_second_descriptive(doc):
     except:
         created_models = ['Calidad_Agua']
 
+    ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
+    # Crear nuevo archivo custom si periodo=3
+    if periodo == 3:
+        create_custom_period(periodo_custom_start, periodo_custom_end)
+        ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+
+
     # Llamada al webservice de RapidMiner
     json_perfil_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
                                            username='rapidminer',
                                            password='Edar2021*',
-                                           parameters={'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+                                           parameters={'Ruta_periodo': ruta_periodo,
                                                        'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                        'Normalizacion': 1},
                                            out_json=True)
@@ -896,13 +908,18 @@ def modify_second_descriptive(doc):
             # print(f'Ruta_periodo: /home/admin/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv')
             # print(f'IN_MODELO: {total_model_dict[model_objective]}')
             # Llamar al servicio web EDAR_Cartuja_Prediccion con los nuevos parámetros
+            ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
+            # Crear nuevo archivo custom si periodo=3
+            if periodo == 3:
+                create_custom_period(periodo_custom_start, periodo_custom_end)
+                ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
             json_prediction_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Prediccion_JSON_v5?',
                                                        username='rapidminer',
                                                        password='Edar2021*',
                                                        parameters={'Objetivo': model_objective,
                                                                    'Discretizacion': model_discretise,
                                                                    'Numero_Atributos': 4,
-                                                                   'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv',
+                                                                   'Ruta_periodo': ruta_periodo,
                                                                    'IN_MODELO': str(total_model_dict[model_objective])
                                                                    },
                                                        out_json=True)
@@ -932,7 +949,7 @@ def modify_second_descriptive(doc):
 
             # Crear nuevos gráficos
             simul_or_optim_wb = SimulOptimWidget(target=model_objective, simul_df=slider_df,
-                                                 possible_targets=possible_targets, var_influyentes=var_influyentes, periodo=periodo, ranges=ranges_df)
+                                                 possible_targets=possible_targets, var_influyentes=var_influyentes, periodo=periodo, ranges=ranges_df, periodo_custom_start=periodo_custom_start, periodo_custom_end=periodo_custom_end)
             daily_pred_plot = create_daily_pred_plot(
                 daily_pred_df, model_objective)
             decision_tree_plot = create_decision_tree_plot()

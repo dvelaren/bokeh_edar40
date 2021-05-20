@@ -35,6 +35,8 @@ sched.start()
 app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
+periodo_custom_start = '01-05-2018'
+periodo_custom_end = ''
 
 
 # Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
@@ -143,11 +145,15 @@ def perfil():
     if 'username' in session:
         global periodo
         global tipo_var
+        global periodo_custom_start
+        global periodo_custom_end
         active_page = 'perfil'
         if request.method == 'POST':
             periodo = request.form['periodo']
             tipo_var = request.form['tipo_var']
-        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+            periodo_custom_start = request.form['hiddenStartDate']
+            periodo_custom_end = request.form['hiddenEndDate']
+        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}, custom_start: {periodo_custom_start} ')
         username = str(session.get('username'))
         if username == 'rapidminer':
             # For Production
@@ -155,7 +161,7 @@ def perfil():
             #                          arguments={'periodo': periodo, 'tipo_var': tipo_var})
             # For Development
             script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil',
-                                     arguments={'periodo': periodo, 'tipo_var': tipo_var})
+                                     arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
             if tipo_var == 'abs':
                 tipo_var_title = 'Absolutas'
             elif tipo_var == 'rend':

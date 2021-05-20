@@ -42,22 +42,26 @@
 					<li class="nav-item {% if active_page == 'prediccion' %}active{% endif %}">
 						<a class="nav-link" href="{{ url_for('cartuja_prediction') }}">Predicción</a>
 					</li>
-					<form class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
+					<form id='formQuery' class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
 						<select class="form-control mr-2" id="periodo"
 								name="periodo" data-toggle="tooltip"
 								title={% if periodo=='2' %}"01/05/2018 - {{ current_date }}"{% else %}"01/01/2013 - 31/12/2014"{% endif %}>
 								<option value="2" {% if periodo=='2' %}selected{% endif %} data-toggle="tooltip" title="01/05/2018 - {{ current_date }}">Periodo 2</option>
 								<option value="1" {% if periodo=='1' %}selected{% endif %} data-toggle="tooltip" title="01/01/2013 - 31/12/2014">Periodo 1</option>
+								<option value="3" {% if periodo=='3' %}selected{% endif %} data-toggle="tooltip" title="Personalizado">Personalizado</option>
 						</select>
-						<div id="reportrange" class="form-control mr-2" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 250px;">
+						<div id="reportrange" class="form-control mr-2 {% if periodo=='1' or periodo=='2' %}disabled-picker{% elif periodo=='3' %}calendar-picker{% endif %}">
 							<i class="fa fa-calendar"></i>&nbsp;
-							<span></span> <i class="fa fa-angle-down float-right" style="vertical-align:middle;"></i>
+							<span></span>
+							<!-- <i class="fa fa-angle-down float-right" style="vertical-align:middle;"></i> -->
 						</div>
+						<input id="hiddenStartDate" name="hiddenStartDate" type="hidden" value="">
+						<input id="hiddenEndDate" name="hiddenEndDate" type="hidden" value="">
 						<select class="form-control mr-2" id="tipo_var" name="tipo_var">
 								<option value="rend" {% if tipo_var=='rend' %}selected{% endif %}>Rendimientos</option>
 								<option value="abs" {% if tipo_var=='abs' %}selected{% endif %}>Absolutas</option>
 						</select>
-						<button class="btn btn-md btn-outline-success mr-2" type="submit">Actualizar</button>
+						<button id="submitBtn" class="btn btn-md btn-outline-success mr-2" type="button">Actualizar</button>
 					</form>
 					{% endif %}
 				</ul>
@@ -100,13 +104,32 @@
 </body>
 
 <script type="text/javascript">
+	var start = moment('05/01/2018', 'DD-MM-YYYY')
+	var end = moment('{{ current_date }}', 'DD-MM-YYYY');
+
+	$(document).ready(function(){
+		$('#periodo').change(function(){
+			var selectedPeriod = $(this).children("option:selected").val();
+			console.log('selectedPeriod:', selectedPeriod);
+			if (selectedPeriod === '1' || selectedPeriod === '2') {
+				$('#reportrange').removeClass('calendar-picker').addClass('disabled-picker');
+			} else if (selectedPeriod === '3') {
+				$('#reportrange').removeClass('disabled-picker').addClass('calendar-picker');
+			}
+		});
+
+		$('#submitBtn').click(function(){
+			$('#formQuery').submit()
+		})
+	});
+
 	$(function() {
-	
-		var start = moment().subtract(29, 'days');
-		var end = moment();
 	
 		function cb(start, end) {
 			$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+			console.log(start.format('DD/MM/YYYY HH:MM:ss') + ' to ' + end.format('DD/MM/YYYY HH:MM:ss'));
+			$("#hiddenStartDate").val(start.format('DD/MM/YYYY'));
+			$("#hiddenEndDate").val(end.format('DD/MM/YYYY'));
 		}
 	
 		$('#reportrange').daterangepicker({
@@ -146,8 +169,9 @@
 			},
 			startDate: start,
 			endDate: end,
+			minDate: "05/01/2018",
+			maxDate: '{{ current_date }}',
 			ranges: {
-			   'Hoy': [moment(), moment()],
 			   'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 			   'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
 			   'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],

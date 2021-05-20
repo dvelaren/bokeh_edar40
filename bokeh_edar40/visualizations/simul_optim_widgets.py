@@ -9,6 +9,7 @@ from bokeh.models.widgets import (Button, RadioButtonGroup, Select, Slider,
                                   TextInput)
 from pandas.io.json import json_normalize
 from utils.rapidminer_proxy import call_webservice
+from utils.utils import create_custom_period
 
 
 def create_div_title(title=''):
@@ -109,10 +110,12 @@ class DynamicSimulWidget:
 		target: Target de simulación.
     """
 
-    def __init__(self, target, df, periodo):
+    def __init__(self, target, df, periodo, periodo_custom_start, periodo_custom_end):
         self.target = target
         self.df = df
         self.periodo = periodo
+        self.periodo_custom_start = periodo_custom_start
+        self.periodo_custom_end = periodo_custom_end
         self.new_rows = OrderedDict([])
         columns = column([])
         target_title = create_div_title(f'Simulación - {self.target}')
@@ -145,18 +148,22 @@ class DynamicSimulWidget:
         self.div_spinner.show_spinner()
         vars_influyentes = {var: round(drow.slider.value, 2)
                             for (var, drow) in self.new_rows.items()}
+        ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
+        # Crear nuevo archivo custom si periodo=3
+        if self.periodo == 3:
+            create_custom_period(self.periodo_custom_start, self.periodo_custom_end)
+            ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
         json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
                                      username='rapidminer',
                                      password='Edar2021*',
                                      parameters={
                                          'Modelo': self.target,
                                          'Variables_influyentes': str(vars_influyentes),
-                                         'Ruta_periodo': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
+                                         'Ruta_periodo': ruta_periodo
                                      },
                                      out_json=True)
         print(f'Modelo: {self.target}')
-        print(
-            f'Ruta_periodo: https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv')
+        print(f'Ruta_periodo: {ruta_periodo}')
         print(vars_influyentes)
         simul_result = json_normalize(json_simul)
         print(simul_result[f'prediction({self.target})'][0])
@@ -308,9 +315,9 @@ def create_optim_div(target, possible_targets, var_influyentes, ranges):
 
 
 class SimulOptimWidget:
-    def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges):
+    def __init__(self, target, simul_df, possible_targets, var_influyentes, periodo, ranges, periodo_custom_start, periodo_custom_end):
         self.simulate_wb = DynamicSimulWidget(
-            target=target, df=simul_df, periodo=periodo)
+            target=target, df=simul_df, periodo=periodo, periodo_custom_start=periodo_custom_start, periodo_custom_end=periodo_custom_end)
         # self.optimize_wb = DynamicOptimWidget(target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
         self.optimize_wb = create_optim_div(
             target=target, possible_targets=possible_targets, var_influyentes=var_influyentes, ranges=ranges)
