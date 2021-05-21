@@ -157,11 +157,11 @@ def perfil():
         username = str(session.get('username'))
         if username == 'rapidminer':
             # For Production
-            # script = server_document(url=r'/bokeh/perfil', relative_urls=True,
-            #                          arguments={'periodo': periodo, 'tipo_var': tipo_var})
-            # For Development
-            script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil',
+            script = server_document(url=r'/bokeh/perfil', relative_urls=True,
                                      arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
+            # For Development
+            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil',
+            #                          arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
             if tipo_var == 'abs':
                 tipo_var_title = 'Absolutas'
             elif tipo_var == 'rend':
@@ -190,19 +190,23 @@ def cartuja_prediction():
     if 'username' in session:
         global periodo
         global tipo_var
+        global periodo_custom_start
+        global periodo_custom_end
         active_page = 'prediccion'
         if request.method == 'POST':
             periodo = request.form['periodo']
             tipo_var = request.form['tipo_var']
-        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+            periodo_custom_start = request.form['hiddenStartDate']
+            periodo_custom_end = request.form['hiddenEndDate']
+        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}, custom_start: {periodo_custom_start} ')
         username = str(session.get('username'))
         if username == 'rapidminer':
             # For Production
-            # script = server_document(url=r'/bokeh/prediccion', relative_urls=True,
-            #                          arguments={'periodo': periodo, 'tipo_var': tipo_var})
+            script = server_document(url=r'/bokeh/prediccion', relative_urls=True,
+                                     arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
             # For Development
-            script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion',
-									 arguments={'periodo': periodo, 'tipo_var': tipo_var})
+            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion',
+			# 						 arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
             if tipo_var == 'abs':
                 tipo_var_title = 'Absolutas'
             elif tipo_var == 'rend':
