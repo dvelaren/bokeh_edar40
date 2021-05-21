@@ -104,8 +104,8 @@
 </body>
 
 <script type="text/javascript">
-	var start = moment('05/01/2018', 'DD-MM-YYYY')
-	var end = moment('{{ current_date }}', 'DD-MM-YYYY');
+	var start = moment('{% if periodo == '3' %}{{ periodo_custom_start }}{% else %}01/05/2018{% endif %}', 'DD-MM-YYYY');
+	var end = moment('{% if periodo == '3' %}{{ periodo_custom_end }}{% else %}{{ current_date }}{% endif %}', 'DD-MM-YYYY');
 
 	$(document).ready(function(){
 		$('#periodo').change(function(){
@@ -127,7 +127,7 @@
 	
 		function cb(start, end) {
 			$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-			console.log(start.format('DD/MM/YYYY HH:MM:ss') + ' to ' + end.format('DD/MM/YYYY HH:MM:ss'));
+			console.log(start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
 			$("#hiddenStartDate").val(start.format('DD/MM/YYYY'));
 			$("#hiddenEndDate").val(end.format('DD/MM/YYYY'));
 		}

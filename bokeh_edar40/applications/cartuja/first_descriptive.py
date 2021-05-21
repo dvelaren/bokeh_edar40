@@ -17,6 +17,7 @@ from bokeh.models.widgets import Panel, Tabs
 from bokeh.plotting import curdoc, figure, show
 from bokeh_edar40.visualizations.treemap import normalize_sizes, squarify
 from utils.utils import create_custom_period
+from utils.server_config import SERVER_HOST
 from pandas.io.json import json_normalize
 from utils.rapidminer_proxy import call_webservice
 
@@ -587,18 +588,18 @@ def modify_first_descriptive(doc):
         tipo_var = 'RENDIMIENTOS'
     print(f'periodo: {periodo}, tipo_var: {tipo_var}, periodo_custom_start: {periodo_custom_start}, periodo_custom_end: {periodo_custom_end}')
 
-    ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
+    ruta_periodo = f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
     # Crear nuevo archivo custom si periodo=3
     if periodo == 3:
         create_custom_period(periodo_custom_start, periodo_custom_end)
-        ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+        ruta_periodo = f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
 
     # Llamada al webservice de RapidMiner
     json_document = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Perfil_Out_JSON_v5?',
                                     username='rapidminer',
                                     password='Edar2021*',
                                     parameters={'Ruta_periodo': ruta_periodo,
-                                                'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+                                                'Ruta_tipo_variable': f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                 'Normalizacion': 1},
                                     out_json=True)
     # print(f'json_doc: {json_document}')

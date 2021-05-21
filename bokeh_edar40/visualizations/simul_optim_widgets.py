@@ -10,6 +10,7 @@ from bokeh.models.widgets import (Button, RadioButtonGroup, Select, Slider,
 from pandas.io.json import json_normalize
 from utils.rapidminer_proxy import call_webservice
 from utils.utils import create_custom_period
+from utils.server_config import SERVER_HOST
 
 
 def create_div_title(title=''):
@@ -148,11 +149,11 @@ class DynamicSimulWidget:
         self.div_spinner.show_spinner()
         vars_influyentes = {var: round(drow.slider.value, 2)
                             for (var, drow) in self.new_rows.items()}
-        ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
+        ruta_periodo = f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{self.periodo}.csv'
         # Crear nuevo archivo custom si periodo=3
         if self.periodo == 3:
             create_custom_period(self.periodo_custom_start, self.periodo_custom_end)
-            ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+            ruta_periodo = f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
         json_simul = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Simulacion_JSON_v1?',
                                      username='rapidminer',
                                      password='Edar2021*',
@@ -280,9 +281,10 @@ class DynamicSimulWidget:
 
 
 def create_optim_div(target, possible_targets, var_influyentes, ranges):
+    endpoint = f'{SERVER_HOST}/optimizacion'
     # endpoint = "http://10.0.20.30:9995/optimizacion"
     # endpoint = "http://localhost:9995/optimizacion"
-    endpoint = "https://edar.vicomtech.org/optimizacion"
+    # endpoint = "https://edar.vicomtech.org/optimizacion"
     data = {
         'target': target,
         'valores': possible_targets,

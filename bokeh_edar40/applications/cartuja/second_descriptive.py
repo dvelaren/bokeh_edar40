@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import utils.bokeh_utils as bokeh_utils
 from utils.utils import create_custom_period
+from utils.server_config import SERVER_HOST
 from bokeh.layouts import column, layout, row, widgetbox
 # from bokeh.core.properties import value
 from bokeh.models import (BasicTicker, ColorBar, ColumnDataSource, Div,
@@ -462,12 +463,12 @@ def create_outlier_plot(df, prediction_df, tipo_var):
     return outlier_plot
 
 
-def create_prediction_plot(df):
+def create_prediction_plot(df, current_date):
     """Crea gráfica de predicción a futuro.
 
     Parameters:
 		df (Dataframe): Dataframe con los datos a mostrar en la visualización.
-
+        current_date: Ultima fecha antes de la prediccion
     Returns:
 		Figure: Gráfica de de predicción a futuro.
     """
@@ -523,7 +524,7 @@ def create_prediction_plot(df):
                                                                '%b %Y'])
     prediction_plot.xaxis[0].ticker = FixedTicker(ticks=list(x_axis_tick_vals))
     # Linea vertical para definir el horizonte de predicción
-    current_date = dt.now() - timedelta(days=1)
+    # current_date = dt.now() - timedelta(days=1)
     prediction_date = time.mktime(current_date.timetuple())*1000
     vline = Span(location=prediction_date, dimension='height',
                  line_color='gray', line_alpha=0.6, line_dash='dotted', line_width=2)
@@ -786,16 +787,18 @@ def modify_second_descriptive(doc):
         tipo_var = args.get('tipo_var')[0].decode('ascii')
         periodo_custom_start = args.get('periodo_custom_start')[0].decode('ascii')
         periodo_custom_end = args.get('periodo_custom_end')[0].decode('ascii')
+        current_date = dt.strptime(args.get('current_date')[0].decode('ascii'), '%d/%m/%Y')
     except:
         periodo = 0
         tipo_var = ''
         periodo_custom_start = ''
         periodo_custom_end = ''
+        current_date = ''
     if tipo_var == 'abs':
         tipo_var = 'ABSOLUTAS'
     elif tipo_var == 'rend':
         tipo_var = 'RENDIMIENTOS'
-    print(f'periodo: {periodo}, tipo_var: {tipo_var}, periodo_custom_start: {periodo_custom_start}, periodo_custom_end: {periodo_custom_end}')
+    print(f'periodo: {periodo}, tipo_var: {tipo_var}, periodo_custom_start: {periodo_custom_start}, periodo_custom_end: {periodo_custom_end}, current_date: {current_date}')
 
     # Creación/Carga en RAM del diccionario con las variables a modelizar
     total_model_dict = load_or_create_model_vars(model_vars_file='resources/total_model_dict.pkl',
@@ -820,11 +823,12 @@ def modify_second_descriptive(doc):
     except:
         created_models = ['Calidad_Agua']
 
-    ruta_periodo = f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
+    ruta_periodo = f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_{periodo}.csv'
     # Crear nuevo archivo custom si periodo=3
     if periodo == 3:
         create_custom_period(periodo_custom_start, periodo_custom_end)
-        ruta_periodo = 'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+        ruta_periodo = F'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_CUSTOM.csv'
+        current_date = dt.strptime(periodo_custom_end, '%d/%m/%Y')
 
 
     # Llamada al webservice de RapidMiner
@@ -832,7 +836,7 @@ def modify_second_descriptive(doc):
                                            username='rapidminer',
                                            password='Edar2021*',
                                            parameters={'Ruta_periodo': ruta_periodo,
-                                                       'Ruta_tipo_variable': f'https://edar.vicomtech.org/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
+                                                       'Ruta_tipo_variable': f'{SERVER_HOST}/archivos/EDAR4.0_EDAR_Cartuja_VARIABLES_{tipo_var}.csv',
                                                        'Normalizacion': 1},
                                            out_json=True)
 
@@ -844,7 +848,7 @@ def modify_second_descriptive(doc):
     outlier_df = df_perfil[4]
 
     # Creación de los gráficos y widgets permanentes en la interfaz
-    prediction_plot = create_prediction_plot(prediction_df)
+    prediction_plot = create_prediction_plot(prediction_df, current_date)
     outlier_plot = create_outlier_plot(outlier_df, prediction_df, tipo_var)
     simulation_title = create_div_title(
         'Creación, Simulación y Optimización de modelos')
