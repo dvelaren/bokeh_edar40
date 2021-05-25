@@ -4,11 +4,11 @@ from pathlib import Path
 # Mask Constants
 # Vars ABSOLUTAS file name directory
 OUT_VARS_ABSOLUTAS_FILE_NAME = Path(
-    './static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_ABSOLUTAS.csv')
+    './Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_ABSOLUTAS.csv')
 
 # Vars RENDIMIENTOS file name directory
 OUT_VARS_RENDIMIENTOS_FILE_NAME = Path(
-    './static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_RENDIMIENTOS.csv')
+    './Cartuja_Datos/EDAR4.0_EDAR_Cartuja_VARIABLES_RENDIMIENTOS.csv')
 
 # Vars out column names
 VARS_COLUMN_NAMES = ['Atributo', 'Valor_MAX_NORMA']
@@ -83,7 +83,7 @@ IN_DATA_SHEET_NAME_ID = 'ID'
 # Specify if it is requested to create the list of column names of sheet ID
 blnCreate_ID_sheet_columns_list = True
 ID_EDAR_CARTUJA_ID_sheet_column_names_FILE_NAME = Path(
-    './static/Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_ID.md')
+    './Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_ID.md')
 
 # Sheet YOKO
 IN_DATA_SHEET_NAME_YOKO = 'YOKO'
@@ -91,7 +91,7 @@ IN_DATA_SHEET_NAME_YOKO = 'YOKO'
 # Specify if it is requested to create the list of column names of sheet YOKO
 blnCreate_YOKO_sheet_columns_list = True
 ID_EDAR_CARTUJA_YOKO_sheet_column_names_FILE_NAME = Path(
-    './static/Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_YOKO.md')
+    './Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_YOKO.md')
 
 # Sheet ANALITICA
 IN_DATA_SHEET_NAME_ANALITICA = 'ANALITICA'
@@ -99,7 +99,7 @@ IN_DATA_SHEET_NAME_ANALITICA = 'ANALITICA'
 # Specify if it is requested to create the list of column names of sheet ANALITICA
 blnCreate_ANALITICA_sheet_columns_list = True
 ID_EDAR_CARTUJA_ANALITICA_sheet_column_names_FILE_NAME = Path(
-    './static/Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_ANALITICA.md')
+    './Cartuja_Datos/ID_EDAR_Cartuja_column_names_sheet_ANALITICA.md')
 
 # Specify Excel file name specifiying variables ro be read
 VARIABLES_TO_READ_FILE_NAME = Path(
@@ -136,9 +136,9 @@ VARS_CALCULADAS_COL_NAME = 'CALCULADAS'
 
 # Specify OUTPUT DATA CSV file (for PERIODS 1 & 2; see time filters for PERIOD 1 & 2 below)
 OUT_DATA_FILE_NAME_PERIOD_1 = Path(
-    './static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_1.csv')
+    './Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_1.csv')
 OUT_DATA_FILE_NAME_PERIOD_2 = Path(
-    './static/Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_2.csv')
+    './Cartuja_Datos/EDAR4.0_EDAR_Cartuja_ID_PERIOD_2.csv')
 LATEST_DATE_FILE = Path('./data/latest_date.pkl')
 
 # Other constants of interest

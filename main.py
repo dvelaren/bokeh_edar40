@@ -35,6 +35,8 @@ sched.start()
 app = Flask(__name__)
 periodo = '2'
 tipo_var = 'rend'
+periodo_custom_start = '01-05-2018'
+periodo_custom_end = ''
 
 
 # Configuración de secret key y logging cuando ejecutamos sobre Gunicorn
@@ -92,7 +94,7 @@ def recreate_db():
                 print(f'Eliminando {LATEST_DATE_FILE}')
 
             RESOURCES_FOLDER = Path('./resources')
-            CARTUJA_DATOS_FOLDER = Path('./static/Cartuja_Datos/')
+            CARTUJA_DATOS_FOLDER = Path('./Cartuja_Datos/')
 
             model_files = ['created_models.pkl', 'total_model_dict.pkl']
             cartuja_datos_files = [
@@ -143,37 +145,44 @@ def perfil():
     if 'username' in session:
         global periodo
         global tipo_var
+        global periodo_custom_start
+        global periodo_custom_end
         active_page = 'perfil'
         if request.method == 'POST':
             periodo = request.form['periodo']
             tipo_var = request.form['tipo_var']
-        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+            periodo_custom_start = request.form['hiddenStartDate']
+            periodo_custom_end = request.form['hiddenEndDate']
+
+        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}, custom_start: {periodo_custom_start} ')
         username = str(session.get('username'))
         if username == 'rapidminer':
-            # For Production
-            script = server_document(url=r'/bokeh/perfil', relative_urls=True,
-                                     arguments={'periodo': periodo, 'tipo_var': tipo_var})
-            # For Development
-            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil',
-            #                          arguments={'periodo': periodo, 'tipo_var': tipo_var})
-            if tipo_var == 'abs':
-                tipo_var_title = 'Absolutas'
-            elif tipo_var == 'rend':
-                tipo_var_title = 'Rendimientos'
-            title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
-
             current_date = datetime.now().date() - timedelta(days=1)
             try:
                 current_date = pickle.load(open(LATEST_DATE_FILE, "rb"))
             except:
                 print("Cannot load current date")
             current_date = current_date.strftime("%d/%m/%Y")
+            # For Production
+            script = server_document(url=r'/bokeh/perfil', relative_urls=True,
+                                     arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
+            # For Development
+            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/perfil',
+            #                          arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end})
+            if tipo_var == 'abs':
+                tipo_var_title = 'Absolutas'
+            elif tipo_var == 'rend':
+                tipo_var_title = 'Rendimientos'
+            title = f'Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
+
             return render_template('cartuja.html',
                                    script=script,
                                    active_page=active_page,
                                    title=title, periodo=periodo,
                                    tipo_var=tipo_var,
-                                   current_date=current_date)
+                                   current_date=current_date,
+                                   periodo_custom_start=periodo_custom_start,
+                                   periodo_custom_end=periodo_custom_end)
     return redirect(url_for('login'))
 
 # Usamos localhost porque estamos probando la aplicación localmente, una vez ejecutando la aplicación sobre el servidor cambiamos la IP a la adecuada.
@@ -184,36 +193,43 @@ def cartuja_prediction():
     if 'username' in session:
         global periodo
         global tipo_var
+        global periodo_custom_start
+        global periodo_custom_end
         active_page = 'prediccion'
         if request.method == 'POST':
             periodo = request.form['periodo']
             tipo_var = request.form['tipo_var']
-        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}')
+            periodo_custom_start = request.form['hiddenStartDate']
+            periodo_custom_end = request.form['hiddenEndDate']
+        print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}, custom_start: {periodo_custom_start} ')
         username = str(session.get('username'))
         if username == 'rapidminer':
-            # For Production
-            script = server_document(url=r'/bokeh/prediccion', relative_urls=True,
-                                     arguments={'periodo': periodo, 'tipo_var': tipo_var})
-            # For Development
-            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion',
-			# 						 arguments={'periodo': periodo, 'tipo_var': tipo_var})
-            if tipo_var == 'abs':
-                tipo_var_title = 'Absolutas'
-            elif tipo_var == 'rend':
-                tipo_var_title = 'Rendimientos'
-            title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
             current_date = datetime.now().date() - timedelta(days=1)
             try:
                 current_date = pickle.load(open(LATEST_DATE_FILE, "rb"))
             except:
                 print("Cannot load current date")
             current_date = current_date.strftime("%d/%m/%Y")
+            # For Production
+            script = server_document(url=r'/bokeh/prediccion', relative_urls=True,
+                                     arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end, 'current_date': current_date})
+            # For Development
+            # script = server_document(f'http://{SERVER_IP}:9090/bokeh/prediccion',
+			# 						 arguments={'periodo': periodo, 'tipo_var': tipo_var, 'periodo_custom_start': periodo_custom_start, 'periodo_custom_end': periodo_custom_end, 'current_date': current_date})
+            if tipo_var == 'abs':
+                tipo_var_title = 'Absolutas'
+            elif tipo_var == 'rend':
+                tipo_var_title = 'Rendimientos'
+            title = f'Predicción de Calidad del Agua - Periodo {periodo} [{tipo_var_title}]'
+            
             return render_template('cartuja.html',
                                    script=script,
                                    active_page=active_page,
                                    title=title, periodo=periodo,
                                    tipo_var=tipo_var,
-                                   current_date=current_date)
+                                   current_date=current_date,
+                                   periodo_custom_start=periodo_custom_start,
+                                   periodo_custom_end=periodo_custom_end)
     return redirect(url_for('login'))
 
 
@@ -268,7 +284,7 @@ def optimizacion():
         print(f'Restricciones: {restricciones}')
         json_optim = call_webservice(url='http://rapidminer.vicomtech.org/api/rest/process/EDAR_Cartuja_Optimizacion_v1?',
                                      username='rapidminer',
-                                     password='rapidminer',
+                                     password='Edar2021*',
                                      parameters={'Target': str(
                                          arg_target), 'Restricciones': str(restricciones)},
                                      out_json=True)
@@ -294,7 +310,7 @@ def optimizacion():
 
 @app.route('/archivos/<path:filename>')
 def send_js(filename):
-    return send_from_directory('static/Cartuja_Datos/', filename)
+    return send_from_directory('Cartuja_Datos/', filename)
 
 
 # Configuración cuando ejecutamos unicamente Flask sin Gunicorn, en modo de prueba
