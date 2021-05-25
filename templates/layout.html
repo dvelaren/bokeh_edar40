@@ -15,9 +15,12 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('static', filename='icon-192.png') }}">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 	<title>EDAR 4.0</title>
 </head>
 
@@ -39,18 +42,26 @@
 					<li class="nav-item {% if active_page == 'prediccion' %}active{% endif %}">
 						<a class="nav-link" href="{{ url_for('cartuja_prediction') }}">Predicción</a>
 					</li>
-					<form class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
+					<form id='formQuery' class="form-inline" method="POST" action="{% if active_page == 'perfil' %}{{ url_for('perfil') }}{% elif active_page == 'prediccion' %}{{ url_for('cartuja_prediction') }}{% endif %}">
 						<select class="form-control mr-2" id="periodo"
 								name="periodo" data-toggle="tooltip"
 								title={% if periodo=='2' %}"01/05/2018 - {{ current_date }}"{% else %}"01/01/2013 - 31/12/2014"{% endif %}>
 								<option value="2" {% if periodo=='2' %}selected{% endif %} data-toggle="tooltip" title="01/05/2018 - {{ current_date }}">Periodo 2</option>
 								<option value="1" {% if periodo=='1' %}selected{% endif %} data-toggle="tooltip" title="01/01/2013 - 31/12/2014">Periodo 1</option>
+								<option value="3" {% if periodo=='3' %}selected{% endif %} data-toggle="tooltip" title="Personalizado">Personalizado</option>
 						</select>
+						<div id="reportrange" class="form-control mr-2 {% if periodo=='1' or periodo=='2' %}disabled-picker{% elif periodo=='3' %}calendar-picker{% endif %}">
+							<i class="fa fa-calendar"></i>&nbsp;
+							<span></span>
+							<!-- <i class="fa fa-angle-down float-right" style="vertical-align:middle;"></i> -->
+						</div>
+						<input id="hiddenStartDate" name="hiddenStartDate" type="hidden" value="">
+						<input id="hiddenEndDate" name="hiddenEndDate" type="hidden" value="">
 						<select class="form-control mr-2" id="tipo_var" name="tipo_var">
 								<option value="rend" {% if tipo_var=='rend' %}selected{% endif %}>Rendimientos</option>
 								<option value="abs" {% if tipo_var=='abs' %}selected{% endif %}>Absolutas</option>
 						</select>
-						<button class="btn btn-md btn-outline-success mr-2" type="submit">Actualizar</button>
+						<button id="submitBtn" class="btn btn-md btn-outline-success mr-2" type="button">Actualizar</button>
 					</form>
 					{% endif %}
 				</ul>
@@ -91,5 +102,92 @@
         </div>
     </footer>
 </body>
+
+<script type="text/javascript">
+	var start = moment('{% if periodo == '3' %}{{ periodo_custom_start }}{% else %}01/05/2018{% endif %}', 'DD-MM-YYYY');
+	var end = moment('{% if periodo == '3' %}{{ periodo_custom_end }}{% else %}{{ current_date }}{% endif %}', 'DD-MM-YYYY');
+
+	$(document).ready(function(){
+		$('#periodo').change(function(){
+			var selectedPeriod = $(this).children("option:selected").val();
+			console.log('selectedPeriod:', selectedPeriod);
+			if (selectedPeriod === '1' || selectedPeriod === '2') {
+				$('#reportrange').removeClass('calendar-picker').addClass('disabled-picker');
+			} else if (selectedPeriod === '3') {
+				$('#reportrange').removeClass('disabled-picker').addClass('calendar-picker');
+			}
+		});
+
+		$('#submitBtn').click(function(){
+			$('#formQuery').submit()
+		})
+	});
+
+	$(function() {
+	
+		function cb(start, end) {
+			total_months = end.diff(start, 'months', true)
+			if (total_months >= 8.5) {
+				$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+				console.log(start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+				$("#hiddenStartDate").val(start.format('DD/MM/YYYY'));
+				$("#hiddenEndDate").val(end.format('DD/MM/YYYY'));
+			} else {
+				alert(`Se requiere seleccionar mínimo 8.5 meses, ha seleccionado solamente ${total_months.toFixed(1)} meses`);
+			}
+		}
+	
+		$('#reportrange').daterangepicker({
+			"locale": {
+				"format": "DD/MM/YYYY",
+				"separator": " - ",
+				"applyLabel": "Aplicar",
+				"cancelLabel": "Cancelar",
+				"fromLabel": "Desde",
+				"toLabel": "Hasta",
+				"customRangeLabel": "Personalizado",
+				"weekLabel": "S",
+				"daysOfWeek": [
+					"Do",
+					"Lu",
+					"Ma",
+					"Mi",
+					"Ju",
+					"Vi",
+					"Sa"
+				],
+				"monthNames": [
+					"Enero",
+					"Febrero",
+					"Marzo",
+					"Abril",
+					"Mayo",
+					"Junio",
+					"Julio",
+					"Agosto",
+					"Septiembre",
+					"Octubre",
+					"Noviembre",
+					"Deciembre"
+				],
+				"firstDay": 1
+			},
+			startDate: start,
+			endDate: end,
+			minDate: "01/05/2018",
+			maxDate: '{{ current_date }}',
+			ranges: {
+			   'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+			   'Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+			   'Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+			   'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+			   'Último Mes': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+			}
+		}, cb);
+	
+		cb(start, end);
+	
+	});
+</script>
 
 </html>

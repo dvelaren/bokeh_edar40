@@ -133,3 +133,19 @@ body {
     color: #428BCA; 
     background-color: #FFFFFF; 
   }
+
+  .calendar-picker {
+    background: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 230px;
+  }
+
+  .disabled-picker {
+    opacity: 0.7;
+    pointer-events: none;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    width: 230px;
+  }
