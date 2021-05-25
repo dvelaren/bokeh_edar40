@@ -153,6 +153,7 @@ def perfil():
             tipo_var = request.form['tipo_var']
             periodo_custom_start = request.form['hiddenStartDate']
             periodo_custom_end = request.form['hiddenEndDate']
+
         print(f'periodo_sel: {periodo}, tipo_var_sel: {tipo_var}, custom_start: {periodo_custom_start} ')
         username = str(session.get('username'))
         if username == 'rapidminer':

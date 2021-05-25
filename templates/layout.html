@@ -126,10 +126,15 @@
 	$(function() {
 	
 		function cb(start, end) {
-			$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-			console.log(start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
-			$("#hiddenStartDate").val(start.format('DD/MM/YYYY'));
-			$("#hiddenEndDate").val(end.format('DD/MM/YYYY'));
+			total_months = end.diff(start, 'months', true)
+			if (total_months >= 8.5) {
+				$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+				console.log(start.format('DD/MM/YYYY') + ' to ' + end.format('DD/MM/YYYY'));
+				$("#hiddenStartDate").val(start.format('DD/MM/YYYY'));
+				$("#hiddenEndDate").val(end.format('DD/MM/YYYY'));
+			} else {
+				alert(`Se requiere seleccionar mínimo 8.5 meses, ha seleccionado solamente ${total_months.toFixed(1)} meses`);
+			}
 		}
 	
 		$('#reportrange').daterangepicker({
@@ -169,7 +174,7 @@
 			},
 			startDate: start,
 			endDate: end,
-			minDate: "05/01/2018",
+			minDate: "01/05/2018",
 			maxDate: '{{ current_date }}',
 			ranges: {
 			   'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
