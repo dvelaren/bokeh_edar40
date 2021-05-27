@@ -103,6 +103,7 @@
     </footer>
 </body>
 
+{% if session['username'] %}
 <script type="text/javascript">
 	var start = moment('{% if periodo == '3' %}{{ periodo_custom_start }}{% else %}01/05/2018{% endif %}', 'DD-MM-YYYY');
 	var end = moment('{% if periodo == '3' %}{{ periodo_custom_end }}{% else %}{{ current_date }}{% endif %}', 'DD-MM-YYYY');
@@ -189,5 +190,6 @@
 	
 	});
 </script>
+{% endif %}
 
 </html>
